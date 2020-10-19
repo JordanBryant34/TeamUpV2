@@ -8,5 +8,6 @@ target 'Team Up' do
   # Pods for Team Up
 	pod 'SwiftyJSON'
   pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
   
 end
