@@ -3,15 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADD010253E061000CA1FF7 /* AppDelegate.swift */; };
 		7AADD013253E061000CA1FF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADD012253E061000CA1FF7 /* SceneDelegate.swift */; };
-		7AADD015253E061000CA1FF7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADD014253E061000CA1FF7 /* ViewController.swift */; };
 		7AADD01A253E061200CA1FF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD019253E061200CA1FF7 /* Assets.xcassets */; };
 		7AADD01D253E061200CA1FF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD01B253E061200CA1FF7 /* LaunchScreen.storyboard */; };
+		7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED1553253E0C710004DA81 /* TabBarController.swift */; };
+		7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED156F253E0D840004DA81 /* LFGViewController.swift */; };
+		7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED1573253E0D910004DA81 /* TeammatesViewController.swift */; };
+		7AED1578253E0D9E0004DA81 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED1577253E0D9E0004DA81 /* MessagesViewController.swift */; };
+		7AED157B253E0DAA0004DA81 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED157A253E0DAA0004DA81 /* ProfileViewController.swift */; };
 		C3D3C85C78C5CD43A3CC371A /* Pods_Team_Up.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */; };
 /* End PBXBuildFile section */
 
@@ -21,10 +25,14 @@
 		7AADD00D253E061000CA1FF7 /* Team Up.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team Up.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AADD010253E061000CA1FF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AADD012253E061000CA1FF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		7AADD014253E061000CA1FF7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7AADD019253E061200CA1FF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7AADD01C253E061200CA1FF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7AADD01E253E061200CA1FF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7AED1553253E0C710004DA81 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		7AED156F253E0D840004DA81 /* LFGViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LFGViewController.swift; sourceTree = "<group>"; };
+		7AED1573253E0D910004DA81 /* TeammatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeammatesViewController.swift; sourceTree = "<group>"; };
+		7AED1577253E0D9E0004DA81 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		7AED157A253E0DAA0004DA81 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		7EE233B4B2AECB512A7B0CA7 /* Pods-Team Up.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.release.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,7 +77,11 @@
 		7AADD00F253E061000CA1FF7 /* Team Up */ = {
 			isa = PBXGroup;
 			children = (
-				7AADD014253E061000CA1FF7 /* ViewController.swift */,
+				7AED156F253E0D840004DA81 /* LFGViewController.swift */,
+				7AED1573253E0D910004DA81 /* TeammatesViewController.swift */,
+				7AED1577253E0D9E0004DA81 /* MessagesViewController.swift */,
+				7AED157A253E0DAA0004DA81 /* ProfileViewController.swift */,
+				7AED1553253E0C710004DA81 /* TabBarController.swift */,
 				7AADD025253E063700CA1FF7 /* Resources */,
 			);
 			path = "Team Up";
@@ -93,7 +105,6 @@
 				1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */,
 				7EE233B4B2AECB512A7B0CA7 /* Pods-Team Up.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -210,8 +221,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7AADD015253E061000CA1FF7 /* ViewController.swift in Sources */,
+				7AED1578253E0D9E0004DA81 /* MessagesViewController.swift in Sources */,
+				7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */,
+				7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */,
 				7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */,
+				7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */,
+				7AED157B253E0DAA0004DA81 /* ProfileViewController.swift in Sources */,
 				7AADD013253E061000CA1FF7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
