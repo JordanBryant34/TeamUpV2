@@ -68,6 +68,101 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7A2B0653253E58AD00CF585A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7A2B0654253E58B200CF585A /* View Controllers */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		7A2B0654253E58B200CF585A /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7A2B065A253E591500CF585A /* Teammates */,
+				7A2B0659253E590C00CF585A /* Profile */,
+				7A2B0658253E590400CF585A /* Messaging */,
+				7A2B0657253E58F800CF585A /* LFG */,
+				7A2B0655253E58B800CF585A /* Sign In and Registration */,
+				7A2B0656253E58DA00CF585A /* Tab Bar and Side Menu */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		7A2B0655253E58B800CF585A /* Sign In and Registration */ = {
+			isa = PBXGroup;
+			children = (
+				7A2B0643253E33D500CF585A /* SignInViewController.swift */,
+			);
+			path = "Sign In and Registration";
+			sourceTree = "<group>";
+		};
+		7A2B0656253E58DA00CF585A /* Tab Bar and Side Menu */ = {
+			isa = PBXGroup;
+			children = (
+				7AED1553253E0C710004DA81 /* TabBarController.swift */,
+			);
+			path = "Tab Bar and Side Menu";
+			sourceTree = "<group>";
+		};
+		7A2B0657253E58F800CF585A /* LFG */ = {
+			isa = PBXGroup;
+			children = (
+				7AED156F253E0D840004DA81 /* LFGViewController.swift */,
+			);
+			path = LFG;
+			sourceTree = "<group>";
+		};
+		7A2B0658253E590400CF585A /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				7AED1577253E0D9E0004DA81 /* MessagesViewController.swift */,
+			);
+			path = Messaging;
+			sourceTree = "<group>";
+		};
+		7A2B0659253E590C00CF585A /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				7AED157A253E0DAA0004DA81 /* ProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		7A2B065A253E591500CF585A /* Teammates */ = {
+			isa = PBXGroup;
+			children = (
+				7AED1573253E0D910004DA81 /* TeammatesViewController.swift */,
+			);
+			path = Teammates;
+			sourceTree = "<group>";
+		};
+		7A2B065B253E592600CF585A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7A2B065C253E592C00CF585A /* Custom Views */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7A2B065C253E592C00CF585A /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				7A2B064B253E48EC00CF585A /* TeamUpTextField.swift */,
+				7A2B064F253E550200CF585A /* RoundedButton.swift */,
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		7A2B065D253E594800CF585A /* Helpers and Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7A2B0647253E394800CF585A /* UIViewExtension.swift */,
+				7A2B0612253E22FA00CF585A /* UIColorExtension.swift */,
+			);
+			path = "Helpers and Extensions";
+			sourceTree = "<group>";
+		};
 		7AADD004253E061000CA1FF7 = {
 			isa = PBXGroup;
 			children = (
@@ -89,16 +184,9 @@
 		7AADD00F253E061000CA1FF7 /* Team Up */ = {
 			isa = PBXGroup;
 			children = (
-				7AED156F253E0D840004DA81 /* LFGViewController.swift */,
-				7AED1573253E0D910004DA81 /* TeammatesViewController.swift */,
-				7AED1577253E0D9E0004DA81 /* MessagesViewController.swift */,
-				7AED157A253E0DAA0004DA81 /* ProfileViewController.swift */,
-				7AED1553253E0C710004DA81 /* TabBarController.swift */,
-				7A2B0612253E22FA00CF585A /* UIColorExtension.swift */,
-				7A2B0647253E394800CF585A /* UIViewExtension.swift */,
-				7A2B0643253E33D500CF585A /* SignInViewController.swift */,
-				7A2B064B253E48EC00CF585A /* TeamUpTextField.swift */,
-				7A2B064F253E550200CF585A /* RoundedButton.swift */,
+				7A2B065B253E592600CF585A /* Views */,
+				7A2B0653253E58AD00CF585A /* Controllers */,
+				7A2B065D253E594800CF585A /* Helpers and Extensions */,
 				7AADD025253E063700CA1FF7 /* Resources */,
 			);
 			path = "Team Up";

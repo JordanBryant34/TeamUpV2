@@ -170,4 +170,7 @@ extension SignInViewController: UITextFieldDelegate {
         return false
     }
     
+    deinit {
+        print("\n\nSignInViewController Deinit\n\n")
+    }
 }
