@@ -12,6 +12,8 @@ class LFGViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .blue
+        view.backgroundColor = .teamUpBlue()
+        
+        title = "LFG"
     }
 }

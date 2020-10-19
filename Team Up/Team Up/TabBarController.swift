@@ -27,5 +27,9 @@ class TabBarController: UITabBarController {
         teammatesController.tabBarItem = UITabBarItem(title: "Teammates", image: nil, selectedImage: nil)
         messagesController.tabBarItem = UITabBarItem(title: "Messages", image: nil, selectedImage: nil)
         profileController.tabBarItem = UITabBarItem(title: "Profile", image: nil, selectedImage: nil)
+        
+        tabBar.barTintColor = .teamUpDarkBlue()
+        tabBar.isTranslucent = false
     }
+
 }

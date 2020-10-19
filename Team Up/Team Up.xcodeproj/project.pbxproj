@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A2B0613253E22FA00CF585A /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B0612253E22FA00CF585A /* UIColorExtension.swift */; };
 		7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADD010253E061000CA1FF7 /* AppDelegate.swift */; };
 		7AADD013253E061000CA1FF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADD012253E061000CA1FF7 /* SceneDelegate.swift */; };
 		7AADD01A253E061200CA1FF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD019253E061200CA1FF7 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.debug.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.debug.xcconfig"; sourceTree = "<group>"; };
 		61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Team_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A2B0612253E22FA00CF585A /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		7AADD00D253E061000CA1FF7 /* Team Up.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team Up.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AADD010253E061000CA1FF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AADD012253E061000CA1FF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				7AED1577253E0D9E0004DA81 /* MessagesViewController.swift */,
 				7AED157A253E0DAA0004DA81 /* ProfileViewController.swift */,
 				7AED1553253E0C710004DA81 /* TabBarController.swift */,
+				7A2B0612253E22FA00CF585A /* UIColorExtension.swift */,
 				7AADD025253E063700CA1FF7 /* Resources */,
 			);
 			path = "Team Up";
@@ -224,6 +227,7 @@
 				7AED1578253E0D9E0004DA81 /* MessagesViewController.swift in Sources */,
 				7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */,
 				7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */,
+				7A2B0613253E22FA00CF585A /* UIColorExtension.swift in Sources */,
 				7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */,
 				7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */,
 				7AED157B253E0DAA0004DA81 /* ProfileViewController.swift in Sources */,
