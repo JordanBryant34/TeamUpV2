@@ -20,4 +20,12 @@ extension UIColor {
     static func accent() -> UIColor {
         return UIColor(red: 60/255, green: 151/255, blue: 138/255, alpha: 1)
     }
+    
+    static func secondaryLabelColor() -> UIColor {
+        return UIColor(red: 110/255, green: 120/255, blue: 135/255, alpha: 1)
+    }
+    
+    static func separatorColor() -> UIColor {
+        return UIColor(red: 81/255, green: 91/255, blue: 103/255, alpha: 0.75)
+    }
 }
