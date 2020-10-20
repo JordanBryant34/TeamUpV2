@@ -24,6 +24,13 @@ extension UIView {
         bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
+    public func centerInView(view: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+    
     public func setHeightAndWidthConstants(height: CGFloat, width: CGFloat) {
         heightAnchor.constraint(equalToConstant: height).isActive = true
         widthAnchor.constraint(equalToConstant: width).isActive = true

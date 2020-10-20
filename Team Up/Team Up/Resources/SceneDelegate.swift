@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func checkIfSignedIn() {
         if Auth.auth().currentUser == nil {
-            window?.rootViewController = SignInViewController()
+            window?.rootViewController = UINavigationController(rootViewController: SignInViewController())
         } else {
             window?.rootViewController = TabBarController()
         }

@@ -13,6 +13,7 @@ class SignInViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "signInBackground")
         imageView.alpha = 0.04
+        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -39,7 +40,7 @@ class SignInViewController: UIViewController {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 17)
-        label.text = "Login or sign up to continue."
+        label.text = "Log in or sign up to continue."
         label.textColor = .accent()
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +52,7 @@ class SignInViewController: UIViewController {
         textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondaryLabelColor()])
         textField.backgroundColor = .teamUpDarkBlue()
         textField.autocorrectionType = .no
+        textField.keyboardType = .emailAddress
         textField.layer.borderColor = UIColor.separatorColor().cgColor
         textField.returnKeyType = .next
         textField.tag = 0
@@ -96,11 +98,19 @@ class SignInViewController: UIViewController {
         setupViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        makeNavigationBarClear()
+    }
+    
     private func setDelegatesAndActions() {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        
+        signUpButton.addTarget(self, action: #selector(createNewAccountButtonTapped), for: .touchUpInside)
     }
     
     private func setupViews() {
@@ -118,9 +128,9 @@ class SignInViewController: UIViewController {
         backgroundImageView.pinEdgesToView(view: view)
         
         logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.075).isActive = true
-        logoImageView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        logoImageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.015).isActive = true
+        logoImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
+        logoImageView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
         
         welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         welcomeLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 20).isActive = true
@@ -136,17 +146,25 @@ class SignInViewController: UIViewController {
         passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         passwordTextField.setHeightAndWidthConstants(height: 50, width: view.frame.width * 0.8)
         
-        signUpButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
+        signUpButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
         signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         signUpButton.setHeightAndWidthConstants(height: 70, width: view.frame.width * 0.8)
         
-        loginButton.bottomAnchor.constraint(equalTo: signUpButton.topAnchor, constant: -15).isActive = true
+        loginButton.bottomAnchor.constraint(equalTo: signUpButton.topAnchor, constant: -20).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.setHeightAndWidthConstants(height: 70, width: view.frame.width * 0.8)
     }
     
+    @objc private func createNewAccountButtonTapped() {
+        navigationController?.pushViewController(RegisterViewController(), animated: true)
+    }
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    deinit {
+        print("\n\nSignInViewController Deinit\n\n")
     }
 }
 
@@ -170,7 +188,4 @@ extension SignInViewController: UITextFieldDelegate {
         return false
     }
     
-    deinit {
-        print("\n\nSignInViewController Deinit\n\n")
-    }
 }
