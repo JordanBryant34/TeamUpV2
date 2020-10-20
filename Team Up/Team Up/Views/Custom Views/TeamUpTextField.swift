@@ -19,7 +19,7 @@ class TeamUpTextField: UITextField {
         clearButtonMode = .whileEditing
         
         layer.masksToBounds = true
-        layer.cornerRadius = 5
+        layer.cornerRadius = 7.5
         layer.borderWidth = 1.5
         
         translatesAutoresizingMaskIntoConstraints = false

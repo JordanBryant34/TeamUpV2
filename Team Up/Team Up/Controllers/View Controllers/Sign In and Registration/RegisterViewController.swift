@@ -87,6 +87,8 @@ class RegisterViewController: UIViewController {
         confirmPasswordTextField.delegate = self
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        
+        createAccountButton.addTarget(self, action: #selector(createAccountButtonTapped), for: .touchUpInside)
     }
     
     private func setupViews() {
@@ -118,6 +120,10 @@ class RegisterViewController: UIViewController {
         createAccountButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50).isActive = true
         createAccountButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         createAccountButton.setHeightAndWidthConstants(height: 70, width: view.frame.width * 0.8)
+    }
+    
+    @objc private func createAccountButtonTapped() {
+        navigationController?.pushViewController(SetupProfileViewController(), animated: true)
     }
     
     @objc private func dismissKeyboard() {
