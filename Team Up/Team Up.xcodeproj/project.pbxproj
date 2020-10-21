@@ -19,6 +19,7 @@
 		7AADD01A253E061200CA1FF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD019253E061200CA1FF7 /* Assets.xcassets */; };
 		7AADD01D253E061200CA1FF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD01B253E061200CA1FF7 /* LaunchScreen.storyboard */; };
 		7AAF56AB253FAB81004BAFF2 /* AddBioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF56AA253FAB81004BAFF2 /* AddBioViewController.swift */; };
+		7AAF56AE253FB513004BAFF2 /* AddGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF56AD253FB513004BAFF2 /* AddGamesViewController.swift */; };
 		7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED1553253E0C710004DA81 /* TabBarController.swift */; };
 		7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED156F253E0D840004DA81 /* LFGViewController.swift */; };
 		7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED1573253E0D910004DA81 /* TeammatesViewController.swift */; };
@@ -48,6 +49,7 @@
 		7AADD01C253E061200CA1FF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7AADD01E253E061200CA1FF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7AAF56AA253FAB81004BAFF2 /* AddBioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBioViewController.swift; sourceTree = "<group>"; };
+		7AAF56AD253FB513004BAFF2 /* AddGamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGamesViewController.swift; sourceTree = "<group>"; };
 		7AED1553253E0C710004DA81 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7AED156F253E0D840004DA81 /* LFGViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LFGViewController.swift; sourceTree = "<group>"; };
 		7AED1573253E0D910004DA81 /* TeammatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeammatesViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				7A2B065E253E5A0F00CF585A /* RegisterViewController.swift */,
 				7AEDD792253E723700620EFC /* SetupProfileViewController.swift */,
 				7AAF56AA253FAB81004BAFF2 /* AddBioViewController.swift */,
+				7AAF56AD253FB513004BAFF2 /* AddGamesViewController.swift */,
 			);
 			path = "Sign In and Registration";
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				7AEDD793253E723700620EFC /* SetupProfileViewController.swift in Sources */,
 				7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */,
 				7AAF56AB253FAB81004BAFF2 /* AddBioViewController.swift in Sources */,
+				7AAF56AE253FB513004BAFF2 /* AddGamesViewController.swift in Sources */,
 				7A2B0613253E22FA00CF585A /* UIColorExtension.swift in Sources */,
 				7AEDD79A253F9D1F00620EFC /* UserController.swift in Sources */,
 				7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */,

@@ -12,7 +12,7 @@ class SetupProfileViewController: UIViewController {
     let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "setupProfileBackground")
-        imageView.alpha = 0.08
+        imageView.alpha = 0.1
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
@@ -133,6 +133,8 @@ class SetupProfileViewController: UIViewController {
         regionTextField.delegate = self
         usernameTextField.delegate = self
         
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        
         continueButton.addTarget(self, action: #selector(handleContinue), for: .touchUpInside)
     }
     
@@ -191,6 +193,10 @@ class SetupProfileViewController: UIViewController {
     
     @objc private func handleContinue() {
         navigationController?.pushViewController(AddBioViewController(), animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     deinit {
