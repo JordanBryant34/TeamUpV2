@@ -12,7 +12,7 @@ class AddBioViewController: UIViewController {
     let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "addBioBackground")
-        imageView.alpha = 0.08
+        imageView.alpha = 0.06
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView

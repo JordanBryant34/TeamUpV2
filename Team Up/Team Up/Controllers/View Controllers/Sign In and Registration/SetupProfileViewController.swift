@@ -12,7 +12,7 @@ class SetupProfileViewController: UIViewController {
     let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "setupProfileBackground")
-        imageView.alpha = 0.1
+        imageView.alpha = 0.09
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
