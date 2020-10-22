@@ -16,7 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         styleNavigationControllers()
         
+        getGames()
+        
         return true
+    }
+    
+    private func getGames() {
+        GameController.fetchAllGames { (games) in
+            for game in games {
+                GameController.fetchGameBackground(game: game) { (_) in }
+                GameController.fetchGameLogo(game: game) { (_) in }
+            }
+        }
     }
     
     private func styleNavigationControllers() {
