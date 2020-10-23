@@ -27,10 +27,22 @@ class AddGamesViewController: UIViewController {
         return collectionView
     }()
     
-    var games: [Game] = []
+    let gameController = GameController.shared
+    
+    var dataSource: [Game]  {
+        if let searchText = searchText, !searchText.isEmpty {
+            return searchResults
+        } else {
+            return gameController.games
+        }
+    }
+    
+    var searchResults: [Game] = []
     
     let cellId = "cellId"
     let headerId = "headerId"
+    
+    var searchText: String? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,9 +66,10 @@ class AddGamesViewController: UIViewController {
     }
     
     private func fetchGames() {
-        GameController.fetchAllGames { [weak self] (games) in
-            self?.games = games
-            self?.reloadData()
+        if gameController.games.count == 0 {
+            gameController.fetchAllGames { [weak self] (games) in
+                self?.reloadData()
+            }
         }
     }
     
@@ -90,12 +103,12 @@ class AddGamesViewController: UIViewController {
 extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return games.count
+        return dataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? GameCell else { return UICollectionViewCell(frame: .zero) }
-        cell.game = games[indexPath.item]
+        cell.game = dataSource[indexPath.item]
         return cell
     }
     
@@ -118,7 +131,7 @@ extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(games[indexPath.item].name)
+        print(dataSource[indexPath.item].name)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -156,7 +169,7 @@ extension AddGamesViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("Blah Blah")
+        
     }
     
 }

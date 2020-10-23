@@ -42,6 +42,8 @@ class GameCell: UICollectionViewCell {
         }
     }
     
+    let gameController = GameController.shared
+    
     override func layoutSubviews() {
         super.layoutSubviews()
             
@@ -79,11 +81,11 @@ class GameCell: UICollectionViewCell {
         
         gameNameLabel.text = game.name
         
-        GameController.fetchGameBackground(game: game) { [weak self] (image) in
+        gameController.fetchGameBackground(game: game) { [weak self] (image) in
             self?.backgroundImageView.image = image
         }
         
-        GameController.fetchGameLogo(game: game) { [weak self] (image) in
+        gameController.fetchGameLogo(game: game) { [weak self] (image) in
             guard let newImage = image?.resize(newSize: CGSize(width: 75, height: 75)) else { return }
             self?.logoImageView.image = newImage
         }

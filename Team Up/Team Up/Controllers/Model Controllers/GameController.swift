@@ -16,13 +16,17 @@ enum GameImageType: String {
 
 class GameController {
     
-    static private let ref = Database.database().reference()
+    static let shared = GameController()
     
-    static func fetchAllGames(completion: @escaping ([Game]) -> Void) {
+    var games: [Game] = []
+    
+    private let ref = Database.database().reference()
+    
+    func fetchAllGames(completion: @escaping ([Game]) -> Void) {
         let gamesRef = ref.child("games")
         var games: [Game] = []
         
-        gamesRef.observeSingleEvent(of: .value) { (snapshot) in
+        gamesRef.observeSingleEvent(of: .value) { [weak self] (snapshot) in
             guard let gamesDictionary = snapshot.value as? NSDictionary else {
                 completion(games)
                 return
@@ -33,12 +37,15 @@ class GameController {
                 guard let game = Game(dictionary: dictionary) else { print("could not get game"); return }
                 games.append(game)
             }
-    
-            completion(games.sorted(by: { $0.name < $1.name }))
+            
+            games = games.sorted(by: { $0.name < $1.name })
+            
+            self?.games = games
+            completion(games)
         }
     }
     
-    static func fetchGameBackground(game: Game, completion: @escaping (UIImage?) -> Void) {
+    func fetchGameBackground(game: Game, completion: @escaping (UIImage?) -> Void) {
         let path = "\(game.name)_background.jpg"
         
         if let image = Helpers.getImageFromFile(pathComponent: path) {
@@ -58,11 +65,10 @@ class GameController {
         }
     }
     
-    static func fetchGameLogo(game: Game, completion: @escaping (UIImage?) -> Void) {
+    func fetchGameLogo(game: Game, completion: @escaping (UIImage?) -> Void) {
         let path = "\(game.name)_logo.png"
         
         if let image = Helpers.getImageFromFile(pathComponent: path) {
-            print("Logo retrieved from disk")
             completion(image)
         } else {
             guard let imageUrl = URL(string: game.logoImageUrl) else { return completion(nil) }
@@ -71,8 +77,6 @@ class GameController {
                 guard let image = image else { return completion(nil) }
                 
                 Helpers.storePngToFile(image: image, pathComponent: path, size: image.size)
-                
-                print("Logo downloaded")
                 
                 completion(image)
             }

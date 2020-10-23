@@ -94,6 +94,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getGames()
         setDelegatesAndActions()
         setupViews()
     }
@@ -153,6 +154,15 @@ class SignInViewController: UIViewController {
         loginButton.bottomAnchor.constraint(equalTo: signUpButton.topAnchor, constant: -20).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.setHeightAndWidthConstants(height: 70, width: view.frame.width * 0.8)
+    }
+    
+    private func getGames() {
+        GameController.shared.fetchAllGames { (games) in
+            for game in games {
+                GameController.shared.fetchGameBackground(game: game) { (_) in }
+                GameController.shared.fetchGameLogo(game: game) { (_) in }
+            }
+        }
     }
     
     @objc private func createNewAccountButtonTapped() {
