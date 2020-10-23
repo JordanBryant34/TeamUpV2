@@ -84,9 +84,9 @@ class AddGamesViewController: UIViewController {
         
         for platform in game.platforms {
             let action = UIAlertAction(title: platform, style: .default) { (_) in
-                // Handle adding a game to the user and updating the collectionview as a result
+                let image = UIImage(named: "\(platform)Icon")?.resize(newSize: CGSize(width: 30, height: 30))
                 
-                Helpers.showNotificationBanner(title: "Game added!", subtitle: "You've added \(game.name) to your profile.", style: .success)
+                Helpers.showNotificationBanner(title: "Game added!", subtitle: "You've added \(game.name) to your profile.", image: image, style: .success)
                 alertController.dismiss(animated: true, completion: nil)
             }
             
