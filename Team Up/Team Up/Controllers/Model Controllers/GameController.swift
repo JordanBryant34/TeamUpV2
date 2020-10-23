@@ -83,4 +83,20 @@ class GameController {
         }
     }
     
+    func searchGames(searchText: String) -> [Game] {
+        let results = games.filter {
+            var isMatch = false
+
+            for word in $0.name.split(separator: " ") {
+                if word.hasPrefix(searchText) {
+                    isMatch = true
+                }
+            }
+
+            return isMatch
+        }
+        
+        return results
+    }
+    
 }

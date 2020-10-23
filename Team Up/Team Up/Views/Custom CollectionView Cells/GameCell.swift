@@ -36,11 +36,41 @@ class GameCell: UICollectionViewCell {
         return label
     }()
     
+    let addedView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.teamUpDarkBlue().withAlphaComponent(0.9)
+        view.layer.masksToBounds = true
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.accent().cgColor
+        view.layer.cornerRadius = 12.5
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let addedLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16)
+        label.text = "Added"
+        label.textColor = .accent()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let platformImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     var game: Game? {
         didSet {
             setData()
         }
     }
+    
+    var isEditing = false
     
     let gameController = GameController.shared
     
@@ -61,21 +91,43 @@ class GameCell: UICollectionViewCell {
         addSubview(backgroundImageView)
         addSubview(logoImageView)
         addSubview(gameNameLabel)
+        addSubview(addedView)
+        addSubview(platformImageView)
+        
+        addedView.addSubview(addedLabel)
         
         backgroundImageView.pinEdgesToView(view: self)
-        
+
         logoImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         logoImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -15).isActive = true
         logoImageView.setHeightAndWidthConstants(height: 75, width: 75)
-        
+
         gameNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         gameNameLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor).isActive = true
         gameNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         gameNameLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.4).isActive = true
+        
+        addedView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        addedView.leftAnchor.constraint(equalTo: leftAnchor, constant: -12.5).isActive = true
+        addedView.setHeightAndWidthConstants(height: 25, width: 100)
+        
+        addedLabel.centerYAnchor.constraint(equalTo: addedView.centerYAnchor).isActive = true
+        addedLabel.centerXAnchor.constraint(equalTo: addedView.centerXAnchor, constant: 6).isActive = true
+        
+        platformImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        platformImageView.setHeightAndWidthConstants(height: 30, width: 30)
+        
+        if isEditing {
+            platformImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+        } else {
+            platformImageView.rightAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
+        }
     }
     
     private func setData() {
         backgroundImageView.image = nil
+        logoImageView.image = nil
+        platformImageView.image = nil
         
         guard let game = game else { return }
         
@@ -89,6 +141,8 @@ class GameCell: UICollectionViewCell {
             guard let newImage = image?.resize(newSize: CGSize(width: 75, height: 75)) else { return }
             self?.logoImageView.image = newImage
         }
+        
+        platformImageView.image = UIImage(named: "SwitchIcon")?.resize(newSize: CGSize(width: 30, height: 30))
         
     }
     

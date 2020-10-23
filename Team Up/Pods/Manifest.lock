@@ -78,12 +78,17 @@ PODS:
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.4.0)
   - leveldb-library (1.22)
+  - MarqueeLabel (4.0.5)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
   - nanopb/decode (1.30906.0)
   - nanopb/encode (1.30906.0)
+  - NotificationBannerSwift (3.0.2):
+    - MarqueeLabel (~> 4.0.0)
+    - SnapKit (~> 5.0.0)
   - PromisesObjC (1.2.11)
+  - SnapKit (5.0.1)
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
@@ -91,6 +96,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Database
   - Firebase/Storage
+  - NotificationBannerSwift
   - SwiftyJSON
 
 SPEC REPOS:
@@ -108,8 +114,11 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - leveldb-library
+    - MarqueeLabel
     - nanopb
+    - NotificationBannerSwift
     - PromisesObjC
+    - SnapKit
     - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -126,10 +135,13 @@ SPEC CHECKSUMS:
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
+  NotificationBannerSwift: 713e20f21b6105f4a36a00e5d9fa414a930d3d8e
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 38ae886cff51f847fb131ce8468ee37055f13984
+PODFILE CHECKSUM: 94d8d71492fd6d45e51d46f5f14f1accd549e81e
 
 COCOAPODS: 1.9.3

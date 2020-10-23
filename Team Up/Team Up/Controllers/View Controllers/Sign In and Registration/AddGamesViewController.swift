@@ -50,7 +50,6 @@ class AddGamesViewController: UIViewController {
         collectionView.register(GameCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(AddGamesHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
-        setDelegatesAndActions()
         fetchGames()
         setupViews()
     }
@@ -59,10 +58,6 @@ class AddGamesViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-    }
-    
-    private func setDelegatesAndActions() {
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
     
     private func fetchGames() {
@@ -84,13 +79,32 @@ class AddGamesViewController: UIViewController {
         collectionView.pinEdgesToView(view: view)
     }
     
+    private func presentPlatformOptions(game: Game, indexPath: IndexPath) {
+        let alertController = UIAlertController(title: "Select the platform you play on.", message: nil, preferredStyle: .actionSheet)
+        
+        for platform in game.platforms {
+            let action = UIAlertAction(title: platform, style: .default) { (_) in
+                // Handle adding a game to the user and updating the collectionview as a result
+                
+                Helpers.showNotificationBanner(title: "Game added!", subtitle: "You've added \(game.name) to your profile.", style: .success)
+                alertController.dismiss(animated: true, completion: nil)
+            }
+            
+            alertController.addAction(action)
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
     
     private func reloadData() {
         DispatchQueue.main.async {
-            self.collectionView.reloadData()
+            self.collectionView.reloadSections(IndexSet(integer: 1))
         }
     }
     
@@ -102,20 +116,33 @@ class AddGamesViewController: UIViewController {
 
 extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.count
+        if section == 1 {
+            return dataSource.count
+        } else { return 0 }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? GameCell else { return UICollectionViewCell(frame: .zero) }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? GameCell,
+              indexPath.section == 1 else { return UICollectionViewCell() }
+        
+        cell.isEditing = true
         cell.game = dataSource[indexPath.item]
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath) as? AddGamesHeader else { return UICollectionReusableView(frame: .zero) }
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath) as? AddGamesHeader, indexPath.section == 0 else { return UICollectionReusableView(frame: .zero) }
+        
+        header.searchBar.searchTextField.text = searchText
         
         header.searchBar.delegate = self
+        header.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         
         return header
     }
@@ -123,15 +150,22 @@ extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.frame.width - 20
         let height = width * (9/16) - 30
-        return CGSize(width: width, height: height)
+        
+        if indexPath.section == 1 {
+            return CGSize(width: width, height: height)
+        } else { return .zero }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height / 3)
+        if section == 0 {
+            return CGSize(width: view.frame.width, height: view.frame.height / 3)
+        } else { return .zero }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(dataSource[indexPath.item].name)
+        view.endEditing(true)
+        
+        presentPlatformOptions(game: dataSource[indexPath.item], indexPath: indexPath)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -169,7 +203,11 @@ extension AddGamesViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.searchText = searchText
         
+        searchResults = gameController.searchGames(searchText: searchText)
+        
+        self.reloadData()
     }
     
 }
