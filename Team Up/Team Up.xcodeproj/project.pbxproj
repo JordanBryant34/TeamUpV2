@@ -34,6 +34,7 @@
 		7AFA1165254106FF00EEE7C6 /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA1164254106FF00EEE7C6 /* GameCell.swift */; };
 		7AFA11692541120B00EEE7C6 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA11682541120B00EEE7C6 /* Helpers.swift */; };
 		7AFA116C2541193100EEE7C6 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA116B2541193100EEE7C6 /* ImageService.swift */; };
+		7AFA1170254244CE00EEE7C6 /* AddGamesHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA116F254244CE00EEE7C6 /* AddGamesHeader.swift */; };
 		C3D3C85C78C5CD43A3CC371A /* Pods_Team_Up.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,7 @@
 		7AFA1164254106FF00EEE7C6 /* GameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCell.swift; sourceTree = "<group>"; };
 		7AFA11682541120B00EEE7C6 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		7AFA116B2541193100EEE7C6 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		7AFA116F254244CE00EEE7C6 /* AddGamesHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGamesHeader.swift; sourceTree = "<group>"; };
 		7EE233B4B2AECB512A7B0CA7 /* Pods-Team Up.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.release.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -260,9 +262,18 @@
 		7AFA1163254106E500EEE7C6 /* Custom CollectionView Cells */ = {
 			isa = PBXGroup;
 			children = (
+				7AFA116E254244BB00EEE7C6 /* Headers */,
 				7AFA1164254106FF00EEE7C6 /* GameCell.swift */,
 			);
 			path = "Custom CollectionView Cells";
+			sourceTree = "<group>";
+		};
+		7AFA116E254244BB00EEE7C6 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				7AFA116F254244CE00EEE7C6 /* AddGamesHeader.swift */,
+			);
+			path = Headers;
 			sourceTree = "<group>";
 		};
 		BD8A580F1CE7B41047DB2D1B /* Pods */ = {
@@ -403,6 +414,7 @@
 				7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */,
 				7A2B0644253E33D500CF585A /* SignInViewController.swift in Sources */,
 				7A2B0650253E550200CF585A /* RoundedButton.swift in Sources */,
+				7AFA1170254244CE00EEE7C6 /* AddGamesHeader.swift in Sources */,
 				7A2B064C253E48EC00CF585A /* TeamUpTextField.swift in Sources */,
 				7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */,
 				7AFA116C2541193100EEE7C6 /* ImageService.swift in Sources */,

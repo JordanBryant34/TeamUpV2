@@ -79,8 +79,6 @@ class GameCell: UICollectionViewCell {
         
         gameNameLabel.text = game.name
         
-        print("\(game.name): \(game.backgroundImageUrl)")
-        
         GameController.fetchGameBackground(game: game) { [weak self] (image) in
             self?.backgroundImageView.image = image
         }
