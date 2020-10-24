@@ -12,6 +12,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getGames()
         setupTabBar()
     }
     
@@ -30,6 +31,15 @@ class TabBarController: UITabBarController {
         
         tabBar.barTintColor = .teamUpDarkBlue()
         tabBar.isTranslucent = false
+    }
+    
+    private func getGames() {
+        GameController.shared.fetchAllGames { (games) in
+            for game in games {
+                GameController.shared.fetchGameBackground(game: game) { (_) in }
+                GameController.shared.fetchGameLogo(game: game) { (_) in }
+            }
+        }
     }
 
 }

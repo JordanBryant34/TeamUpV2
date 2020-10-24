@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class AddGamesViewController: UIViewController {
     
@@ -39,6 +40,8 @@ class AddGamesViewController: UIViewController {
     
     var searchResults: [Game] = []
     
+    var addedGames: [Game] = []
+    
     let cellId = "cellId"
     let headerId = "headerId"
     
@@ -50,6 +53,7 @@ class AddGamesViewController: UIViewController {
         collectionView.register(GameCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(AddGamesHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
+        makeNavigationBarClear()
         fetchGames()
         setupViews()
     }
@@ -66,6 +70,13 @@ class AddGamesViewController: UIViewController {
                 self?.reloadData()
             }
         }
+        
+        if let username = Auth.auth().currentUser?.displayName {
+            UserController.fetchUsersGames(username: username) { [weak self] (games) in
+                self?.addedGames = games
+                self?.reloadData()
+            }
+        }
     }
     
     private func setupViews() {
@@ -77,16 +88,24 @@ class AddGamesViewController: UIViewController {
         
         backgroundImageView.pinEdgesToView(view: view)
         collectionView.pinEdgesToView(view: view)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: .plain, target: self, action: #selector(finishTapped))
     }
     
     private func presentPlatformOptions(game: Game, indexPath: IndexPath) {
         let alertController = UIAlertController(title: "Select the platform you play on.", message: nil, preferredStyle: .actionSheet)
         
         for platform in game.platforms {
-            let action = UIAlertAction(title: platform, style: .default) { (_) in
+            let action = UIAlertAction(title: platform, style: .default) { [weak self] (_) in
                 let image = UIImage(named: "\(platform)Icon")?.resize(newSize: CGSize(width: 30, height: 30))
                 
-                Helpers.showNotificationBanner(title: "Game added!", subtitle: "You've added \(game.name) to your profile.", image: image, style: .success)
+                let gameToAdd = game
+                gameToAdd.playerPlatform = platform
+                self?.addedGames.append(gameToAdd)
+                
+                self?.reloadCell(at: indexPath)
+                
+                Helpers.showNotificationBanner(title: "Game added!", subtitle: "You've added \(game.name) to your profile.", image: image, style: .success, textAlignment: .left)
                 alertController.dismiss(animated: true, completion: nil)
             }
             
@@ -98,6 +117,29 @@ class AddGamesViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    private func presentRemoveOption(game: Game, indexPath: IndexPath) {
+        let alertController = UIAlertController(title: "Remove \(game.name) from your games?", message: nil, preferredStyle: .alert)
+        
+        let removeAction = UIAlertAction(title: "Remove", style: .default) { [weak self] (_) in
+            if let index = self?.addedGames.firstIndex(of: game) {
+                game.playerPlatform = nil
+                self?.addedGames.remove(at: index)
+            }
+            
+            self?.reloadCell(at: indexPath)
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        
+        alertController.addAction(removeAction)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc private func finishTapped() {
+        UserController.updateGames(games: addedGames)
+    }
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -105,6 +147,12 @@ class AddGamesViewController: UIViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             self.collectionView.reloadSections(IndexSet(integer: 1))
+        }
+    }
+    
+    private func reloadCell(at indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            self.collectionView.reloadItems(at: [indexPath])
         }
     }
     
@@ -129,9 +177,15 @@ extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? GameCell,
               indexPath.section == 1 else { return UICollectionViewCell() }
-        
+        let game = dataSource[indexPath.item]
+                
         cell.isEditing = true
-        cell.game = dataSource[indexPath.item]
+        
+        if addedGames.contains(game), let index = addedGames.firstIndex(of: game) {
+            cell.game = addedGames[index]
+        } else {
+            cell.game = game
+        }
         
         return cell
     }
@@ -164,8 +218,13 @@ extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         view.endEditing(true)
+        let game = dataSource[indexPath.item]
         
-        presentPlatformOptions(game: dataSource[indexPath.item], indexPath: indexPath)
+        if addedGames.contains(game) {
+            presentRemoveOption(game: game, indexPath: indexPath)
+        } else {
+            presentPlatformOptions(game: dataSource[indexPath.item], indexPath: indexPath)
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

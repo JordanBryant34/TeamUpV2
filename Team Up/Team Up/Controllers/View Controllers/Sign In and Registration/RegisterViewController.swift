@@ -123,7 +123,19 @@ class RegisterViewController: UIViewController {
     }
     
     @objc private func createAccountButtonTapped() {
-        navigationController?.pushViewController(SetupProfileViewController(), animated: true)
+        guard let email = emailTextField.text, !email.isEmpty else { return }
+        guard let password = passwordTextField.text, !password.isEmpty else { return }
+        guard let passwordConfirmation = confirmPasswordTextField.text, !passwordConfirmation.isEmpty else { return }
+        
+        UserController.createNewUser(email: email, password: password, passwordConfirmation: passwordConfirmation) { [weak self] (result) in
+            switch result {
+            case .success(_):
+                self?.navigationController?.pushViewController(SetupProfileViewController(), animated: true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                print(error)
+            }
+        }
     }
     
     @objc private func dismissKeyboard() {

@@ -60,7 +60,7 @@ class AddBioViewController: UIViewController {
     let continueButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle("Continue", for: .normal)
-        button.setTitleColor(.teamUpBlue(), for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
         button.backgroundColor = .accent()
         return button
@@ -126,6 +126,16 @@ class AddBioViewController: UIViewController {
     }
     
     @objc private func handleContinue() {
+        
+        if bioTextView.text.count > characterLimit {
+            Helpers.showNotificationBanner(title: "Bio is too long", subtitle: "Your bio has to be under \(characterLimit) characters.", image: nil, style: .danger, textAlignment: .left)
+            return
+        }
+        
+        if let bio = bioTextView.text, !bio.isEmpty, bio != "Write your bio..." {
+            UserController.updateBio(bio: bio)
+        }
+        
         navigationController?.pushViewController(AddGamesViewController(), animated: true)
     }
     

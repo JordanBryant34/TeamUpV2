@@ -25,6 +25,7 @@ class SetupProfileViewController: UIViewController {
         imageView.layer.borderColor = UIColor.accent().cgColor
         imageView.image = UIImage(named: "teamUpLogo")
         imageView.backgroundColor = .teamUpDarkBlue()
+        imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -114,9 +115,12 @@ class SetupProfileViewController: UIViewController {
     let continueButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle("Continue", for: .normal)
-        button.setTitleColor(.teamUpBlue(), for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.secondaryLabelColor(), for: .disabled)
         button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = .accent()
+        button.setBackgroundImage(UIImage(color: .accent()), for: .normal)
+        button.setBackgroundImage(UIImage(color: .teamUpDarkBlue()), for: .disabled)
+        button.isEnabled = false
         return button
     }()
     
@@ -125,6 +129,7 @@ class SetupProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
+        makeNavigationBarClear()
         setDelegatesAndActions()
         setupViews()
     }
@@ -134,6 +139,7 @@ class SetupProfileViewController: UIViewController {
         usernameTextField.delegate = self
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        profilePicImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentImagePicker)))
         
         continueButton.addTarget(self, action: #selector(handleContinue), for: .touchUpInside)
     }
@@ -157,7 +163,7 @@ class SetupProfileViewController: UIViewController {
         backgroundImageView.pinEdgesToView(view: view)
         
         profilePicImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profilePicImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.02).isActive = true
+        profilePicImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.03).isActive = true
         profilePicImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
         profilePicImageView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
         profilePicImageView.layer.cornerRadius = view.frame.height * 0.125 / 2
@@ -191,7 +197,30 @@ class SetupProfileViewController: UIViewController {
         continueButton.setHeightAndWidthConstants(height: 70, width: view.frame.width * 0.8)
     }
     
+    private func checkIfReadyToContinue() {
+        if let username = usernameTextField.text, let regionString = regionTextField.text {
+            if !username.isEmpty && !regionString.isEmpty {
+                continueButton.isEnabled = true
+            }
+        }
+    }
+    
     @objc private func handleContinue() {
+        guard let username = usernameTextField.text, !username.isEmpty else { return }
+        guard let region = regionTextField.text, !region.isEmpty else { return }
+        
+        var mic: MicStatus {
+            if micSegmentedControl.selectedSegmentIndex == 1 {
+                return .noMic
+            } else {
+                return .mic
+            }
+        }
+        
+        UserController.setupProfile(username: username, mic: mic, region: region, image: profilePicImageView.image) { (success) in
+            print("successfully created a user")
+        }
+        
         navigationController?.pushViewController(AddBioViewController(), animated: true)
     }
     
@@ -208,15 +237,32 @@ extension SetupProfileViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.accent().cgColor
+        continueButton.isEnabled = false
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderColor = UIColor.separatorColor().cgColor
+        dismissKeyboard()
         
+        continueButton.isEnabled = false
+        checkIfReadyToContinue()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return false
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == regionTextField {
-            textField.resignFirstResponder()
-            
+            dismissKeyboard()
             let alertController = UIAlertController(title: "Select a region", message: nil, preferredStyle: .actionSheet)
             
-            for region in Regions.allCases {
+            for region in Region.allCases {
                 let action = UIAlertAction(title: region.rawValue, style: .default) { [weak self] (_) in
                     self?.regionTextField.text = region.rawValue
+                    self?.checkIfReadyToContinue()
                 }
                 
                 alertController.addAction(action)
@@ -225,17 +271,33 @@ extension SetupProfileViewController: UITextFieldDelegate {
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             
             present(alertController, animated: true, completion: nil)
+            
+            return false
+        } else {
+            return true
         }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.layer.borderColor = UIColor.separatorColor().cgColor
+}
+
+extension SetupProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let image = info[.editedImage] as? UIImage {
+            profilePicImageView.image = image
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    @objc private func presentImagePicker() {
+        print("Image Picker")
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
         
-        return false
+        present(imagePicker, animated: true, completion: nil)
     }
     
 }

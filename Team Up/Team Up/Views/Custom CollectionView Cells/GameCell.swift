@@ -44,6 +44,7 @@ class GameCell: UICollectionViewCell {
         view.layer.borderColor = UIColor.accent().cgColor
         view.layer.cornerRadius = 12.5
         view.clipsToBounds = true
+        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -128,6 +129,7 @@ class GameCell: UICollectionViewCell {
         backgroundImageView.image = nil
         logoImageView.image = nil
         platformImageView.image = nil
+        addedView.isHidden = true
         
         guard let game = game else { return }
         
@@ -142,8 +144,13 @@ class GameCell: UICollectionViewCell {
             self?.logoImageView.image = newImage
         }
         
-        platformImageView.image = UIImage(named: "SwitchIcon")?.resize(newSize: CGSize(width: 30, height: 30))
-        
+        if let playerPlatform = game.playerPlatform {
+            platformImageView.image = UIImage(named: "\(playerPlatform)Icon")?.resize(newSize: CGSize(width: 30, height: 30))
+            
+            if isEditing {
+                addedView.isHidden = false
+            }
+        }
     }
     
 }

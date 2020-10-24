@@ -85,7 +85,7 @@ class SignInViewController: UIViewController {
     let loginButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle("Log in", for: .normal)
-        button.setTitleColor(.teamUpBlue(), for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
         button.backgroundColor = .accent()
         return button
