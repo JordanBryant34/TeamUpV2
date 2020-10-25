@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class AddGamesViewController: UIViewController {
     
@@ -137,7 +138,11 @@ class AddGamesViewController: UIViewController {
     }
     
     @objc private func finishTapped() {
-        UserController.updateGames(games: addedGames)
+        if addedGames.count > 0 {
+            UserController.updateUserGames(games: addedGames)
+        } else {
+            Helpers.showNotificationBanner(title: "Can't let you do that", subtitle: "You must have at least one game added.", image: nil, style: .danger, textAlignment: .left)
+        }
     }
     
     @objc private func dismissKeyboard() {

@@ -42,7 +42,7 @@ class User {
 
 extension User {
     
-    convenience init?(dictionary: [String: AnyObject]) {
+    convenience init?(dictionary: [String: Any]) {
         guard let username = dictionary["username"] as? String else { return nil }
         guard let biography = dictionary["biography"] as? String else { return nil }
         guard let micString = dictionary["mic"] as? String else { return nil }
@@ -53,9 +53,9 @@ extension User {
         guard let region = Region(rawValue: regionString) else { return nil }
         
         var games: [Game] = []
-        if let gamesDictionary = dictionary["games"] as? [String : AnyObject] {
+        if let gamesDictionary = dictionary["games"] as? [String : Any] {
             for key in gamesDictionary.keys {
-                if let gameDictionary = gamesDictionary[key] as? [String : AnyObject], let game = Game(dictionary: gameDictionary) {
+                if let gameDictionary = gamesDictionary[key] as? [String : Any], let game = Game(dictionary: gameDictionary) {
                     games.append(game)
                 }
             }

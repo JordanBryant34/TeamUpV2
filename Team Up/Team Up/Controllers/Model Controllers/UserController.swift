@@ -160,7 +160,20 @@ class UserController {
         }
     }
     
-    static func updateGames(games: [Game]) {
+    static func fetchUser(username: String, completion: @escaping (_ user: User?) -> Void) {
+        ref.child("users").child(username).observeSingleEvent(of: .value) { (snapshot) in
+            guard let dictionary = snapshot.value as? [String : Any] else {
+                completion(nil)
+                return
+            }
+            
+            let user = User(dictionary: dictionary)
+            
+            completion(user)
+        }
+    }
+    
+    static func updateUserGames(games: [Game]) {
         guard let username = Auth.auth().currentUser?.displayName else { return }
         var gamesDictionary: [String : [String : Any]] = [:]
         
@@ -184,6 +197,46 @@ class UserController {
         }
         
         ref.child("users").child(username).updateChildValues(["games" : gamesDictionary])
+    
+        updateUserLFG(games: games)
+    }
+    
+    static private func updateUserLFG(games: [Game]) {
+        guard let username = Auth.auth().currentUser?.displayName else { return }
+        fetchUser(username: username) { (user) in
+            guard let user = user else { return }
+            
+            for game in GameController.shared.games {
+                var lfgDictionary: [String : Any]?
+                
+                if let index = games.firstIndex(of: game), let platform = games[index].playerPlatform {
+                    lfgDictionary = [
+                        "username" : username,
+                        "region" : user.region.rawValue,
+                        "profilePicUrl" : user.profilePicUrl,
+                        "mic" : user.mic.rawValue,
+                        "platform" : platform,
+                        "compoundQuery" : "\(platform)_\(user.region.rawValue)"
+                    ]
+                }
+                
+                let gameRef = ref.child("lfg").child(game.name)
+                gameRef.queryOrdered(byChild: "username").queryEqual(toValue: username).observeSingleEvent(of: .value) { (snapshot) in
+                    if let dictionary = snapshot.value as? NSDictionary, let autoId = dictionary.allKeys.first as? String {
+                        if let lfgDictionary = lfgDictionary, games.contains(game) {
+                            gameRef.child(autoId).updateChildValues(lfgDictionary)
+                        } else {
+                            gameRef.child(autoId).removeValue()
+                        }
+                    } else {
+                        print("User is not already in this LFG")
+                        if let lfgDictionary = lfgDictionary, games.contains(game) {
+                            gameRef.childByAutoId().updateChildValues(lfgDictionary)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

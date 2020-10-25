@@ -217,11 +217,11 @@ class SetupProfileViewController: UIViewController {
             }
         }
         
-        UserController.setupProfile(username: username, mic: mic, region: region, image: profilePicImageView.image) { (success) in
-            print("successfully created a user")
+        UserController.setupProfile(username: username, mic: mic, region: region, image: profilePicImageView.image) { [weak self] (success) in
+            if success {
+                self?.navigationController?.pushViewController(AddBioViewController(), animated: true)
+            }
         }
-        
-        navigationController?.pushViewController(AddBioViewController(), animated: true)
     }
     
     @objc private func dismissKeyboard() {

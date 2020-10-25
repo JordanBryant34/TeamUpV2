@@ -68,9 +68,12 @@ class RegisterViewController: UIViewController {
     let createAccountButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle("Create Account", for: .normal)
-        button.setTitleColor(.teamUpBlue(), for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.secondaryLabelColor(), for: .disabled)
+        button.setBackgroundImage(UIImage(color: .teamUpDarkBlue()), for: .disabled)
+        button.setBackgroundImage(UIImage(color: .accent()), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = .accent()
+        button.isEnabled = false
         return button
     }()
     
@@ -122,6 +125,15 @@ class RegisterViewController: UIViewController {
         createAccountButton.setHeightAndWidthConstants(height: 70, width: view.frame.width * 0.8)
     }
     
+    private func checkIfReadyToContinue() {
+        createAccountButton.isEnabled = false
+        if let email = emailTextField.text, let password = passwordTextField.text, let passwordConfirmation = confirmPasswordTextField.text {
+            if !email.isEmpty && !password.isEmpty && !passwordConfirmation.isEmpty {
+                createAccountButton.isEnabled = true
+            }
+        }
+    }
+    
     @objc private func createAccountButtonTapped() {
         guard let email = emailTextField.text, !email.isEmpty else { return }
         guard let password = passwordTextField.text, !password.isEmpty else { return }
@@ -135,6 +147,8 @@ class RegisterViewController: UIViewController {
                 print(error.localizedDescription)
                 print(error)
             }
+            
+            self?.checkIfReadyToContinue()
         }
     }
     
@@ -151,10 +165,12 @@ extension RegisterViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.accent().cgColor
+        checkIfReadyToContinue()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.separatorColor().cgColor
+        checkIfReadyToContinue()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -163,6 +179,8 @@ extension RegisterViewController: UITextFieldDelegate {
         } else {
            textField.resignFirstResponder()
         }
+        
+        checkIfReadyToContinue()
         
         return false
     }
