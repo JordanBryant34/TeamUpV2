@@ -12,5 +12,6 @@ target 'Team Up' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'NotificationBannerSwift'
+  pod 'NVActivityIndicatorView'
   
 end
