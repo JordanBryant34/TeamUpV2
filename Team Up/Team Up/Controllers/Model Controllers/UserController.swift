@@ -15,6 +15,32 @@ class UserController {
     static private let ref = Database.database().reference()
     static private let storageRef = Storage.storage().reference()
     
+    static func loginUser(email: String, password: String, completion: @escaping (Result<Bool, AuthError>) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { (_, error) in
+            if let error = error {
+                let errorCode = (error as NSError).code
+                
+                if errorCode == 17008 {
+                    Helpers.showNotificationBanner(title: "Invalid email address", subtitle: "Please check that the email address is correct and try again.", image: nil, style: .danger, textAlignment: .left)
+                    completion(.failure(.thrownError(error)))
+                    return
+                } else if errorCode == 17011 {
+                    Helpers.showNotificationBanner(title: "No user with that email exists", subtitle: "This email address is currently not in use by Team Up.", image: nil, style: .danger, textAlignment: .left)
+                    completion(.failure(.thrownError(error)))
+                    return
+                } else if errorCode == 17009 {
+                    Helpers.showNotificationBanner(title: "Incorrect password", subtitle: "Please double check the password and try again.", image: nil, style: .danger, textAlignment: .left)
+                    completion(.failure(.thrownError(error)))
+                    return
+                }
+            } else {
+                Helpers.showNotificationBanner(title: "Welcome back", subtitle: "", image: nil, style: .success, textAlignment: .center)
+                completion(.success(true))
+                return
+            }
+        }
+    }
+    
     static func createNewUser(email: String, password: String, passwordConfirmation: String, completion: @escaping (Result<Bool, AuthError>) -> Void) {
         
         if (password.count < 8) || (password.count > 30) {

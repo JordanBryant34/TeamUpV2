@@ -129,6 +129,7 @@ class SetupProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
+        removeNavigationBarBackButton()
         makeNavigationBarClear()
         setDelegatesAndActions()
         setupViews()
@@ -209,6 +210,8 @@ class SetupProfileViewController: UIViewController {
         guard let username = usernameTextField.text, !username.isEmpty else { return }
         guard let region = regionTextField.text, !region.isEmpty else { return }
         
+        continueButton.isEnabled = false
+        
         var mic: MicStatus {
             if micSegmentedControl.selectedSegmentIndex == 1 {
                 return .noMic
@@ -221,6 +224,8 @@ class SetupProfileViewController: UIViewController {
             if success {
                 self?.navigationController?.pushViewController(AddBioViewController(), animated: true)
             }
+            
+            self?.checkIfReadyToContinue()
         }
     }
     

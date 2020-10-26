@@ -140,6 +140,13 @@ class AddGamesViewController: UIViewController {
     @objc private func finishTapped() {
         if addedGames.count > 0 {
             UserController.updateUserGames(games: addedGames)
+            
+            if presentingViewController != nil {
+                dismiss(animated: true, completion: nil)
+            } else {
+                navigationController?.pushViewController(TabBarController(), animated: true)
+            }
+            
         } else {
             Helpers.showNotificationBanner(title: "Can't let you do that", subtitle: "You must have at least one game added.", image: nil, style: .danger, textAlignment: .left)
         }

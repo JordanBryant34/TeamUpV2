@@ -84,10 +84,12 @@ class SignInViewController: UIViewController {
     
     let loginButton: RoundedButton = {
         let button = RoundedButton()
-        button.setTitle("Log in", for: .normal)
+        button.setBackgroundImage(UIImage(color: .teamUpDarkBlue()), for: .disabled)
+        button.setBackgroundImage(UIImage(color: .accent()), for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.secondaryLabelColor(), for: .disabled)
+        button.setTitle("Log In", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = .accent()
         return button
     }()
     
@@ -112,6 +114,7 @@ class SignInViewController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         
         signUpButton.addTarget(self, action: #selector(createNewAccountButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(logInUser), for: .touchUpInside)
     }
     
     private func setupViews() {
@@ -162,6 +165,24 @@ class SignInViewController: UIViewController {
                 GameController.shared.fetchGameBackground(game: game) { (_) in }
                 GameController.shared.fetchGameLogo(game: game) { (_) in }
             }
+        }
+    }
+    
+    @objc private func logInUser() {
+        guard let email = emailTextField.text, !email.isEmpty else { return }
+        guard let password = passwordTextField.text, !password.isEmpty else { return }
+        
+        loginButton.isEnabled = false
+        
+        UserController.loginUser(email: email, password: password) { [weak self] (result) in
+            switch result {
+            case .success(_):
+                self?.navigationController?.pushViewController(TabBarController(), animated: true)
+            case .failure(let error):
+                print(error)
+            }
+            
+            self?.loginButton.isEnabled = true
         }
     }
     

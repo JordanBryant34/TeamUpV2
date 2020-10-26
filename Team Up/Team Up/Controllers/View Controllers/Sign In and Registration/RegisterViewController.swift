@@ -139,6 +139,8 @@ class RegisterViewController: UIViewController {
         guard let password = passwordTextField.text, !password.isEmpty else { return }
         guard let passwordConfirmation = confirmPasswordTextField.text, !passwordConfirmation.isEmpty else { return }
         
+        createAccountButton.isEnabled = false
+        
         UserController.createNewUser(email: email, password: password, passwordConfirmation: passwordConfirmation) { [weak self] (result) in
             switch result {
             case .success(_):

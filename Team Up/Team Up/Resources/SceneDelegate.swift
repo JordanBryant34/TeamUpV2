@@ -30,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if Auth.auth().currentUser == nil {
             window?.rootViewController = UINavigationController(rootViewController: SignInViewController())
         } else {
-            try? Auth.auth().signOut()
+//            try? Auth.auth().signOut()
             window?.rootViewController = TabBarController()
         }
     }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class TabBarController: UITabBarController {
     
@@ -14,6 +15,18 @@ class TabBarController: UITabBarController {
         
         getGames()
         setupTabBar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        checkIfProfileIsSetup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     private func setupTabBar() {
@@ -31,6 +44,18 @@ class TabBarController: UITabBarController {
         
         tabBar.barTintColor = .teamUpDarkBlue()
         tabBar.isTranslucent = false
+    }
+    
+    private func checkIfProfileIsSetup() {
+        if Auth.auth().currentUser == nil {
+            let signInController = UINavigationController(rootViewController: SignInViewController())
+            signInController.modalPresentationStyle = .overFullScreen
+            present(signInController, animated: true, completion: nil)
+        } else if Auth.auth().currentUser?.displayName == nil {
+            let setupProfileController = UINavigationController(rootViewController: SetupProfileViewController())
+            setupProfileController.modalPresentationStyle = .overFullScreen
+            present(setupProfileController, animated: true, completion: nil)
+        }
     }
     
     private func getGames() {
