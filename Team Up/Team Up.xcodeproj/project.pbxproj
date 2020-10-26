@@ -16,6 +16,7 @@
 		7A2B065F253E5A0F00CF585A /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B065E253E5A0F00CF585A /* RegisterViewController.swift */; };
 		7A4D9D172543454800E440B6 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9D162543454800E440B6 /* AuthError.swift */; };
 		7A4D9D1A25435DDA00E440B6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9D1925435DDA00E440B6 /* User.swift */; };
+		7A4D9D1D2546523000E440B6 /* LFGHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9D1C2546522F00E440B6 /* LFGHeader.swift */; };
 		7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADD010253E061000CA1FF7 /* AppDelegate.swift */; };
 		7AADD013253E061000CA1FF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADD012253E061000CA1FF7 /* SceneDelegate.swift */; };
 		7AADD01A253E061200CA1FF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AADD019253E061200CA1FF7 /* Assets.xcassets */; };
@@ -52,6 +53,7 @@
 		7A2B065E253E5A0F00CF585A /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		7A4D9D162543454800E440B6 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		7A4D9D1925435DDA00E440B6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		7A4D9D1C2546522F00E440B6 /* LFGHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LFGHeader.swift; sourceTree = "<group>"; };
 		7AADD00D253E061000CA1FF7 /* Team Up.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team Up.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AADD010253E061000CA1FF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AADD012253E061000CA1FF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				7AFA116F254244CE00EEE7C6 /* AddGamesHeader.swift */,
+				7A4D9D1C2546522F00E440B6 /* LFGHeader.swift */,
 			);
 			path = Headers;
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				7AFA1170254244CE00EEE7C6 /* AddGamesHeader.swift in Sources */,
 				7A2B064C253E48EC00CF585A /* TeamUpTextField.swift in Sources */,
 				7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */,
+				7A4D9D1D2546523000E440B6 /* LFGHeader.swift in Sources */,
 				7AFA116C2541193100EEE7C6 /* ImageService.swift in Sources */,
 				7A2B065F253E5A0F00CF585A /* RegisterViewController.swift in Sources */,
 				7AAF56B52540C812004BAFF2 /* Game.swift in Sources */,
