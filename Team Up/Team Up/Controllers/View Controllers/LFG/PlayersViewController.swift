@@ -45,7 +45,7 @@ class PlayersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         collectionView.register(PlayerCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
             

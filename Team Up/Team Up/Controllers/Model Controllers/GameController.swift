@@ -92,6 +92,10 @@ class GameController {
                     isMatch = true
                 }
             }
+            
+            if searchText.count >= 4 && $0.name.lowercased().contains(searchText.lowercased()) {
+                isMatch = true
+            }
 
             return isMatch
         }

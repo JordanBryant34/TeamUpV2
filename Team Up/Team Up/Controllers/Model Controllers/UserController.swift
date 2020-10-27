@@ -117,6 +117,7 @@ class UserController {
                         "dateJoined" : Int(NSDate().timeIntervalSince1970),
                         "lastSeen" : Int(NSDate().timeIntervalSince1970),
                         "username" : username,
+                        "searchName" : username.lowercased(),
                         "biography" : "No biography",
                         "profilePicUrl" : "https://www.example.com/exampleImage.jpg",
                         "region" : region,
@@ -246,6 +247,7 @@ class UserController {
                         "region" : user.region.rawValue,
                         "profilePicUrl" : user.profilePicUrl,
                         "mic" : user.mic.rawValue,
+                        "biography" : user.bio,
                         "platform" : platform,
                         "compoundQuery" : "\(platform)_\(user.region.rawValue)"
                     ]
@@ -267,6 +269,26 @@ class UserController {
                     }
                 }
             }
+        }
+    }
+    
+    static func searchUsers(searchText: String, completion: @escaping (_ users: [User]) -> Void) {
+        let searchText = searchText.lowercased()
+        Database.database().reference().child("users").queryOrdered(byChild: "searchName").queryStarting(atValue: searchText).queryEnding(atValue: searchText+"\u{f8ff}").observeSingleEvent(of: .value) { (snapshot) in
+            var users: [User] = []
+            
+            guard let dictionary = snapshot.value as? [String : Any] else {
+                completion(users)
+                return
+            }
+            
+            for key in dictionary.keys {
+                if let userDictionary = dictionary[key] as? [String : Any], let user = User(dictionary: userDictionary) {
+                    users.append(user)
+                }
+            }
+            
+            completion(users)
         }
     }
 
