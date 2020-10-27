@@ -1,17 +1,16 @@
 //
-//  AddGamesHeader.swift
+//  TitleAndSearchHeader.swift
 //  Team Up
 //
-//  Created by Jordan Bryant on 10/22/20.
+//  Created by Jordan Bryant on 10/26/20.
 //
 
 import UIKit
 
-class AddGamesHeader: UICollectionReusableView {
+class TitleAndSearchHeader: UICollectionReusableView {
     
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search Games...", attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondaryLabelColor()])
         searchBar.backgroundColor = .clear
         searchBar.backgroundImage = UIImage()
         searchBar.searchTextField.textColor = .white
@@ -20,11 +19,10 @@ class AddGamesHeader: UICollectionReusableView {
         return searchBar
     }()
     
-    let addGamesLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .boldSystemFont(ofSize: 25)
-        label.text = "Add games you play"
         label.textColor = .white
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +33,6 @@ class AddGamesHeader: UICollectionReusableView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 17)
-        label.text = "Tap on a game and choose what platform you play on."
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         label.textColor = .accent()
@@ -48,7 +45,7 @@ class AddGamesHeader: UICollectionReusableView {
         super.layoutSubviews()
         
         addSubview(searchBar)
-        addSubview(addGamesLabel)
+        addSubview(titleLabel)
         addSubview(detailLabel)
         
         searchBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
@@ -56,10 +53,10 @@ class AddGamesHeader: UICollectionReusableView {
         searchBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         searchBar.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
-        addGamesLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -30).isActive = true
-        addGamesLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -30).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
-        detailLabel.topAnchor.constraint(equalTo: addGamesLabel.bottomAnchor, constant: 10).isActive = true
+        detailLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
         detailLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         detailLabel.preferredMaxLayoutWidth = frame.width * 0.55
     }

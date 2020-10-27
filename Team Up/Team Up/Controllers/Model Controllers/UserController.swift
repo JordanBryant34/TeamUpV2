@@ -32,7 +32,12 @@ class UserController {
                     Helpers.showNotificationBanner(title: "Incorrect password", subtitle: "Please double check the password and try again.", image: nil, style: .danger, textAlignment: .left)
                     completion(.failure(.thrownError(error)))
                     return
+                } else {
+                    Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "Please try again later.", image: nil, style: .danger, textAlignment: .left)
+                    completion(.failure(.thrownError(error)))
+                    return
                 }
+                        
             } else {
                 Helpers.showNotificationBanner(title: "Welcome back", subtitle: "", image: nil, style: .success, textAlignment: .center)
                 completion(.success(true))

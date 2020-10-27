@@ -52,7 +52,7 @@ class AddGamesViewController: UIViewController {
         super.viewDidLoad()
         
         collectionView.register(GameCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.register(AddGamesHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView.register(TitleAndSearchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
         makeNavigationBarClear()
         fetchGames()
@@ -203,11 +203,16 @@ extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath) as? AddGamesHeader, indexPath.section == 0 else { return UICollectionReusableView(frame: .zero) }
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath) as? TitleAndSearchHeader, indexPath.section == 0 else { return UICollectionReusableView(frame: .zero) }
         
         header.searchBar.searchTextField.text = searchText
+        header.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search Games...", attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondaryLabelColor()])
+        
+        header.titleLabel.text = "Add games you play"
+        header.detailLabel.text = "Tap on a game and choose what platform you play on."
         
         header.searchBar.delegate = self
+        
         header.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         
         return header
@@ -258,8 +263,8 @@ extension AddGamesViewController: UICollectionViewDelegate, UICollectionViewData
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(color: UIColor.teamUpDarkBlue().withAlphaComponent(offsetForNavBar)), for: .default)
         
-        if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: 0)) as? AddGamesHeader {
-            header.addGamesLabel.alpha = 1 - offsetForLabels
+        if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: 0)) as? TitleAndSearchHeader {
+            header.titleLabel.alpha = 1 - offsetForLabels
             header.detailLabel.alpha = 1 - offsetForLabels
             header.searchBar.alpha = 1 - offsetForSearchBar
         }
