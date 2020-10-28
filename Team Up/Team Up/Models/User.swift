@@ -28,14 +28,16 @@ class User {
     var bio: String
     var region: Region
     var games: [Game]
+    var platform: String?
     
-    init(username: String, profilePicUrl: String, mic: MicStatus, bio: String, region: Region, games: [Game]) {
+    init(username: String, profilePicUrl: String, mic: MicStatus, bio: String, region: Region, games: [Game], platform: String? = nil) {
         self.username = username
         self.profilePicUrl = profilePicUrl
         self.mic = mic
         self.bio = bio
         self.region = region
         self.games = games
+        self.platform = platform
     }
     
 }
@@ -61,7 +63,10 @@ extension User {
             }
         }
         
-        self.init(username: username, profilePicUrl: profilePicUrl, mic: mic, bio: biography, region: region, games: games)
+        var platform: String? = nil
+        platform = dictionary["platform"] as? String
+        
+        self.init(username: username, profilePicUrl: profilePicUrl, mic: mic, bio: biography, region: region, games: games, platform: platform)
     }
     
 }

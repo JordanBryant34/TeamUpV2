@@ -37,9 +37,22 @@ class PlayersViewController: UIViewController {
         return label
     }()
     
+    lazy var filtersBarButtonItem: UIBarButtonItem = {
+        let image = UIImage(named: "filtersIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
+        let button = UIButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(filtersTapped), for: .touchUpInside)
+        
+        let filterBarButton = UIBarButtonItem(customView: button)
+        return filterBarButton
+    }()
+    
     var game: Game?
     let cellId = "cellId"
     let headerId = "headerId"
+    
+    var users: [User] = []
     
     let gameController = GameController.shared
     
@@ -50,12 +63,14 @@ class PlayersViewController: UIViewController {
         collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
             
         setupViews()
-        fetchPlayers()
+        fetchPlayers(platform: nil, region: nil)
         makeNavigationBarClear()
     }
     
     private func setupViews() {
         navigationItem.titleView = titleLabel
+        navigationItem.rightBarButtonItem = filtersBarButtonItem
+        
         view.backgroundColor = .teamUpBlue()
         
         view.addSubview(backgroundImageView)
@@ -65,6 +80,8 @@ class PlayersViewController: UIViewController {
         backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         backgroundImageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         backgroundImageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: (10/16)).isActive = true
+        
+        filtersBarButtonItem.customView?.setHeightAndWidthConstants(height: 35, width: 35)
                 
         collectionView.pinEdgesToView(view: view)
         
@@ -76,8 +93,27 @@ class PlayersViewController: UIViewController {
         }
     }
     
-    private func fetchPlayers() {
-        
+    private func fetchPlayers(platform: String?, region: Region?) {
+        guard let game = game else { return }
+        LFGController.fetchPlayers(game: game, platform: platform, region: region) { [weak self] (users) in
+            self?.users = users
+            
+            self?.reloadData()
+        }
+    }
+    
+    @objc private func filtersTapped() {
+        let filtersVC = LFGFiltersViewController()
+        filtersVC.game = game
+        filtersVC.delegate = self
+        filtersVC.modalPresentationStyle = .overFullScreen
+        present(filtersVC, animated: true, completion: nil)
+    }
+    
+    private func reloadData() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     deinit {
@@ -86,14 +122,23 @@ class PlayersViewController: UIViewController {
     
 }
 
+extension PlayersViewController: LFGFiltersViewControllerDelegate {
+    func filter(platform: String?, region: Region?) {
+        fetchPlayers(platform: platform, region: region)
+    }
+}
+
 extension PlayersViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        return users.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PlayerCell
+        let user = users[indexPath.item]
+
+        cell.user = user
         
         return cell
     }

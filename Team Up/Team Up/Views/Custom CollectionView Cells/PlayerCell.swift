@@ -95,6 +95,14 @@ class PlayerCell: UICollectionViewCell {
         return button
     }()
     
+    let iconImageSize = CGSize(width: 20, height: 20)
+    
+    var user: User? {
+        didSet {
+            setData()
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -142,4 +150,27 @@ class PlayerCell: UICollectionViewCell {
         stackView.addArrangedSubview(platformImageView)
         stackView.addArrangedSubview(micImageView)
     }
+    
+    private func setData() {
+        micImageView.image = nil
+        platformImageView.image = nil
+        profilePicImageView.image = nil
+        
+        guard let user = user else { return }
+        
+        usernameLabel.text = user.username
+        regionLabel.text = user.region.rawValue
+        micImageView.image = UIImage(named: user.mic.rawValue)?.resize(newSize: iconImageSize).withRenderingMode(.alwaysTemplate)
+        
+        if let platform = user.platform {
+            platformImageView.image = UIImage(named: "\(platform)Icon")?.resize(newSize: iconImageSize).withRenderingMode(.alwaysTemplate)
+        }
+        
+        if let imageUrl = URL(string: user.profilePicUrl) {
+            ImageService.getImage(withURL: imageUrl) { [weak self] (image) in
+                self?.profilePicImageView.image = image?.resize(newSize: CGSize(width: 60, height: 60))
+            }
+        }
+    }
+    
 }
