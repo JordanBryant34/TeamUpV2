@@ -100,7 +100,7 @@ class LFGFiltersViewController: UIViewController {
         grabBarView.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor).isActive = true
         grabBarView.setHeightAndWidthConstants(height: 5, width: 60)
         
-        tableView.anchor(backgroundView.topAnchor, left: backgroundView.leftAnchor, bottom: backgroundView.bottomAnchor, right: backgroundView.rightAnchor, topConstant: 50, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        tableView.anchor(backgroundView.topAnchor, left: backgroundView.leftAnchor, bottom: backgroundView.bottomAnchor, right: backgroundView.rightAnchor, topConstant: 70, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         
         doneButton.anchor(backgroundView.topAnchor, left: nil, bottom: tableView.topAnchor, right: backgroundView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 90, heightConstant: 0)
         

@@ -53,6 +53,7 @@ class PlayersViewController: UIViewController {
     let headerId = "headerId"
     
     var users: [User] = []
+    var requestedUsers: [User] = []
     
     let gameController = GameController.shared
     
@@ -116,16 +117,16 @@ class PlayersViewController: UIViewController {
         }
     }
     
+    private func reloadCells(indexPath: [IndexPath]) {
+        DispatchQueue.main.async {
+            self.collectionView.reloadItems(at: indexPath)
+        }
+    }
+    
     deinit {
         print("\n\nPlayersViewController Deinit\n\n")
     }
     
-}
-
-extension PlayersViewController: LFGFiltersViewControllerDelegate {
-    func filter(platform: String?, region: Region?) {
-        fetchPlayers(platform: platform, region: region)
-    }
 }
 
 extension PlayersViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -138,7 +139,9 @@ extension PlayersViewController: UICollectionViewDelegate, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PlayerCell
         let user = users[indexPath.item]
 
+        cell.delegate = self
         cell.user = user
+        cell.alreadyRequested = requestedUsers.contains(user)
         
         return cell
     }
@@ -199,4 +202,21 @@ extension PlayersViewController: UICollectionViewDelegate, UICollectionViewDataS
         backgroundImageView.alpha = 1 - offsetForImage
     }
     
+}
+
+extension PlayersViewController: LFGFiltersViewControllerDelegate {
+    func filter(platform: String?, region: Region?) {
+        fetchPlayers(platform: platform, region: region)
+    }
+}
+
+extension PlayersViewController: PlayerCellDelegate {
+    func requestTapped(user: User, cell: PlayerCell) {
+        LFGController.requestPlayerToTeamUp(user: user) { [weak self] (success) in
+            if success {
+                self?.requestedUsers.append(user)
+                cell.alreadyRequested = true
+            }
+        }
+    }
 }

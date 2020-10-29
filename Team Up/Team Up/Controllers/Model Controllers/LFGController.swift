@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseDatabase
+import FirebaseAuth
 
 class LFGController {
     
@@ -37,11 +38,34 @@ class LFGController {
             
             for key in dictionary.keys {
                 if let userDictionary = dictionary[key] as? [String : Any], let user = User(dictionary: userDictionary) {
-                    users.append(user)
+                    if user.username != Auth.auth().currentUser?.displayName {
+                        users.append(user)
+                    }
                 }
             }
             
             completion(users)
         }
     }
+    
+    static func requestPlayerToTeamUp(user: User, completion: @escaping (_ success: Bool) -> Void) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else {
+            Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "We were unable to retrieve your profile. Restart Team Up and try again.", image: nil, style: .danger, textAlignment: .left)
+            completion(false)
+            return
+        }
+        
+        ref.child("users").child(user.username).child("teammateRequests").observeSingleEvent(of: .value) { (snapshot) in
+            if let requestsDictionary = snapshot.value as? [String : Any], requestsDictionary.keys.contains(currentUser) {
+                Helpers.showNotificationBanner(title: "You've already requested \(user.username)", subtitle: "", image: nil, style: .danger, textAlignment: .center)
+                completion(true)
+                return
+            }
+            
+            ref.child("users").child(user.username).child("teammateRequests").updateChildValues([currentUser : 1])
+            Helpers.showNotificationBanner(title: "Teammate request sent to \(user.username)", subtitle: "", image: nil, style: .success, textAlignment: .center)
+            completion(true)
+        }
+    }
+  
 }

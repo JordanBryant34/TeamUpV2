@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol PlayerCellDelegate: AnyObject {
+    func requestTapped(user: User, cell: PlayerCell)
+}
+
 class PlayerCell: UICollectionViewCell {
     
     let usernameLabel: UILabel = {
@@ -73,7 +77,7 @@ class PlayerCell: UICollectionViewCell {
         return stackView
     }()
     
-    let teamUpButton: UIButton = {
+    let requestButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .accent()
         button.titleLabel?.font = .boldSystemFont(ofSize: 16)
@@ -95,7 +99,14 @@ class PlayerCell: UICollectionViewCell {
         return button
     }()
     
+    weak var delegate: PlayerCellDelegate?
     let iconImageSize = CGSize(width: 20, height: 20)
+    
+    var alreadyRequested = false {
+        didSet {
+            requestButton.isEnabled = !alreadyRequested
+        }
+    }
     
     var user: User? {
         didSet {
@@ -105,6 +116,8 @@ class PlayerCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        requestButton.addTarget(self, action: #selector(handleRequestButtonTapped), for: .touchUpInside)
         
         setupViews()
     }
@@ -118,7 +131,7 @@ class PlayerCell: UICollectionViewCell {
         addSubview(profilePicImageView)
         addSubview(separatorView)
         addSubview(stackView)
-        addSubview(teamUpButton)
+        addSubview(requestButton)
         addSubview(moreButton)
         
         profilePicImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
@@ -135,10 +148,10 @@ class PlayerCell: UICollectionViewCell {
         platformImageView.setHeightAndWidthConstants(height: 20, width: 20)
         micImageView.setHeightAndWidthConstants(height: 20, width: 20)
         
-        teamUpButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor).isActive = true
-        teamUpButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        teamUpButton.rightAnchor.constraint(equalTo: moreButton.leftAnchor, constant: -10).isActive = true
-        teamUpButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        requestButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor).isActive = true
+        requestButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        requestButton.rightAnchor.constraint(equalTo: moreButton.leftAnchor, constant: -10).isActive = true
+        requestButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         moreButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 7.5).isActive = true
         moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7.5).isActive = true
@@ -171,6 +184,11 @@ class PlayerCell: UICollectionViewCell {
                 self?.profilePicImageView.image = image?.resize(newSize: CGSize(width: 60, height: 60))
             }
         }
+    }
+    
+    @objc private func handleRequestButtonTapped() {
+        guard let user = user, let delegate = delegate else { return }
+        delegate.requestTapped(user: user, cell: self)
     }
     
 }
