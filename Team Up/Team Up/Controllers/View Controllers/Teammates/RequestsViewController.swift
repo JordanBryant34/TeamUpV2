@@ -1,15 +1,13 @@
 //
-//  TeammatesViewController.swift
+//  RequestsViewController.swift
 //  Team Up
 //
-//  Created by Jordan Bryant on 10/19/20.
+//  Created by Jordan Bryant on 10/29/20.
 //
 
 import UIKit
-import FirebaseDatabase
-import FirebaseAuth
 
-class TeammatesViewController: UIViewController {
+class RequestsViewController: UIViewController {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -19,17 +17,6 @@ class TeammatesViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
-    }()
-    
-    lazy var requestsBarButtonItem: UIBarButtonItem = {
-        let image = UIImage(named: "requestsIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
-        let button = UIButton(type: .custom)
-        button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(requestsButtonTapped), for: .touchUpInside)
-        
-        let requestsBarButton = UIBarButtonItem(customView: button)
-        return requestsBarButton
     }()
     
     let titleLabel: UILabel = {
@@ -42,7 +29,7 @@ class TeammatesViewController: UIViewController {
         return label
     }()
     
-    var teammates: [User] = []
+    var requestingUsers: [User] = []
     
     var cellId = "cellId"
     var headerId = "headerId"
@@ -50,66 +37,92 @@ class TeammatesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.register(TeammateCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(TeammateRequestCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
-        
-        fetchTeammates()
+    
         makeNavigationBarClear()
         setupViews()
+        fetchRequests()
     }
     
     private func setupViews() {
-        navigationItem.rightBarButtonItem = requestsBarButtonItem
         
         view.backgroundColor = .teamUpBlue()
         
         view.addSubview(collectionView)
         
         collectionView.pinEdgesToView(view: view)
-        
-        requestsBarButtonItem.customView?.setHeightAndWidthConstants(height: 35, width: 35)
     }
     
-    private func fetchTeammates() {
-        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
-        
-        Database.database().reference().child("users").child(currentUser).child("teammates").observe(.value) { [weak self] (snapshot) in
-            guard let dictionary = snapshot.value as? [String : Any] else {
-                self?.teammates = []
-                self?.reloadData()
-                return
-            }
-            
-            let teammateNames = Array(dictionary.keys)
-            
-            UserController.fetchUsers(usernames: teammateNames) { [weak self] (teammates) in
-                self?.teammates = teammates
-                self?.reloadData()
-            }
+    private func fetchRequests() {
+        LFGController.fetchTeammateRequests { [weak self] (users) in
+            self?.requestingUsers = users
+            self?.reloadData()
         }
     }
     
-    @objc private func requestsButtonTapped() {
-        navigationController?.pushViewController(RequestsViewController(), animated: true)
-    }
-
     private func reloadData() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
     }
+    
+    deinit {
+        print("\n\nRequestsViewController Deinit\n\n")
+    }
+    
 }
 
-extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension RequestsViewController: TeammateRequestCellDelegate {
+    func acceptRequest(requestingUser: User, cell: TeammateRequestCell) {
+        let alertController = UIAlertController(title: "Add \(requestingUser.username) as a teammate?", message: nil, preferredStyle: .alert)
+        
+        let acceptAction = UIAlertAction(title: "Add", style: .default) { [weak self] (_) in
+            LFGController.acceptTeammateRequest(requestingUser: requestingUser)
+            
+            if let indexPath = self?.collectionView.indexPath(for: cell) {
+                self?.requestingUsers.remove(at: indexPath.item)
+                self?.collectionView.deleteItems(at: [indexPath])
+            }
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(acceptAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func declineRequest(requestingUser: User, cell: TeammateRequestCell) {
+        let alertController = UIAlertController(title: "Decline \(requestingUser.username)'s teammate request?", message: nil, preferredStyle: .alert)
+        
+        let declineAction = UIAlertAction(title: "Decline", style: .default) { [weak self] (_) in
+            LFGController.declineTeammateRequest(requestingUser: requestingUser)
+            
+            if let indexPath = self?.collectionView.indexPath(for: cell) {
+                self?.requestingUsers.remove(at: indexPath.item)
+                self?.collectionView.deleteItems(at: [indexPath])
+            }
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(declineAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension RequestsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return teammates.count
+        return requestingUsers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TeammateCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TeammateRequestCell
+        let user = requestingUsers[indexPath.item]
         
-        cell.user = teammates[indexPath.item]
+        cell.user = user
+        cell.delegate = self
         
         return cell
     }
@@ -117,7 +130,7 @@ extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath) as! LargeTitleHeader
         
-        header.titleLabel.text = "Teammates"
+        header.titleLabel.text = "Requests"
         
         return header
     }

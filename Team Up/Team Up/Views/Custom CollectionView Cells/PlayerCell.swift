@@ -17,7 +17,6 @@ class PlayerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .white
         label.font = .boldSystemFont(ofSize: 16)
-        label.text = "ImJordanBryant"
         label.sizeToFit()
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +45,6 @@ class PlayerCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .secondaryLabelColor()
         label.font = .boldSystemFont(ofSize: 14)
-        label.text = "Australia"
         label.sizeToFit()
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -55,8 +53,6 @@ class PlayerCell: UICollectionViewCell {
     
     let platformImageView: UIImageView = {
         let imageView = UIImageView()
-        let templateImage = UIImage(named: "XboxIcon")?.resize(newSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate)
-        imageView.image = templateImage
         imageView.tintColor = .secondaryLabelColor()
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
@@ -64,9 +60,8 @@ class PlayerCell: UICollectionViewCell {
     
     let micImageView: UIImageView = {
         let imageView = UIImageView()
-        let templateImage = UIImage(named: "mic")?.resize(newSize: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate)
-        imageView.image = templateImage
         imageView.tintColor = .secondaryLabelColor()
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }()
     

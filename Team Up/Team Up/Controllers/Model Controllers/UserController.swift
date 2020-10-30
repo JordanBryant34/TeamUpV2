@@ -291,5 +291,24 @@ class UserController {
             completion(users)
         }
     }
+    
+    static func fetchUsers(usernames: [String], completion: @escaping (_ users: [User]) -> Void) {
+        let dispatchGroup = DispatchGroup()
+        var users: [User] = []
+        
+        for username in usernames {
+            dispatchGroup.enter()
+            fetchUser(username: username) { (user) in
+                if let user = user {
+                    users.append(user)
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion(users)
+        }
+    }
 
 }

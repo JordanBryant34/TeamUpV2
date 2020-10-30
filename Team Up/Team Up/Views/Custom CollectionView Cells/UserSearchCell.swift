@@ -24,7 +24,6 @@ class UserSearchCell: UICollectionViewCell {
         label.textColor = .white
         label.font = .systemFont(ofSize: 13)
         label.textAlignment = .center
-        label.text = "ImJordanBryant"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
