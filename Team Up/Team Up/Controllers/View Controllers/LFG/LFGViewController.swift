@@ -42,7 +42,7 @@ class LFGViewController: UIViewController {
     
     lazy var activityIndicator: NVActivityIndicatorView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.15, height: view.frame.width * 0.15)
-        let indicator = NVActivityIndicatorView(frame: frame, type: .pacman, color: .accent(), padding: nil)
+        let indicator = NVActivityIndicatorView(frame: frame, type: .ballClipRotateMultiple, color: .accent(), padding: nil)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()

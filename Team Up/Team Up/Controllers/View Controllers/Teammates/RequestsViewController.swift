@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class RequestsViewController: UIViewController {
     
@@ -29,6 +30,25 @@ class RequestsViewController: UIViewController {
         return label
     }()
     
+    lazy var noDataView: NoDataView = {
+        let view = NoDataView()
+        let image = UIImage(named: "teamUpLogoTemplate")?.resize(newSize: CGSize(width: view.frame.width * 0.5, height: view.frame.width * 0.5)).withRenderingMode(.alwaysTemplate)
+        view.imageView.image = image
+        view.imageView.tintColor = .teamUpDarkBlue()
+        view.textLabel.text = "You have no requests"
+        view.detailTextLabel.text = "Find some players and request them, or check back here later."
+        view.button.isHidden = true
+        view.isHidden = true
+        return view
+    }()
+    
+    lazy var activityIndicator: NVActivityIndicatorView = {
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.15, height: view.frame.width * 0.15)
+        let indicator = NVActivityIndicatorView(frame: frame, type: .ballClipRotateMultiple, color: .accent(), padding: nil)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     var requestingUsers: [User] = []
     
     var cellId = "cellId"
@@ -49,12 +69,19 @@ class RequestsViewController: UIViewController {
         
         view.backgroundColor = .teamUpBlue()
         
+        view.addSubview(noDataView)
         view.addSubview(collectionView)
+        view.addSubview(activityIndicator)
         
+        noDataView.pinEdgesToView(view: view)
         collectionView.pinEdgesToView(view: view)
+        
+        activityIndicator.centerInView(view: view)
+        activityIndicator.setHeightAndWidthConstants(height: view.frame.width * 0.15, width: view.frame.width * 0.15)
     }
     
     private func fetchRequests() {
+        activityIndicator.startAnimating()
         LFGController.fetchTeammateRequests { [weak self] (users) in
             self?.requestingUsers = users
             self?.reloadData()
@@ -64,6 +91,8 @@ class RequestsViewController: UIViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.noDataView.isHidden = !self.requestingUsers.isEmpty
+            self.activityIndicator.stopAnimating()
         }
     }
     

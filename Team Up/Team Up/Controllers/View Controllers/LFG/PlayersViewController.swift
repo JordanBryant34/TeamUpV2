@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class PlayersViewController: UIViewController {
     
@@ -48,6 +49,27 @@ class PlayersViewController: UIViewController {
         return filterBarButton
     }()
     
+    lazy var noDataView: NoDataView = {
+        let view = NoDataView()
+        let image = UIImage(named: "teamUpLogoTemplate")?.resize(newSize: CGSize(width: view.frame.width * 0.5, height: view.frame.width * 0.5)).withRenderingMode(.alwaysTemplate)
+        view.imageView.image = image
+        view.imageView.tintColor = .teamUpDarkBlue()
+        view.textLabel.text = "No players found"
+        view.detailTextLabel.text = "Broaden your filters or try again later."
+        view.button.isHidden = true
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var activityIndicator: NVActivityIndicatorView = {
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.15, height: view.frame.width * 0.15)
+        let indicator = NVActivityIndicatorView(frame: frame, type: .ballClipRotateMultiple, color: .accent(), padding: nil)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+
+    
     var game: Game?
     let cellId = "cellId"
     let headerId = "headerId"
@@ -75,7 +97,9 @@ class PlayersViewController: UIViewController {
         view.backgroundColor = .teamUpBlue()
         
         view.addSubview(backgroundImageView)
+        view.addSubview(noDataView)
         view.addSubview(collectionView)
+        view.addSubview(activityIndicator)
         
         backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         backgroundImageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -83,8 +107,19 @@ class PlayersViewController: UIViewController {
         backgroundImageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: (10/16)).isActive = true
         
         filtersBarButtonItem.customView?.setHeightAndWidthConstants(height: 35, width: 35)
-                
+            
+        noDataView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noDataView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.1).isActive = true
+        noDataView.setHeightAndWidthConstants(height: view.frame.height, width: view.frame.width)
+//        noDataView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.1).isActive = true
+//        noDataView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height * 0.1).isActive = true
+//        noDataView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+//        noDataView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
         collectionView.pinEdgesToView(view: view)
+        
+        activityIndicator.centerInView(view: view)
+        activityIndicator.setHeightAndWidthConstants(height: view.frame.width * 0.15, width: view.frame.width * 0.15)
         
         if let game = game {
             titleLabel.text = game.name
@@ -96,9 +131,11 @@ class PlayersViewController: UIViewController {
     
     private func fetchPlayers(platform: String?, region: Region?) {
         guard let game = game else { return }
+    
+        activityIndicator.startAnimating()
+        
         LFGController.fetchPlayers(game: game, platform: platform, region: region) { [weak self] (users) in
             self?.users = users
-            
             self?.reloadData()
         }
     }
@@ -114,12 +151,15 @@ class PlayersViewController: UIViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.noDataView.isHidden = !self.users.isEmpty
+            self.activityIndicator.stopAnimating()
         }
     }
     
     private func reloadCells(indexPath: [IndexPath]) {
         DispatchQueue.main.async {
             self.collectionView.reloadItems(at: indexPath)
+            self.noDataView.isHidden = !self.users.isEmpty
         }
     }
     

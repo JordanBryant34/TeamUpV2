@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import NVActivityIndicatorView
 
 class TeammatesViewController: UIViewController {
     
@@ -42,6 +43,25 @@ class TeammatesViewController: UIViewController {
         return label
     }()
     
+    lazy var noDataView: NoDataView = {
+        let view = NoDataView()
+        let image = UIImage(named: "teamUpLogoTemplate")?.resize(newSize: CGSize(width: view.frame.width * 0.5, height: view.frame.width * 0.5)).withRenderingMode(.alwaysTemplate)
+        view.imageView.image = image
+        view.imageView.tintColor = .teamUpDarkBlue()
+        view.textLabel.text = "You have no teammtes"
+        view.detailTextLabel.text = "Find some players and request them to team up!"
+        view.button.setTitle("Find Teammates", for: .normal)
+        view.isHidden = true
+        return view
+    }()
+    
+    lazy var activityIndicator: NVActivityIndicatorView = {
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.15, height: view.frame.width * 0.15)
+        let indicator = NVActivityIndicatorView(frame: frame, type: .ballClipRotateMultiple, color: .accent(), padding: nil)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     var teammates: [User] = []
     
     var cellId = "cellId"
@@ -63,15 +83,23 @@ class TeammatesViewController: UIViewController {
         
         view.backgroundColor = .teamUpBlue()
         
+        view.addSubview(noDataView)
         view.addSubview(collectionView)
+        view.addSubview(activityIndicator)
         
+        noDataView.pinEdgesToView(view: view)
         collectionView.pinEdgesToView(view: view)
         
         requestsBarButtonItem.customView?.setHeightAndWidthConstants(height: 35, width: 35)
+        
+        activityIndicator.centerInView(view: view)
+        activityIndicator.setHeightAndWidthConstants(height: view.frame.width * 0.15, width: view.frame.width * 0.15)
     }
     
     private func fetchTeammates() {
         guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        activityIndicator.startAnimating()
         
         Database.database().reference().child("users").child(currentUser).child("teammates").observe(.value) { [weak self] (snapshot) in
             guard let dictionary = snapshot.value as? [String : Any] else {
@@ -96,6 +124,8 @@ class TeammatesViewController: UIViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.noDataView.isHidden = !self.teammates.isEmpty
+            self.activityIndicator.stopAnimating()
         }
     }
 }
