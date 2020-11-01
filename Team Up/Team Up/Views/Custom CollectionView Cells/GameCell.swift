@@ -116,13 +116,8 @@ class GameCell: UICollectionViewCell {
         addedLabel.centerXAnchor.constraint(equalTo: addedView.centerXAnchor, constant: 6).isActive = true
         
         platformImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        platformImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
         platformImageView.setHeightAndWidthConstants(height: 30, width: 30)
-        
-        if isEditing {
-            platformImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
-        } else {
-            platformImageView.rightAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
-        }
     }
     
     private func setData() {

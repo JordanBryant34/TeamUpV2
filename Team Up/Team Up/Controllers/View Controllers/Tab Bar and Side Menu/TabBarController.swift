@@ -33,7 +33,10 @@ class TabBarController: UITabBarController {
         let lfgController = UINavigationController(rootViewController: LFGViewController())
         let teammatesController = UINavigationController(rootViewController: TeammatesViewController())
         let messagesController = UINavigationController(rootViewController: MessagesViewController())
-        let profileController = UINavigationController(rootViewController: ProfileViewController())
+        
+        let profileVC = ProfileViewController()
+        profileVC.currentUser = true
+        let profileController = UINavigationController(rootViewController: profileVC)
         
         setViewControllers([lfgController, teammatesController, messagesController, profileController], animated: true)
         
