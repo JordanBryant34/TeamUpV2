@@ -131,6 +131,15 @@ class LFGViewController: UIViewController {
     }
 }
 
+extension LFGViewController: UserSearchDelegate {
+    func presentUserProfile(username: String) {
+        let profileVC = ProfileViewController()
+        profileVC.username = username
+        
+        navigationController?.pushViewController(profileVC, animated: true)
+    }
+}
+
 extension LFGViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -197,6 +206,7 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: usersCellId, for: indexPath) as! UserSearchControllerCell
             
             cell.users = self.users
+            cell.delegate = self
             
             return cell
         } else {

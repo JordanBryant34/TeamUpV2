@@ -90,6 +90,13 @@ class PlayersViewController: UIViewController {
         makeNavigationBarClear()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        makeNavigationBarClear()
+        updateViewsByScrollPosition(scrollView: collectionView)
+    }
+    
     private func setupViews() {
         navigationItem.titleView = titleLabel
         navigationItem.rightBarButtonItem = filtersBarButtonItem
@@ -111,10 +118,6 @@ class PlayersViewController: UIViewController {
         noDataView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         noDataView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.1).isActive = true
         noDataView.setHeightAndWidthConstants(height: view.frame.height, width: view.frame.width)
-//        noDataView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.1).isActive = true
-//        noDataView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height * 0.1).isActive = true
-//        noDataView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-//        noDataView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
         collectionView.pinEdgesToView(view: view)
         
@@ -202,6 +205,15 @@ extension PlayersViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
         
         return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let user = users[indexPath.item]
+        
+        let profileVC = ProfileViewController()
+        profileVC.username = user.username
+        
+        navigationController?.pushViewController(profileVC, animated: true)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

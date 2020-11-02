@@ -65,9 +65,18 @@ class ProfileViewController: UIViewController {
         
         if user == nil {
             fetchUser()
+        } else {
+            fetchBackgroundImage()
         }
         
         setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        makeNavigationBarClear()
+        updateViewsByScrollPosition(scrollView: collectionView)
     }
     
     private func setupViews() {
@@ -91,6 +100,13 @@ class ProfileViewController: UIViewController {
         activityIndicator.setHeightAndWidthConstants(height: view.frame.width * 0.15, width: view.frame.width * 0.15)
     }
     
+    private func fetchBackgroundImage() {
+        guard let randomGame = user?.games.randomElement() else { return }
+        GameController.shared.fetchGameBackground(game: randomGame) { [weak self] (image) in
+            self?.backgroundImageView.image = image
+        }
+    }
+    
     private func fetchUser() {
         if currentUser {
             username = Auth.auth().currentUser?.displayName
@@ -102,14 +118,8 @@ class ProfileViewController: UIViewController {
         UserController.fetchUser(username: username) { [weak self] (user) in
             self?.user = user
             self?.reloadData()
-            
-            self?.titleLabel.text = user?.username
-            
-            if let user = user, let randomGame = user.games.randomElement() {
-                GameController.shared.fetchGameBackground(game: randomGame) { [weak self] (image) in
-                    self?.backgroundImageView.image = image
-                }
-            }
+                        
+            self?.fetchBackgroundImage()
         }
     }
     
@@ -172,6 +182,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     private func updateViewsByScrollPosition(scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
         var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 2.5)
         var offsetForImage = scrollView.contentOffset.y / (view.frame.height / 10)
         
@@ -179,10 +190,11 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             offsetForNavBar = 0.95
         }
         
-        if offsetForNavBar < 0 {
+        if offsetForNavBar <= 0 {
             navigationItem.titleView = nil
             offsetForNavBar = 0
         } else {
+            titleLabel.text = user?.username
             navigationItem.titleView = titleLabel
         }
         

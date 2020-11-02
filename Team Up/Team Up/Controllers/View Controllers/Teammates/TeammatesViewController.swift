@@ -160,6 +160,15 @@ extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDat
         return CGSize(width: view.frame.width - 30, height: 90)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let user = teammates[indexPath.item]
+        
+        let profileVC = ProfileViewController()
+        profileVC.user = user
+        
+        navigationController?.pushViewController(profileVC, animated: true)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 2)
         var offsetForLabels = scrollView.contentOffset.y / (view.frame.height * 0.03)

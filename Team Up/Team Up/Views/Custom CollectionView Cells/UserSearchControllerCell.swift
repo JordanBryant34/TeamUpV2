@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol UserSearchDelegate: AnyObject {
+    func presentUserProfile(username: String)
+}
+
 class UserSearchControllerCell: UICollectionViewCell {
     
     lazy var collectionView: UICollectionView = {
@@ -35,6 +39,8 @@ class UserSearchControllerCell: UICollectionViewCell {
     }
     
     let cellId = "cellId"
+    
+    weak var delegate: UserSearchDelegate?
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -68,6 +74,12 @@ extension UserSearchControllerCell: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.height * 0.6, height: frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let user = users[indexPath.item]
+        
+        delegate?.presentUserProfile(username: user.username)
     }
     
 }
