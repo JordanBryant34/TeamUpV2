@@ -48,6 +48,10 @@
 		7AF7A6F3254CA6CE00FC3C25 /* NoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A6F2254CA6CE00FC3C25 /* NoDataView.swift */; };
 		7AF7A6F6254E06D000FC3C25 /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A6F5254E06D000FC3C25 /* ProfileHeader.swift */; };
 		7AF7A6F9254E18E300FC3C25 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A6F8254E18E300FC3C25 /* StringExtensions.swift */; };
+		7AF7A6FD2551E56700FC3C25 /* DirectChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A6FC2551E56700FC3C25 /* DirectChat.swift */; };
+		7AF7A7002551E69300FC3C25 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A6FF2551E69300FC3C25 /* Message.swift */; };
+		7AF7A7042551F21900FC3C25 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A7032551F21800FC3C25 /* ChatTableViewCell.swift */; };
+		7AF7A70C2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A70B2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift */; };
 		7AFA1165254106FF00EEE7C6 /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA1164254106FF00EEE7C6 /* GameCell.swift */; };
 		7AFA11692541120B00EEE7C6 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA11682541120B00EEE7C6 /* Helpers.swift */; };
 		7AFA116C2541193100EEE7C6 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA116B2541193100EEE7C6 /* ImageService.swift */; };
@@ -100,6 +104,10 @@
 		7AF7A6F2254CA6CE00FC3C25 /* NoDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataView.swift; sourceTree = "<group>"; };
 		7AF7A6F5254E06D000FC3C25 /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		7AF7A6F8254E18E300FC3C25 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		7AF7A6FC2551E56700FC3C25 /* DirectChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectChat.swift; sourceTree = "<group>"; };
+		7AF7A6FF2551E69300FC3C25 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		7AF7A7032551F21800FC3C25 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		7AF7A70B2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeTitleTableViewHeader.swift; sourceTree = "<group>"; };
 		7AFA1164254106FF00EEE7C6 /* GameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCell.swift; sourceTree = "<group>"; };
 		7AFA11682541120B00EEE7C6 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		7AFA116B2541193100EEE7C6 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
@@ -206,6 +214,7 @@
 		7A2B065B253E592600CF585A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7AF7A7022551F1FD00FC3C25 /* Custom TableView Cells */,
 				7AFA1163254106E500EEE7C6 /* Custom CollectionView Cells */,
 				7A2B065C253E592C00CF585A /* Custom Views */,
 			);
@@ -283,6 +292,7 @@
 		7AAF56B32540C808004BAFF2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				7AF7A6FB2551E54900FC3C25 /* Messaging */,
 				7AAF56B42540C812004BAFF2 /* Game.swift */,
 				7A4D9D162543454800E440B6 /* AuthError.swift */,
 				7A4D9D1925435DDA00E440B6 /* User.swift */,
@@ -298,6 +308,32 @@
 				7AF7A6E32549DE2300FC3C25 /* LFGController.swift */,
 			);
 			path = "Model Controllers";
+			sourceTree = "<group>";
+		};
+		7AF7A6FB2551E54900FC3C25 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				7AF7A6FC2551E56700FC3C25 /* DirectChat.swift */,
+				7AF7A6FF2551E69300FC3C25 /* Message.swift */,
+			);
+			path = Messaging;
+			sourceTree = "<group>";
+		};
+		7AF7A7022551F1FD00FC3C25 /* Custom TableView Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7AF7A7062551FD0700FC3C25 /* Headers */,
+				7AF7A7032551F21800FC3C25 /* ChatTableViewCell.swift */,
+			);
+			path = "Custom TableView Cells";
+			sourceTree = "<group>";
+		};
+		7AF7A7062551FD0700FC3C25 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				7AF7A70B2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift */,
+			);
+			path = Headers;
 			sourceTree = "<group>";
 		};
 		7AFA1163254106E500EEE7C6 /* Custom CollectionView Cells */ = {
@@ -452,15 +488,18 @@
 				7AAF56B125409CF4004BAFF2 /* GameController.swift in Sources */,
 				7AED1578253E0D9E0004DA81 /* MessagesViewController.swift in Sources */,
 				7AF7A6D12547668300FC3C25 /* TitleAndSearchHeader.swift in Sources */,
+				7AF7A7042551F21900FC3C25 /* ChatTableViewCell.swift in Sources */,
 				7AFA1165254106FF00EEE7C6 /* GameCell.swift in Sources */,
 				7AFA11692541120B00EEE7C6 /* Helpers.swift in Sources */,
 				7AF7A6F9254E18E300FC3C25 /* StringExtensions.swift in Sources */,
 				7AF7A6F3254CA6CE00FC3C25 /* NoDataView.swift in Sources */,
 				7AF7A6F6254E06D000FC3C25 /* ProfileHeader.swift in Sources */,
+				7AF7A7002551E69300FC3C25 /* Message.swift in Sources */,
 				7A4D9D1A25435DDA00E440B6 /* User.swift in Sources */,
 				7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */,
 				7AEDD793253E723700620EFC /* SetupProfileViewController.swift in Sources */,
 				7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */,
+				7AF7A70C2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift in Sources */,
 				7AF7A6F0254B60C400FC3C25 /* TeammateRequestCell.swift in Sources */,
 				7A4D9D172543454800E440B6 /* AuthError.swift in Sources */,
 				7AF7A6CB254753BA00FC3C25 /* LargeTitleHeader.swift in Sources */,
@@ -473,6 +512,7 @@
 				7AF7A6DE2548955C00FC3C25 /* UserSearchControllerCell.swift in Sources */,
 				7AF7A6E12548975D00FC3C25 /* UserSearchCell.swift in Sources */,
 				7AF7A6C0254740D500FC3C25 /* PlayerCell.swift in Sources */,
+				7AF7A6FD2551E56700FC3C25 /* DirectChat.swift in Sources */,
 				7AF7A6E72549F1BF00FC3C25 /* LFGFiltersViewController.swift in Sources */,
 				7A2B0644253E33D500CF585A /* SignInViewController.swift in Sources */,
 				7A2B0650253E550200CF585A /* RoundedButton.swift in Sources */,
