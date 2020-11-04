@@ -23,6 +23,19 @@ class Message {
     
 }
 
+extension Message {
+    
+    convenience init?(dictionary: [String: Any]) {
+        guard let fromUser = dictionary["fromUser"] as? String else { return nil }
+        guard let timestamp = dictionary["timestamp"] as? Int else { return nil }
+        let text = dictionary["text"] as? String
+        let imageUrl = dictionary["imageUrl"] as? String
+        
+        self.init(text: text, imageUrl: imageUrl, fromUser: fromUser, timestamp: timestamp)
+    }
+    
+}
+
 extension Message: Equatable {
     
     static func == (lhs: Message, rhs: Message) -> Bool {

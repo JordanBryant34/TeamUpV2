@@ -19,6 +19,24 @@ class DirectChat {
     
 }
 
+extension DirectChat {
+    
+    convenience init?(chatPartner: User, dictionary: [String: Any]) {
+        
+        var messages: [Message] = []
+        
+        for key in dictionary.keys {
+            if let messageDictionary = dictionary[key] as? [String : Any], let message = Message(dictionary: messageDictionary) {
+                messages.append(message)
+            }
+        }
+        
+        self.init(chatPartner: chatPartner, messages: messages)
+    }
+    
+    
+}
+
 extension DirectChat: Equatable {
     
     static func == (lhs: DirectChat, rhs: DirectChat) -> Bool {

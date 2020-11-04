@@ -52,6 +52,7 @@
 		7AF7A7002551E69300FC3C25 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A6FF2551E69300FC3C25 /* Message.swift */; };
 		7AF7A7042551F21900FC3C25 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A7032551F21800FC3C25 /* ChatTableViewCell.swift */; };
 		7AF7A70C2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A70B2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift */; };
+		7AF7A70F2553294E00FC3C25 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF7A70E2553294E00FC3C25 /* MessageController.swift */; };
 		7AFA1165254106FF00EEE7C6 /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA1164254106FF00EEE7C6 /* GameCell.swift */; };
 		7AFA11692541120B00EEE7C6 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA11682541120B00EEE7C6 /* Helpers.swift */; };
 		7AFA116C2541193100EEE7C6 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA116B2541193100EEE7C6 /* ImageService.swift */; };
@@ -108,6 +109,7 @@
 		7AF7A6FF2551E69300FC3C25 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		7AF7A7032551F21800FC3C25 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		7AF7A70B2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeTitleTableViewHeader.swift; sourceTree = "<group>"; };
+		7AF7A70E2553294E00FC3C25 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		7AFA1164254106FF00EEE7C6 /* GameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCell.swift; sourceTree = "<group>"; };
 		7AFA11682541120B00EEE7C6 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		7AFA116B2541193100EEE7C6 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				7AEDD799253F9D1F00620EFC /* UserController.swift */,
 				7AAF56B025409CF4004BAFF2 /* GameController.swift */,
 				7AF7A6E32549DE2300FC3C25 /* LFGController.swift */,
+				7AF7A70E2553294E00FC3C25 /* MessageController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				7AF7A6D12547668300FC3C25 /* TitleAndSearchHeader.swift in Sources */,
 				7AF7A7042551F21900FC3C25 /* ChatTableViewCell.swift in Sources */,
 				7AFA1165254106FF00EEE7C6 /* GameCell.swift in Sources */,
+				7AF7A70F2553294E00FC3C25 /* MessageController.swift in Sources */,
 				7AFA11692541120B00EEE7C6 /* Helpers.swift in Sources */,
 				7AF7A6F9254E18E300FC3C25 /* StringExtensions.swift in Sources */,
 				7AF7A6F3254CA6CE00FC3C25 /* NoDataView.swift in Sources */,

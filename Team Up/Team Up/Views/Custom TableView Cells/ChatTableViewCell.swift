@@ -46,6 +46,12 @@ class ChatTableViewCell: UITableViewCell {
         return label
     }()
     
+    var chat: DirectChat? {
+        didSet {
+            setData()
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -78,6 +84,31 @@ class ChatTableViewCell: UITableViewCell {
         
         timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         timeLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+    }
+    
+    private func setData() {
+        profilePicImageView.image = nil
+        
+        guard let chat = chat else { return }
+        
+        usernameLabel.text = chat.chatPartner.username
+        
+        if let imageUrl = URL(string: chat.chatPartner.profilePicUrl) {
+            ImageService.getImage(withURL: imageUrl) { [weak self] (image) in
+                self?.profilePicImageView.image = image
+            }
+        }
+        
+        if !chat.messages.isEmpty {
+            chatPreviewLabel.text = chat.messages[0].text
+        }
+        
+        let messageDate = Date(timeIntervalSince1970: Double(chat.messages[0].timestamp))
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        
+        let relativeDate = formatter.localizedString(for: messageDate, relativeTo: Date())
+        timeLabel.text = relativeDate
     }
     
     required init?(coder: NSCoder) {

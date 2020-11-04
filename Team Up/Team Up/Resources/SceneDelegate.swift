@@ -31,6 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = UINavigationController(rootViewController: SignInViewController())
         } else {
 //            try? Auth.auth().signOut()
+            MessageController.shared.fetchChats()
             window?.rootViewController = TabBarController()
         }
     }

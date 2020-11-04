@@ -17,10 +17,14 @@ class MessagesViewController: UIViewController {
         return tableView
     }()
     
+    let messageController = MessageController.shared
+    
     let cellId = "cellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("messagesUpdated"), object: nil)
         
         makeNavigationBarClear()
         setupViews()
@@ -43,16 +47,25 @@ class MessagesViewController: UIViewController {
         tableView.pinEdgesToView(view: view)
     }
     
+    @objc private func reloadData() {
+        print("messages changed")
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
 }
 
 extension MessagesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return messageController.chats.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! ChatTableViewCell
+        
+        cell.chat = messageController.chats[indexPath.row]
         
         return cell
     }
