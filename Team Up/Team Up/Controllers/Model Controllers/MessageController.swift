@@ -34,7 +34,7 @@ class MessageController {
                     guard let user = user else { return }
                     
                     if let chat = DirectChat(chatPartner: user, dictionary: chatDictionary), chat.messages.count > 0 {
-                        chat.messages = chat.messages.sorted(by: { $0.timestamp > $1.timestamp })
+                        chat.messages = chat.messages.sorted(by: { $0.timestamp < $1.timestamp })
                         fetchedChats.append(chat)
                     }
                     
@@ -47,6 +47,16 @@ class MessageController {
                 NotificationCenter.default.post(name: Notification.Name("messagesUpdated"), object: nil)
             }
         }
+    }
+    
+    func fetchDirectChat(chatParter: User) -> DirectChat? {
+        for chat in chats {
+            if chat.chatPartner == chatParter {
+                return chat
+            }
+        }
+        
+        return nil
     }
     
 }

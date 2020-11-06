@@ -48,7 +48,6 @@ class MessagesViewController: UIViewController {
     }
     
     @objc private func reloadData() {
-        print("messages changed")
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -75,6 +74,10 @@ extension MessagesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chatController = ChatViewController()
+        chatController.chat = messageController.chats[indexPath.item]
+        
+        navigationController?.pushViewController(chatController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

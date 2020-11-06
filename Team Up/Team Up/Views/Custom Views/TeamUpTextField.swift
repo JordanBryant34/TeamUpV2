@@ -16,7 +16,6 @@ class TeamUpTextField: UITextField {
         textColor = .white
         
         autocapitalizationType = .none
-        clearButtonMode = .whileEditing
         
         layer.masksToBounds = true
         layer.cornerRadius = 7.5

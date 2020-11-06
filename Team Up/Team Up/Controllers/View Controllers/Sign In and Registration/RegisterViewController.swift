@@ -37,6 +37,7 @@ class RegisterViewController: UIViewController {
         textField.keyboardType = .emailAddress
         textField.layer.borderColor = UIColor.separatorColor().cgColor
         textField.returnKeyType = .next
+        textField.clearButtonMode = .whileEditing
         textField.tag = 0
         return textField
     }()
@@ -49,6 +50,7 @@ class RegisterViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.isSecureTextEntry = true
         textField.returnKeyType = .done
+        textField.clearButtonMode = .whileEditing
         textField.tag = 1
         return textField
     }()
@@ -61,6 +63,7 @@ class RegisterViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.isSecureTextEntry = true
         textField.returnKeyType = .done
+        textField.clearButtonMode = .whileEditing
         textField.tag = 2
         return textField
     }()

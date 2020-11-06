@@ -11,7 +11,6 @@ class ChatTableViewCell: UITableViewCell {
     
     let usernameLabel: UILabel = {
         let label = UILabel()
-        label.text = "ImJordanBryant"
         label.font = .boldSystemFont(ofSize: 17)
         label.textColor = .white
         return label
@@ -30,7 +29,6 @@ class ChatTableViewCell: UITableViewCell {
     
     let chatPreviewLabel: UILabel = {
         let label = UILabel()
-        label.text = "This is test preview text that is supposed to displayed in the chat cell."
         label.font = .systemFont(ofSize: 15)
         label.textColor = .secondaryLabelColor()
         return label
@@ -38,10 +36,10 @@ class ChatTableViewCell: UITableViewCell {
     
     let timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "5 minutes ago"
         label.font = .systemFont(ofSize: 15)
         label.textColor = .secondaryLabelColor()
         label.sizeToFit()
+        label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -99,8 +97,8 @@ class ChatTableViewCell: UITableViewCell {
             }
         }
         
-        if !chat.messages.isEmpty {
-            chatPreviewLabel.text = chat.messages[0].text
+        if let previewMessage = chat.messages.last {
+            chatPreviewLabel.text = previewMessage.text
         }
         
         let messageDate = Date(timeIntervalSince1970: Double(chat.messages[0].timestamp))
