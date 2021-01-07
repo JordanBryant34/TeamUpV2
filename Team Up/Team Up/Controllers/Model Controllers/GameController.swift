@@ -36,6 +36,7 @@ class GameController {
                 guard let dictionary = gamesDictionary[key] as? [String : AnyObject] else { print("could not get dictionary"); return }
                 guard let game = Game(dictionary: dictionary) else { print("could not get game"); return }
                 games.append(game)
+                print(game.name)
             }
             
             games = games.sorted(by: { $0.name < $1.name })

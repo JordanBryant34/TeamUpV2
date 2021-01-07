@@ -34,6 +34,23 @@ extension Message {
         self.init(text: text, imageUrl: imageUrl, fromUser: fromUser, timestamp: timestamp)
     }
     
+    func asDictionary() -> [String : Any] {
+        var dictionary: [String : Any] = [
+            "fromUser" : fromUser,
+            "timestamp" : timestamp
+        ]
+        
+        if let text = text {
+            dictionary["text"] = text
+        }
+        
+        if let imageUrl = imageUrl {
+            dictionary["imageUrl"] = imageUrl
+        }
+        
+        return dictionary
+    }
+    
 }
 
 extension Message: Equatable {

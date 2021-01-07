@@ -62,6 +62,7 @@ class MessageTableViewCell: UITableViewCell {
     
     private func setupViews() {
         backgroundColor = .clear
+        selectedBackgroundView = UIView()
         
         contentView.addSubview(nameLabel)
         contentView.addSubview(messageBubbleView)

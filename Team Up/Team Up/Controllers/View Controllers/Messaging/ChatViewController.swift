@@ -25,13 +25,13 @@ class ChatViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 70
         tableView.separatorStyle = .none
-        tableView.allowsSelection = false
         tableView.alpha = 0
         return tableView
     }()
     
     let chatInputView: ChatInputView = {
         let view = ChatInputView()
+        view.backgroundColor = .clear
         return view
     }()
     
@@ -54,21 +54,29 @@ class ChatViewController: UIViewController {
         
         tableView.register(MessageTableViewCell.self, forCellReuseIdentifier: cellId)
         
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateChat), name: Notification.Name("messagesUpdated"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         setupViews()
+        setupObserversAndActions()
         
-        activityIndicator.startAnimating()
+        if let chat = chat, !chat.messages.isEmpty {
+            activityIndicator.startAnimating()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        setChatPosition()
+        scrollToBottom(animated: false)
+    }
+    
+    private func setupObserversAndActions() {
+        let tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tableView.addGestureRecognizer(tapToDismissKeyboard)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateChat), name: Notification.Name("messagesUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        chatInputView.sendButton.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
     }
     
     private func setupViews() {
@@ -99,16 +107,6 @@ class ChatViewController: UIViewController {
         activityIndicator.setHeightAndWidthConstants(height: view.frame.width * 0.15, width: view.frame.width * 0.15)
     }
     
-    private func setChatPosition() {
-        let bottomOffset = CGPoint(x: 0, y: self.tableView.contentSize.height - self.tableView.frame.size.height + 30)
-        tableView.setContentOffset(bottomOffset, animated: false)
-        
-        activityIndicator.stopAnimating()
-        UIView.animate(withDuration: 0.2) {
-            self.tableView.alpha = 1
-        }
-    }
-    
     @objc private func updateChat() {
         if let chatPartner = chat?.chatPartner {
             chat = messageController.fetchDirectChat(chatParter: chatPartner)
@@ -116,14 +114,26 @@ class ChatViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            self.scrollToBottom()
+            self.scrollToBottom(animated: true)
         }
     }
     
-    private func scrollToBottom() {
+    @objc private func sendMessage() {        
+        if let text = chatInputView.textField.text, let chat = chat, !text.isEmpty {
+            messageController.sendDirectMessage(messageText: text, chatPartner: chat.chatPartner)
+            chatInputView.textField.text = ""
+        }
+    }
+    
+    private func scrollToBottom(animated: Bool) {
         guard let messages = self.chat?.messages, !messages.isEmpty else { return }
         let indexPath = IndexPath(row: messages.count - 1, section: 0)
-        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+        
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2) {
+            self.tableView.alpha = 1
+        }
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -134,7 +144,7 @@ class ChatViewController: UIViewController {
             chatContainerBottomConstraint?.constant = -keyboardFrame.height + tabBarHeight
             UIView.animate(withDuration: keyboardDuration) {
                 self.view.layoutIfNeeded()
-                self.scrollToBottom()
+                self.scrollToBottom(animated: false)
             }
         }
     }
@@ -152,6 +162,10 @@ class ChatViewController: UIViewController {
         view.endEditing(true)
     }
     
+    deinit {
+        print("\n\nChatViewController Deinit\n\n")
+    }
+    
 }
 
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
@@ -166,11 +180,18 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.row > 0 {
             cell.hideUsername = message?.fromUser == chat?.messages[indexPath.row - 1].fromUser
+        } else {
+            cell.hideUsername = false
         }
         
         cell.message = message
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismissKeyboard()
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
 }

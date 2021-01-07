@@ -17,11 +17,19 @@ class MessageController {
     var chats: [DirectChat] = []
     
     func fetchChats() {
-        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        guard let currentUser = Auth.auth().currentUser?.displayName else {
+            chats = []
+            NotificationCenter.default.post(name: Notification.Name("messagesUpdated"), object: nil)
+            return
+        }
         
         ref.child("users").child(currentUser).child("messaging").child("directChats").observe(.value) { [weak self] (snapshot) in
             var fetchedChats: [DirectChat] = []
-            guard let dictionary = snapshot.value as? [String : Any] else { return }
+            guard let dictionary = snapshot.value as? [String : Any] else {
+                self?.chats = []
+                NotificationCenter.default.post(name: Notification.Name("messagesUpdated"), object: nil)
+                return
+            }
             
             let dispatchGroup = DispatchGroup()
             
@@ -57,6 +65,18 @@ class MessageController {
         }
         
         return nil
+    }
+    
+    func sendDirectMessage(messageText: String, chatPartner: User) {
+        guard let username = Auth.auth().currentUser?.displayName else { return }
+        
+        let userMessageRef = ref.child("users").child(username).child("messaging").child("directChats").child(chatPartner.username)
+        let chatPartnerRef = ref.child("users").child(chatPartner.username).child("messaging").child("directChats").child(username)
+        
+        let message = Message(text: messageText, imageUrl: nil, fromUser: username, timestamp: Int(Date().timeIntervalSince1970))
+        
+        userMessageRef.childByAutoId().updateChildValues(message.asDictionary())
+        chatPartnerRef.childByAutoId().updateChildValues(message.asDictionary())
     }
     
 }

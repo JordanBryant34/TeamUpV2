@@ -13,6 +13,7 @@ class ChatInputView: UIView {
         let button = UIButton()
         button.setTitle("Send", for: .normal)
         button.setTitleColor(.accent(), for: .normal)
+        button.setTitleColor(UIColor.accent().withAlphaComponent(0.5), for: .disabled)
         button.titleLabel?.font = .systemFont(ofSize: 17)
         return button
     }()

@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		7A2B0613253E22FA00CF585A /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B0612253E22FA00CF585A /* UIColorExtension.swift */; };
-		7A2B0625253E305900CF585A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A2B0624253E305900CF585A /* GoogleService-Info.plist */; };
 		7A2B0644253E33D500CF585A /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B0643253E33D500CF585A /* SignInViewController.swift */; };
 		7A2B0648253E394800CF585A /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B0647253E394800CF585A /* UIViewExtension.swift */; };
 		7A2B064C253E48EC00CF585A /* TeamUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B064B253E48EC00CF585A /* TeamUpTextField.swift */; };
 		7A2B0650253E550200CF585A /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B064F253E550200CF585A /* RoundedButton.swift */; };
 		7A2B065F253E5A0F00CF585A /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B065E253E5A0F00CF585A /* RegisterViewController.swift */; };
+		7A2D0A3325670FFB00C6C77C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D0A3225670FFB00C6C77C /* GoogleService-Info.plist */; };
 		7A49C4DC2555D05800103FF0 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A49C4DB2555D05800103FF0 /* ChatInputView.swift */; };
 		7A4D9D172543454800E440B6 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9D162543454800E440B6 /* AuthError.swift */; };
 		7A4D9D1A25435DDA00E440B6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D9D1925435DDA00E440B6 /* User.swift */; };
@@ -25,6 +25,8 @@
 		7AAF56AE253FB513004BAFF2 /* AddGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF56AD253FB513004BAFF2 /* AddGamesViewController.swift */; };
 		7AAF56B125409CF4004BAFF2 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF56B025409CF4004BAFF2 /* GameController.swift */; };
 		7AAF56B52540C812004BAFF2 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAF56B42540C812004BAFF2 /* Game.swift */; };
+		7ABFB61B25A782E9005AF4E1 /* SelectTeammateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABFB61A25A782E9005AF4E1 /* SelectTeammateViewController.swift */; };
+		7ABFB61F25A7873D005AF4E1 /* TeammateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABFB61E25A7873D005AF4E1 /* TeammateController.swift */; };
 		7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED1553253E0C710004DA81 /* TabBarController.swift */; };
 		7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED156F253E0D840004DA81 /* LFGViewController.swift */; };
 		7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AED1573253E0D910004DA81 /* TeammatesViewController.swift */; };
@@ -72,6 +74,7 @@
 		7A2B064B253E48EC00CF585A /* TeamUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpTextField.swift; sourceTree = "<group>"; };
 		7A2B064F253E550200CF585A /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		7A2B065E253E5A0F00CF585A /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		7A2D0A3225670FFB00C6C77C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A49C4DB2555D05800103FF0 /* ChatInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
 		7A4D9D162543454800E440B6 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		7A4D9D1925435DDA00E440B6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -85,6 +88,8 @@
 		7AAF56AD253FB513004BAFF2 /* AddGamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGamesViewController.swift; sourceTree = "<group>"; };
 		7AAF56B025409CF4004BAFF2 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		7AAF56B42540C812004BAFF2 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		7ABFB61A25A782E9005AF4E1 /* SelectTeammateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTeammateViewController.swift; sourceTree = "<group>"; };
+		7ABFB61E25A7873D005AF4E1 /* TeammateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeammateController.swift; sourceTree = "<group>"; };
 		7AED1553253E0C710004DA81 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7AED156F253E0D840004DA81 /* LFGViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LFGViewController.swift; sourceTree = "<group>"; };
 		7AED1573253E0D910004DA81 /* TeammatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeammatesViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +159,7 @@
 		7A2B0654253E58B200CF585A /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7ABFB61925A782CD005AF4E1 /* Helper View Controllers */,
 				7A2B065A253E591500CF585A /* Teammates */,
 				7A2B0659253E590C00CF585A /* Profile */,
 				7A2B0658253E590400CF585A /* Messaging */,
@@ -277,6 +283,7 @@
 		7AADD00F253E061000CA1FF7 /* Team Up */ = {
 			isa = PBXGroup;
 			children = (
+				7A2D0A3225670FFB00C6C77C /* GoogleService-Info.plist */,
 				7AAF56B32540C808004BAFF2 /* Models */,
 				7A2B065B253E592600CF585A /* Views */,
 				7A2B0653253E58AD00CF585A /* Controllers */,
@@ -310,6 +317,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		7ABFB61925A782CD005AF4E1 /* Helper View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7ABFB61A25A782E9005AF4E1 /* SelectTeammateViewController.swift */,
+			);
+			path = "Helper View Controllers";
+			sourceTree = "<group>";
+		};
 		7AEDD798253F9D1200620EFC /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,6 +332,7 @@
 				7AAF56B025409CF4004BAFF2 /* GameController.swift */,
 				7AF7A6E32549DE2300FC3C25 /* LFGController.swift */,
 				7AF7A70E2553294E00FC3C25 /* MessageController.swift */,
+				7ABFB61E25A7873D005AF4E1 /* TeammateController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -442,7 +458,7 @@
 			files = (
 				7AADD01D253E061200CA1FF7 /* LaunchScreen.storyboard in Resources */,
 				7AADD01A253E061200CA1FF7 /* Assets.xcassets in Resources */,
-				7A2B0625253E305900CF585A /* GoogleService-Info.plist in Resources */,
+				7A2D0A3325670FFB00C6C77C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +529,7 @@
 				7A4D9D1A25435DDA00E440B6 /* User.swift in Sources */,
 				7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */,
 				7AEDD793253E723700620EFC /* SetupProfileViewController.swift in Sources */,
+				7ABFB61B25A782E9005AF4E1 /* SelectTeammateViewController.swift in Sources */,
 				7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */,
 				7AF7A70C2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift in Sources */,
 				7AF7A6F0254B60C400FC3C25 /* TeammateRequestCell.swift in Sources */,
@@ -534,6 +551,7 @@
 				7A2B0650253E550200CF585A /* RoundedButton.swift in Sources */,
 				7A2B064C253E48EC00CF585A /* TeamUpTextField.swift in Sources */,
 				7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */,
+				7ABFB61F25A7873D005AF4E1 /* TeammateController.swift in Sources */,
 				7AF7A6EA254B43A300FC3C25 /* TeammateCell.swift in Sources */,
 				7AFA116C2541193100EEE7C6 /* ImageService.swift in Sources */,
 				7AF7A6C32547418E00FC3C25 /* PlayersViewController.swift in Sources */,

@@ -42,6 +42,9 @@ class MessagesViewController: UIViewController {
         view.backgroundColor = .teamUpBlue()
         tableView.tableFooterView = UIView()
         
+        let newMessageButton = UIBarButtonItem(title: "New", style: .plain, target: self, action: #selector(handleNewMessage))
+        navigationItem.rightBarButtonItem = newMessageButton
+        
         view.addSubview(tableView)
         
         tableView.pinEdgesToView(view: view)
@@ -51,6 +54,14 @@ class MessagesViewController: UIViewController {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+    
+    @objc private func handleNewMessage() {
+        let selectTeammateVC = SelectTeammateViewController()
+        selectTeammateVC.headerLabelText = "New Message"
+        selectTeammateVC.delegate = self
+        
+        present(UINavigationController(rootViewController: selectTeammateVC), animated: true, completion: nil)
     }
     
 }
@@ -84,8 +95,7 @@ extension MessagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = LargeTitleTableViewHeader()
         header.titleLabel.text = "Messages"
-        header.backgroundColor = .teamUpBlue()
-        header.tintColor = .clear
+        header.tintColor = .teamUpBlue()
         return header
     }
     
@@ -93,4 +103,21 @@ extension MessagesViewController: UITableViewDelegate, UITableViewDataSource {
         return 90
     }
     
+}
+
+extension MessagesViewController: SelectTeammatesViewControllerDelegate {
+    
+    func createChat(user: User) {
+        let chatController = ChatViewController()
+        
+        if let chat = messageController.chats.first(where: {$0.chatPartner == user}) {
+            chatController.chat = chat
+            print("chat already exists")
+        } else {
+            chatController.chat = DirectChat(chatPartner: user, messages: [])
+            print("chat does not already exist")
+        }
+        
+        navigationController?.pushViewController(chatController, animated: true)
+    }
 }
