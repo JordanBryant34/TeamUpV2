@@ -17,6 +17,18 @@ class MessagesViewController: UIViewController {
         return tableView
     }()
     
+    lazy var noDataView: NoDataView = {
+        let view = NoDataView()
+        let image = UIImage(named: "teamUpLogoTemplate")?.resize(newSize: CGSize(width: view.frame.width * 0.5, height: view.frame.width * 0.5)).withRenderingMode(.alwaysTemplate)
+        view.imageView.image = image
+        view.imageView.tintColor = .teamUpDarkBlue()
+        view.textLabel.text = "You have no messages"
+        view.detailTextLabel.text = "Send a message to chat with one of your teammates."
+        view.button.setTitle("Create Message", for: .normal)
+        view.isHidden = true
+        return view
+    }()
+    
     let messageController = MessageController.shared
     
     let cellId = "cellId"
@@ -25,6 +37,7 @@ class MessagesViewController: UIViewController {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("messagesUpdated"), object: nil)
+        noDataView.button.addTarget(self, action: #selector(handleNewMessage), for: .touchUpInside)
         
         makeNavigationBarClear()
         setupViews()
@@ -46,12 +59,17 @@ class MessagesViewController: UIViewController {
         navigationItem.rightBarButtonItem = newMessageButton
         
         view.addSubview(tableView)
+        view.addSubview(noDataView)
         
+        noDataView.pinEdgesToView(view: view)
         tableView.pinEdgesToView(view: view)
+        
+        noDataView.isHidden = !messageController.chats.isEmpty
     }
     
     @objc private func reloadData() {
         DispatchQueue.main.async {
+            self.noDataView.isHidden = !self.messageController.chats.isEmpty
             self.tableView.reloadData()
         }
     }
