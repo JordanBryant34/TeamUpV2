@@ -55,14 +55,7 @@ class TeammatesViewController: UIViewController {
         return view
     }()
     
-    lazy var activityIndicator: NVActivityIndicatorView = {
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.15, height: view.frame.width * 0.15)
-        let indicator = NVActivityIndicatorView(frame: frame, type: .ballClipRotateMultiple, color: .accent(), padding: nil)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        return indicator
-    }()
-    
-    var teammates: [User] = []
+    let teammateController = TeammateController.shared
     
     var cellId = "cellId"
     var headerId = "headerId"
@@ -73,7 +66,8 @@ class TeammatesViewController: UIViewController {
         collectionView.register(TeammateCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
-        fetchTeammates()
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("teammatesUpdated"), object: nil)
+        
         makeNavigationBarClear()
         setupViews()
     }
@@ -85,47 +79,23 @@ class TeammatesViewController: UIViewController {
         
         view.addSubview(noDataView)
         view.addSubview(collectionView)
-        view.addSubview(activityIndicator)
         
         noDataView.pinEdgesToView(view: view)
         collectionView.pinEdgesToView(view: view)
         
         requestsBarButtonItem.customView?.setHeightAndWidthConstants(height: 35, width: 35)
         
-        activityIndicator.centerInView(view: view)
-        activityIndicator.setHeightAndWidthConstants(height: view.frame.width * 0.15, width: view.frame.width * 0.15)
-    }
-    
-    private func fetchTeammates() {
-        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
-        
-        activityIndicator.startAnimating()
-        
-        Database.database().reference().child("users").child(currentUser).child("teammates").observe(.value) { [weak self] (snapshot) in
-            guard let dictionary = snapshot.value as? [String : Any] else {
-                self?.teammates = []
-                self?.reloadData()
-                return
-            }
-            
-            let teammateNames = Array(dictionary.keys)
-            
-            UserController.fetchUsers(usernames: teammateNames) { [weak self] (teammates) in
-                self?.teammates = teammates
-                self?.reloadData()
-            }
-        }
+        noDataView.isHidden = !teammateController.teammates.isEmpty
     }
     
     @objc private func requestsButtonTapped() {
         navigationController?.pushViewController(RequestsViewController(), animated: true)
     }
 
-    private func reloadData() {
+    @objc private func reloadData() {
         DispatchQueue.main.async {
+            self.noDataView.isHidden = !self.teammateController.teammates.isEmpty
             self.collectionView.reloadData()
-            self.noDataView.isHidden = !self.teammates.isEmpty
-            self.activityIndicator.stopAnimating()
         }
     }
 }
@@ -133,13 +103,13 @@ class TeammatesViewController: UIViewController {
 extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return teammates.count
+        return teammateController.teammates.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TeammateCell
         
-        cell.user = teammates[indexPath.item]
+        cell.user = teammateController.teammates[indexPath.item]
         
         return cell
     }
@@ -161,7 +131,7 @@ extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let user = teammates[indexPath.item]
+        let user = teammateController.teammates[indexPath.item]
         
         let profileVC = ProfileViewController()
         profileVC.user = user
