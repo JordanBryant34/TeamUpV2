@@ -109,6 +109,9 @@ extension SelectTeammateViewController: UICollectionViewDelegate, UICollectionVi
         
         cell.user = teammateController.teammates[indexPath.item]
         
+        cell.messageButton.isHidden = true
+        cell.moreButton.isHidden = true
+        
         return cell
     }
     

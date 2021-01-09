@@ -56,6 +56,7 @@ class TeammatesViewController: UIViewController {
     }()
     
     let teammateController = TeammateController.shared
+    let messageController = MessageController.shared
     
     var cellId = "cellId"
     var headerId = "headerId"
@@ -110,6 +111,7 @@ extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TeammateCell
         
         cell.user = teammateController.teammates[indexPath.item]
+        cell.delegate = self
         
         return cell
     }
@@ -164,6 +166,56 @@ extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDat
         if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: 0)) as? LargeTitleHeader {
             header.titleLabel.alpha = 1 - offsetForLabels
         }
+    }
+    
+}
+
+extension TeammatesViewController: TeammateCellDelegate {
+    
+    func messageButtonTapped(cell: TeammateCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let teammate = teammateController.teammates[indexPath.item]
+        
+        let chatController = ChatViewController()
+            
+        if let chat = messageController.chats.first(where: {$0.chatPartner == teammate}) {
+            chatController.chat = chat
+            print("chat already exists")
+        } else {
+            chatController.chat = DirectChat(chatPartner: teammate, messages: [])
+            print("chat does not already exist")
+        }
+            
+        navigationController?.pushViewController(chatController, animated: true)
+    }
+    
+    func moreButtonTapped(cell: TeammateCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let teammate = teammateController.teammates[indexPath.item]
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let removeTeammateAction = UIAlertAction(title: "Remove teammate", style: .destructive) { [weak self] (_) in
+            let removeAlertController = UIAlertController(title: "Remove \(teammate.username) from your teammates list?", message: "This will also remove you from their teammates list.", preferredStyle: .alert)
+            
+            let confirmAction = UIAlertAction(title: "Remove", style: .default) { [weak self] (_) in
+                self?.teammateController.removeTeammate(teammate: teammate)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            removeAlertController.addAction(cancelAction)
+            removeAlertController.addAction(confirmAction)
+            
+            self?.present(removeAlertController, animated: true, completion: nil)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(removeTeammateAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
 }

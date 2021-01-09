@@ -7,6 +7,16 @@
 
 import UIKit
 
+protocol TeammateCellDelegate: AnyObject {
+    func messageButtonTapped(cell: TeammateCell)
+    func moreButtonTapped(cell: TeammateCell)
+}
+
+extension TeammateCellDelegate {
+    func messageButtonTapped() { /* empty default implementation */ }
+    func moreButtonTapped() { /* empty default implementation */ }
+}
+
 class TeammateCell: UICollectionViewCell {
     
     let usernameLabel: UILabel = {
@@ -29,14 +39,47 @@ class TeammateCell: UICollectionViewCell {
         return imageView
     }()
     
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 15
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    let messageButton: UIButton = {
+        let button = UIButton()
+        let templateImage = UIImage(named: "messageIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
+        button.tintColor = .accent()
+        button.setBackgroundImage(templateImage, for: .normal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let moreButton: UIButton = {
+        let button = UIButton()
+        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
+        button.tintColor = .accent()
+        button.setBackgroundImage(templateImage, for: .normal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     var user: User? {
         didSet {
             setData()
         }
     }
     
+    var delegate: TeammateCellDelegate?
+    
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        messageButton.addTarget(self, action: #selector(handleMessageButtonTapped), for: .touchUpInside)
+        moreButton.addTarget(self, action: #selector(handleMoreButtonTapped), for: .touchUpInside)
                 
         setupViews()
     }
@@ -48,15 +91,24 @@ class TeammateCell: UICollectionViewCell {
         backgroundColor = .teamUpDarkBlue()
         
         addSubview(profilePicImageView)
-        addSubview(usernameLabel)
+        addSubview(stackView)
         
         profilePicImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         profilePicImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
         profilePicImageView.setHeightAndWidthConstants(height: frame.height * 0.75, width: frame.height * 0.75)
         profilePicImageView.layer.cornerRadius = frame.height * 0.375
         
-        usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        usernameLabel.leftAnchor.constraint(equalTo: profilePicImageView.rightAnchor, constant: 15).isActive = true
+        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: profilePicImageView.rightAnchor, constant: 10).isActive = true
+        stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+        stackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        
+        moreButton.setHeightAndWidthConstants(height: 35, width: 35)
+        messageButton.setHeightAndWidthConstants(height: 35, width: 35)
+        
+        stackView.addArrangedSubview(usernameLabel)
+        stackView.addArrangedSubview(messageButton)
+        stackView.addArrangedSubview(moreButton)
     }
     
     private func setData() {
@@ -71,6 +123,14 @@ class TeammateCell: UICollectionViewCell {
                 self?.profilePicImageView.image = image
             }
         }
+    }
+    
+    @objc private func handleMessageButtonTapped() {
+        delegate?.messageButtonTapped(cell: self)
+    }
+    
+    @objc private func handleMoreButtonTapped() {
+        delegate?.moreButtonTapped(cell: self)
     }
     
 }
