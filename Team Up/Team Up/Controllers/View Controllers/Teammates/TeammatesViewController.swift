@@ -73,6 +73,12 @@ class TeammatesViewController: UIViewController {
         setupViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidLoad()
+        
+        makeNavigationBarClear()
+    }
+    
     private func setupViews() {
         navigationItem.rightBarButtonItem = requestsBarButtonItem
         
