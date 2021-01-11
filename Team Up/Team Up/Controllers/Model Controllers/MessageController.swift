@@ -79,4 +79,11 @@ class MessageController {
         chatPartnerRef.childByAutoId().updateChildValues(message.asDictionary())
     }
     
+    func deleteDirectChat(chat: DirectChat) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        let chatRef = ref.child("users").child(currentUser).child("messaging").child("directChats").child(chat.chatPartner.username)
+        chatRef.removeValue()
+    }
+    
 }

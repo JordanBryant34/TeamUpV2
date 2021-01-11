@@ -121,6 +121,13 @@ extension MessagesViewController: UITableViewDelegate, UITableViewDataSource {
         return 90
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let chat = messageController.chats[indexPath.row]
+            
+            messageController.deleteDirectChat(chat: chat)
+        }
+    }
 }
 
 extension MessagesViewController: SelectTeammatesViewControllerDelegate {
