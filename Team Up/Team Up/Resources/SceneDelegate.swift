@@ -33,6 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            try? Auth.auth().signOut()
             MessageController.shared.fetchChats()
             TeammateController.shared.fetchTeammates()
+            RequestController.shared.fetchTeammateRequests()
             window?.rootViewController = TabBarController()
         }
     }
