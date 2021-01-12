@@ -22,6 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func setupWindow(windowScene: UIWindowScene) {
         window = UIWindow(frame: UIScreen.main.bounds)
         
+        if #available(iOS 13.0, *) {
+            window?.overrideUserInterfaceStyle = .dark
+        }
+        
         window?.windowScene = windowScene
         window?.makeKeyAndVisible()
     }
