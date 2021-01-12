@@ -38,7 +38,7 @@ class LFGController {
             
             for key in dictionary.keys {
                 if let userDictionary = dictionary[key] as? [String : Any], let user = User(dictionary: userDictionary) {
-                    if user.username != Auth.auth().currentUser?.displayName {
+                    if user.username != Auth.auth().currentUser?.displayName && !TeammateController.shared.teammates.contains(user) {
                         users.append(user)
                     }
                 }
