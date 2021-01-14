@@ -80,7 +80,6 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupViews() {
-        
         view.backgroundColor = .teamUpBlue()
         
         navigationItem.titleView = titleLabel
@@ -110,6 +109,12 @@ class ProfileViewController: UIViewController {
     private func fetchUser() {
         if currentUser {
             username = Auth.auth().currentUser?.displayName
+            
+            let settingsButtonIcon = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(handleSettingsTapped))
+            navigationItem.rightBarButtonItem = settingsButtonIcon
+        } else {
+            let optionsButtonIcon = UIBarButtonItem(title: "Options", style: .plain, target: self, action: #selector(handleOptionsTapped))
+            navigationItem.rightBarButtonItem = optionsButtonIcon
         }
         
         guard let username = username else { return }
@@ -128,6 +133,14 @@ class ProfileViewController: UIViewController {
             self.collectionView.reloadData()
             self.activityIndicator.stopAnimating()
         }
+    }
+    
+    @objc private func handleSettingsTapped() {
+        navigationController?.pushViewController(SettingsViewController(), animated: true)
+    }
+    
+    @objc private func handleOptionsTapped() {
+        print("Options tapped")
     }
     
     deinit {
