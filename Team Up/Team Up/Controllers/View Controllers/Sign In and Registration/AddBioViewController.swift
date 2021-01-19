@@ -79,6 +79,8 @@ class AddBioViewController: UIViewController {
     
     let characterLimit = 180
     
+    var isEditingSettings = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -134,9 +136,16 @@ class AddBioViewController: UIViewController {
         
         if let bio = bioTextView.text, !bio.isEmpty, bio != "Write your bio..." {
             UserController.updateBio(bio: bio)
+        } else {
+            UserController.updateBio(bio: "No biography")
         }
         
-        navigationController?.pushViewController(AddGamesViewController(), animated: true)
+        if isEditingSettings {
+            NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
+            navigationController?.popViewController(animated: true)
+        } else {
+            navigationController?.pushViewController(AddGamesViewController(), animated: true)
+        }
     }
     
     @objc private func dismissKeyboard() {

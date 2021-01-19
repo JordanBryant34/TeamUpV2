@@ -47,6 +47,7 @@ class AddGamesViewController: UIViewController {
     let headerId = "headerId"
     
     var searchText: String? = nil
+    var isEditingSettings = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,8 +142,9 @@ class AddGamesViewController: UIViewController {
         if addedGames.count > 0 {
             UserController.updateUserGames(games: addedGames)
             
-            if presentingViewController != nil {
-                dismiss(animated: true, completion: nil)
+            if isEditingSettings {
+                NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
+                navigationController?.popViewController(animated: true)
             } else {
                 navigationController?.pushViewController(TabBarController(), animated: true)
             }

@@ -310,5 +310,47 @@ class UserController {
             completion(users)
         }
     }
+    
+    static func editRegion(viewController: UIViewController) {
+        guard let username = Auth.auth().currentUser?.displayName else { return }
+        let alertController = UIAlertController(title: "Select a region", message: nil, preferredStyle: .actionSheet)
+        
+        for region in Region.allCases {
+            let action = UIAlertAction(title: region.rawValue, style: .default) { (_) in
+                ref.child("users").child(username).updateChildValues(["region" : region.rawValue])
+                NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
+                Helpers.showNotificationBanner(title: "Region changed to \(region.rawValue)", subtitle: "", image: nil, style: .success, textAlignment: .center)
+            }
+            
+            alertController.addAction(action)
+        }
+    
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        viewController.present(alertController, animated: true, completion: nil)
+    }
+    
+    static func editMicStatus(viewController: UIViewController) {
+        guard let username = Auth.auth().currentUser?.displayName else { return }
+        let alertController = UIAlertController(title: "Select a mic status", message: nil, preferredStyle: .actionSheet)
+        
+        let micAction = UIAlertAction(title: "Mic", style: .default) { (_) in
+            ref.child("users").child(username).updateChildValues(["mic" : "mic"])
+            NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
+            Helpers.showNotificationBanner(title: "Mic status changed", subtitle: "", image: nil, style: .success, textAlignment: .center)
+        }
+        
+        let noMicAction = UIAlertAction(title: "No Mic", style: .default) { (_) in
+            ref.child("users").child(username).updateChildValues(["mic" : "noMic"])
+            NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
+            Helpers.showNotificationBanner(title: "Mic status changed", subtitle: "", image: nil, style: .success, textAlignment: .center)
+        }
+        
+        alertController.addAction(micAction)
+        alertController.addAction(noMicAction)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        viewController.present(alertController, animated: true, completion: nil)
+    }
 
 }

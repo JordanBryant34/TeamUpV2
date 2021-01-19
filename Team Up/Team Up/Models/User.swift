@@ -15,7 +15,7 @@ enum Region: String, CaseIterable {
     case australia = "Australia"
 }
 
-enum MicStatus: String {
+enum MicStatus: String, CaseIterable {
     case mic = "mic"
     case noMic = "noMic"
 }

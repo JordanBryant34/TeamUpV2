@@ -42,6 +42,10 @@ class SettingsViewController: UIViewController {
         tableView.pinEdgesToView(view: view)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.setBackgroundImage(UIImage(color: .teamUpDarkBlue()), for: .default)
+    }
+    
     deinit {
         print("\n\nSettingsViewController Deinit\n\n")
     }
@@ -60,6 +64,11 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: cellId)
         
+        let selectedView = UIView()
+        selectedView.backgroundColor = .accent()
+        
+        cell.selectedBackgroundView = selectedView
+        
         cell.textLabel?.text = settingsTitles[indexPath.section][indexPath.row]
         cell.textLabel?.textColor = indexPath.section == 1 ? .systemRed : .white
         cell.backgroundColor = .teamUpDarkBlue()
@@ -77,6 +86,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             switch section {
             case 0:
                 headerView.textLabel?.text = "Profile"
+            case 1:
+                headerView.textLabel?.text = "Account"
             default:
                 headerView.textLabel?.text = ""
             }
@@ -90,17 +101,33 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
-//
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        switch section {
-//        case 0:
-//            return "Profile"
-//        default:
-//            return ""
-//        }
-//    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        switch cell?.textLabel?.text {
+        case "Edit region":
+            UserController.editRegion(viewController: self)
+        case "Edit mic status":
+            UserController.editMicStatus(viewController: self)
+        case "Edit games":
+            let addGamesViewController = AddGamesViewController()
+            addGamesViewController.isEditingSettings = true
+            navigationController?.pushViewController(addGamesViewController, animated: true)
+        case "Edit biography":
+            let addBioViewController = AddBioViewController()
+            addBioViewController.continueButton.setTitle("Save", for: .normal)
+            addBioViewController.isEditingSettings = true
+            navigationController?.pushViewController(addBioViewController, animated: true)
+        default:
+            print("Settings cell has no text")
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
 }

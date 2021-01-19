@@ -64,7 +64,7 @@ class ProfileViewController: UIViewController {
         makeNavigationBarClear()
         
         if user == nil {
-            fetchUser()
+            checkUser()
         } else {
             fetchBackgroundImage()
         }
@@ -106,9 +106,11 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    private func fetchUser() {
+    private func checkUser() {
         if currentUser {
             username = Auth.auth().currentUser?.displayName
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(fetchUser), name: Notification.Name("profileUpdated"), object: nil)
             
             let settingsButtonIcon = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(handleSettingsTapped))
             navigationItem.rightBarButtonItem = settingsButtonIcon
@@ -117,6 +119,10 @@ class ProfileViewController: UIViewController {
             navigationItem.rightBarButtonItem = optionsButtonIcon
         }
         
+        fetchUser()
+    }
+    
+    @objc private func fetchUser() {
         guard let username = username else { return }
         
         activityIndicator.startAnimating()
