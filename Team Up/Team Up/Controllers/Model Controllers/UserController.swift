@@ -40,6 +40,7 @@ class UserController {
                         
             } else {
                 Helpers.showNotificationBanner(title: "Welcome back", subtitle: "", image: nil, style: .success, textAlignment: .center)
+                fetchUserData()
                 completion(.success(true))
                 return
             }
@@ -127,7 +128,8 @@ class UserController {
                     ref.child("users").child(username).updateChildValues(values)
                     
                     updateProfilePic(image: image)
-
+                    fetchUserData()
+                    
                     completion(true)
                 }
             }
@@ -349,6 +351,39 @@ class UserController {
         alertController.addAction(micAction)
         alertController.addAction(noMicAction)
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        viewController.present(alertController, animated: true, completion: nil)
+    }
+    
+    static func fetchUserData() {
+        MessageController.shared.fetchChats()
+        TeammateController.shared.fetchTeammates()
+        RequestController.shared.fetchTeammateRequests()
+    }
+    
+    static func signOutUser(viewController: UIViewController) {
+        let alertController = UIAlertController(title: "Log out?", message: nil, preferredStyle: .alert)
+        
+        let logOutAction = UIAlertAction(title: "Log out", style: .default) { (_) in
+            do {
+                MessageController.shared.clearDataAndObservers()
+                TeammateController.shared.clearDataAndObservers()
+                RequestController.shared.clearDataAndObservers()
+                
+                
+                try Auth.auth().signOut()
+                
+                let signInViewController = UINavigationController(rootViewController: SignInViewController())
+                viewController.view.window?.rootViewController = signInViewController
+            } catch {
+                Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "We were unable to log you out. Try again later or restart the app.", image: nil, style: .danger, textAlignment: .left)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(logOutAction)
+        alertController.addAction(cancelAction)
         
         viewController.present(alertController, animated: true, completion: nil)
     }

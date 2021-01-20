@@ -23,7 +23,7 @@ class TeammateController {
             return
         }
                 
-        Database.database().reference().child("users").child(currentUser).child("teammates").observe(.value) { [weak self] (snapshot) in
+        ref.child("users").child(currentUser).child("teammates").observe(.value) { [weak self] (snapshot) in
             guard let dictionary = snapshot.value as? [String : Any] else {
                 self?.teammates = []
                 NotificationCenter.default.post(name: Notification.Name("teammatesUpdated"), object: nil)
@@ -49,6 +49,14 @@ class TeammateController {
         ref.child("users").child(teammate.username).child("messaging").child("directChats").child(currentUser).removeValue()
         
         Helpers.showNotificationBanner(title: "\(teammate.username) has been removed", subtitle: "", image: nil, style: .success, textAlignment: .center)
+    }
+    
+    func clearDataAndObservers() {
+        teammates = []
+        NotificationCenter.default.post(name: Notification.Name("teammatesUpdated"), object: nil)
+        
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        ref.child("users").child(currentUser).child("teammates").removeAllObservers()
     }
     
 }

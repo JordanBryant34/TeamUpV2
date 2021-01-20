@@ -107,6 +107,7 @@ class SignInViewController: UIViewController {
         super.viewWillAppear(animated)
         
         makeNavigationBarClear()
+        removeNavigationBarBackButton()
     }
     
     private func setDelegatesAndActions() {

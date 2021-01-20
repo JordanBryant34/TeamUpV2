@@ -86,4 +86,12 @@ class MessageController {
         chatRef.removeValue()
     }
     
+    func clearDataAndObservers() {
+        chats = []
+        NotificationCenter.default.post(name: Notification.Name("messagesUpdated"), object: nil)
+        
+        guard let currentUser = Auth.auth().currentUser?.displayName else { print("could not remove message observers"); return }
+        ref.child("users").child(currentUser).child("messaging").child("directChats").removeAllObservers()
+    }
+    
 }

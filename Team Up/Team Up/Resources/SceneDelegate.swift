@@ -34,10 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if Auth.auth().currentUser == nil {
             window?.rootViewController = UINavigationController(rootViewController: SignInViewController())
         } else {
-//            try? Auth.auth().signOut()
-            MessageController.shared.fetchChats()
-            TeammateController.shared.fetchTeammates()
-            RequestController.shared.fetchTeammateRequests()
+            UserController.fetchUserData()
             window?.rootViewController = TabBarController()
         }
     }

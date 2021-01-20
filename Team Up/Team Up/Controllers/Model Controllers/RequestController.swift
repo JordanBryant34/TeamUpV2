@@ -101,4 +101,12 @@ class RequestController {
         currentUserRef.child("teammateRequests").child(requestingUser.username).removeValue()
     }
     
+    func clearDataAndObservers() {
+        teammateRequests = []
+        NotificationCenter.default.post(name: Notification.Name(teammateRequestNotification), object: nil)
+        
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        ref.child("users").child(currentUser).child("teammateRequests").removeAllObservers()
+    }
+    
 }

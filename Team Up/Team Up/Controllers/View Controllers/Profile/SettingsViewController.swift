@@ -19,7 +19,7 @@ class SettingsViewController: UIViewController {
     
     private let settingsTitles = [
         ["Edit profile picture", "Edit biography", "Edit region", "Edit mic status", "Edit games"],
-        ["Logout"]
+        ["Log out"]
     ]
     
     let cellId = "cellId"
@@ -65,7 +65,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = UITableViewCell(style: .default, reuseIdentifier: cellId)
         
         let selectedView = UIView()
-        selectedView.backgroundColor = .accent()
+        selectedView.backgroundColor = UIColor.teamUpBlue().withAlphaComponent(0.5)
         
         cell.selectedBackgroundView = selectedView
         
@@ -123,6 +123,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             addBioViewController.continueButton.setTitle("Save", for: .normal)
             addBioViewController.isEditingSettings = true
             navigationController?.pushViewController(addBioViewController, animated: true)
+        case "Log out":
+            UserController.signOutUser(viewController: self)
         default:
             print("Settings cell has no text")
         }
