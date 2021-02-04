@@ -21,4 +21,9 @@ extension String {
 
         return ceil(boundingBox.width)
     }
+    
+    func removeSpecialCharsFromString() -> String {
+        let okayChars : Set<Character> = Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890")
+        return self.filter { okayChars.contains($0) }
+    }
 }

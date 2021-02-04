@@ -11,7 +11,7 @@ class LargeTitleHeader: UICollectionReusableView {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 37.5)
+        label.font = .boldSystemFont(ofSize: 32.5)
         label.textColor = .white
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping

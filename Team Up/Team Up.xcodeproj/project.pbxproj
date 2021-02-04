@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */; };
+		7A2606A025C65DEA00FA4971 /* ProfilePicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */; };
+		7A2606A325CB74AB00FA4971 /* SectionTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */; };
 		7A29FDEA25B0F371001923DB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A29FDE925B0F371001923DB /* SettingsViewController.swift */; };
 		7A2B0613253E22FA00CF585A /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B0612253E22FA00CF585A /* UIColorExtension.swift */; };
 		7A2B0644253E33D500CF585A /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B0643253E33D500CF585A /* SignInViewController.swift */; };
@@ -69,6 +72,9 @@
 /* Begin PBXFileReference section */
 		1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.debug.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.debug.xcconfig"; sourceTree = "<group>"; };
 		61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Team_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfilePicViewController.swift; sourceTree = "<group>"; };
+		7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicCell.swift; sourceTree = "<group>"; };
+		7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleHeader.swift; sourceTree = "<group>"; };
 		7A29FDE925B0F371001923DB /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7A2B0612253E22FA00CF585A /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		7A2B0624253E305900CF585A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -182,6 +188,7 @@
 				7AEDD792253E723700620EFC /* SetupProfileViewController.swift */,
 				7AAF56AA253FAB81004BAFF2 /* AddBioViewController.swift */,
 				7AAF56AD253FB513004BAFF2 /* AddGamesViewController.swift */,
+				7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */,
 			);
 			path = "Sign In and Registration";
 			sourceTree = "<group>";
@@ -380,6 +387,7 @@
 				7AF7A6E02548975D00FC3C25 /* UserSearchCell.swift */,
 				7AF7A6E9254B43A300FC3C25 /* TeammateCell.swift */,
 				7AF7A6EF254B60C400FC3C25 /* TeammateRequestCell.swift */,
+				7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */,
 			);
 			path = "Custom CollectionView Cells";
 			sourceTree = "<group>";
@@ -390,6 +398,7 @@
 				7AF7A6CA254753BA00FC3C25 /* LargeTitleHeader.swift */,
 				7AF7A6D02547668300FC3C25 /* TitleAndSearchHeader.swift */,
 				7AF7A6F5254E06D000FC3C25 /* ProfileHeader.swift */,
+				7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */,
 			);
 			path = Headers;
 			sourceTree = "<group>";
@@ -534,14 +543,17 @@
 				7A49C4DC2555D05800103FF0 /* ChatInputView.swift in Sources */,
 				7AF7A7002551E69300FC3C25 /* Message.swift in Sources */,
 				7A4D9D1A25435DDA00E440B6 /* User.swift in Sources */,
+				7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */,
 				7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */,
 				7AEDD793253E723700620EFC /* SetupProfileViewController.swift in Sources */,
 				7ABFB61B25A782E9005AF4E1 /* SelectTeammateViewController.swift in Sources */,
+				7A2606A025C65DEA00FA4971 /* ProfilePicCell.swift in Sources */,
 				7AED1554253E0C710004DA81 /* TabBarController.swift in Sources */,
 				7AF7A70C2551FD7F00FC3C25 /* LargeTitleTableViewHeader.swift in Sources */,
 				7AF7A6F0254B60C400FC3C25 /* TeammateRequestCell.swift in Sources */,
 				7A4D9D172543454800E440B6 /* AuthError.swift in Sources */,
 				7AF7A6CB254753BA00FC3C25 /* LargeTitleHeader.swift in Sources */,
+				7A2606A325CB74AB00FA4971 /* SectionTitleHeader.swift in Sources */,
 				7AAF56AB253FAB81004BAFF2 /* AddBioViewController.swift in Sources */,
 				7AAF56AE253FB513004BAFF2 /* AddGamesViewController.swift in Sources */,
 				7A2B0613253E22FA00CF585A /* UIColorExtension.swift in Sources */,

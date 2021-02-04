@@ -125,6 +125,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             navigationController?.pushViewController(addBioViewController, animated: true)
         case "Log out":
             UserController.signOutUser(viewController: self)
+        case "Edit profile picture":
+            let selectProfilePicVC = SelectProfilePicViewController()
+            selectProfilePicVC.modalPresentationStyle = .overFullScreen
+            present(selectProfilePicVC, animated: true, completion: nil)
         default:
             print("Settings cell has no text")
         }

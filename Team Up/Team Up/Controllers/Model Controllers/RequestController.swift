@@ -61,7 +61,6 @@ class RequestController {
             var users: [User] = []
             guard let strongSelf = self else { return }
             guard let dictionary = snapshot.value as? [String : Any] else {
-                print("could not get dictionary")
                 strongSelf.teammateRequests = users
                 NotificationCenter.default.post(name: Notification.Name(strongSelf.teammateRequestNotification), object: nil)
                 return

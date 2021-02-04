@@ -75,7 +75,7 @@ class NoDataView: UIView {
         
         button.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         button.topAnchor.constraint(equalTo: detailTextLabel.bottomAnchor, constant: 40).isActive = true
-        button.setHeightAndWidthConstants(height: 75, width: frame.width * 0.6)
+        button.setHeightAndWidthConstants(height: 60, width: frame.width * 0.6)
     }
     
 }

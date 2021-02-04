@@ -387,5 +387,48 @@ class UserController {
         
         viewController.present(alertController, animated: true, completion: nil)
     }
+    
+    static func fetchAllProfilePictures(completion: @escaping (_ images: [String: [UIImage]]) -> Void) {
+        ref.child("profilePics").observeSingleEvent(of: .value) { (snapshot) in
+            guard let urlsDictionary = snapshot.value as? [String : Any] else { completion([:]); return }
+            
+            var imagesDictionary: [String : [UIImage]] = [:]
+            let dispatchGroup = DispatchGroup()
+            
+            for categoryName in urlsDictionary.keys {
+                guard let categoryDictionary = urlsDictionary[categoryName] as? [String : String] else { return }
+                var categoryImages: [UIImage] = []
+                
+                for picName in categoryDictionary.keys {
+                    guard let picUrlString = categoryDictionary[picName], let picUrl = URL(string: picUrlString) else { return }
+                    let imagePathForStorage = "\(picUrlString.removeSpecialCharsFromString()).jpg"
+                    print(imagePathForStorage)
+                    
+                    if let image = Helpers.getImageFromFile(pathComponent: imagePathForStorage) {
+                        categoryImages.append(image)
+                        imagesDictionary[categoryName] = categoryImages
+                    } else {
+                        dispatchGroup.enter()
+                        
+                        ImageService.getImage(withURL: picUrl) { (image) in
+                            if let image = image {
+                                categoryImages.append(image)
+                                imagesDictionary[categoryName] = categoryImages
+                                
+                                Helpers.storeJpgToFile(image: image, pathComponent: imagePathForStorage, size: image.size)
+                            }
+                            
+                            dispatchGroup.leave()
+                        }
+                    }
+                    
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                completion(imagesDictionary)
+            }
+        }
+    }
 
 }
