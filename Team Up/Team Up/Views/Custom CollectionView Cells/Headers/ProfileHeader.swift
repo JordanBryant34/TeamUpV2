@@ -150,10 +150,8 @@ class ProfileHeader: UICollectionReusableView {
         
         guard let user = user else { return }
         
-        if let imageUrl = URL(string: user.profilePicUrl) {
-            ImageService.getImage(withURL: imageUrl) { [weak self] (image) in
-                self?.profilePicImageView.image = image
-            }
+        UserController.fetchProfilePicture(picUrl: user.profilePicUrl) { [weak self] (image) in
+            self?.profilePicImageView.image = image.resize(newSize: CGSize(width: 100, height: 100))
         }
         
         bioLabel.text = user.bio

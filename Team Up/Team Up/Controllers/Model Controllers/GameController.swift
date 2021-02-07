@@ -22,7 +22,7 @@ class GameController {
     
     private let ref = Database.database().reference()
     
-    func fetchAllGames(completion: @escaping ([Game]) -> Void) {
+    func fetchAllGames(completion: @escaping ([Game]) -> Void = { _ in } ) {
         let gamesRef = ref.child("games")
         var games: [Game] = []
         
@@ -45,7 +45,7 @@ class GameController {
         }
     }
     
-    func fetchGameBackground(game: Game, completion: @escaping (UIImage?) -> Void) {
+    func fetchGameBackground(game: Game, completion: @escaping (UIImage?) -> Void = { _ in } ) {
         let path = "\(game.name)_background.jpg"
         
         if let image = Helpers.getImageFromFile(pathComponent: path) {
@@ -65,7 +65,7 @@ class GameController {
         }
     }
     
-    func fetchGameLogo(game: Game, completion: @escaping (UIImage?) -> Void) {
+    func fetchGameLogo(game: Game, completion: @escaping (UIImage?) -> Void = { _ in } ) {
         let path = "\(game.name)_logo.png"
         
         if let image = Helpers.getImageFromFile(pathComponent: path) {

@@ -23,7 +23,7 @@ class SetupProfileViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.accent().cgColor
-        imageView.image = UIImage(named: "teamUpLogo")
+        imageView.image = UIImage(named: "defaultProfilePic")
         imageView.backgroundColor = .teamUpDarkBlue()
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -126,6 +126,8 @@ class SetupProfileViewController: UIViewController {
     
     let cellId = "cellId"
     
+    var profilePicUrl: String = " "
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
@@ -140,7 +142,7 @@ class SetupProfileViewController: UIViewController {
         usernameTextField.delegate = self
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
-        profilePicImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentImagePicker)))
+        profilePicImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentProfilePicController)))
         
         continueButton.addTarget(self, action: #selector(handleContinue), for: .touchUpInside)
     }
@@ -220,7 +222,7 @@ class SetupProfileViewController: UIViewController {
             }
         }
         
-        UserController.setupProfile(username: username, mic: mic, region: region, image: profilePicImageView.image) { [weak self] (success) in
+        UserController.setupProfile(username: username, mic: mic, region: region, profileImageUrl: profilePicUrl) { [weak self] (success) in
             if success {
                 self?.navigationController?.pushViewController(AddBioViewController(), animated: true)
             }
@@ -231,6 +233,13 @@ class SetupProfileViewController: UIViewController {
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    @objc private func presentProfilePicController() {
+        let selectProfilePicVC = SelectProfilePicViewController()
+        selectProfilePicVC.modalPresentationStyle = .overFullScreen
+        selectProfilePicVC.delegate = self
+        present(selectProfilePicVC, animated: true, completion: nil)
     }
     
     deinit {
@@ -285,24 +294,11 @@ extension SetupProfileViewController: UITextFieldDelegate {
     
 }
 
-extension SetupProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        if let image = info[.editedImage] as? UIImage {
-            profilePicImageView.image = image
+extension SetupProfileViewController: SelectProfilePicViewControllerDelegate {
+    func profilePicChosen(imageUrl: String) {
+        self.profilePicUrl = imageUrl
+        UserController.fetchProfilePicture(picUrl: imageUrl) { [weak self] (image) in
+            self?.profilePicImageView.image = image
         }
-        
-        picker.dismiss(animated: true, completion: nil)
     }
-    
-    @objc private func presentImagePicker() {
-        print("Image Picker")
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-        
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
 }

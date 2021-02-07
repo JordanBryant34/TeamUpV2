@@ -8,6 +8,10 @@
 import UIKit
 import NVActivityIndicatorView
 
+protocol SelectProfilePicViewControllerDelegate: AnyObject {
+    func profilePicChosen(imageUrl: String)
+}
+
 class SelectProfilePicViewController: UIViewController {
     
     lazy var collectionView: UICollectionView = {
@@ -56,11 +60,15 @@ class SelectProfilePicViewController: UIViewController {
         return indicator
     }()
     
+    var delegate: SelectProfilePicViewControllerDelegate?
+    
     private let cellId = "cellId"
     private let headerId = "headerId"
     
-    private var imagesDictionary: [String : [UIImage]] = [:]
+    private var imageUrlsDictionary: [String : [String]] = [:]
     private var categories: [String] = []
+    
+    var selectedImageUrl: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +77,7 @@ class SelectProfilePicViewController: UIViewController {
         collectionView.register(SectionTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
         setupViews()
         fetchPics()
@@ -99,22 +108,29 @@ class SelectProfilePicViewController: UIViewController {
     }
     
     private func fetchPics() {
-        imagesDictionary = [:]
+        imageUrlsDictionary = [:]
         categories = []
         
         activityIndicator.startAnimating()
         
-        UserController.fetchAllProfilePictures { [weak self] (imagesDictionary) in
-            var categories = imagesDictionary.keys.sorted()
+        UserController.fetchAllProfilePictures { [weak self] (imageUrlsDictionary) in
+            self?.imageUrlsDictionary = imageUrlsDictionary
+            self?.categories = imageUrlsDictionary.keys.sorted()
             
-            if let indexOfTeamUp = categories.firstIndex(of: "Team Up") {
-                categories.remove(at: indexOfTeamUp)
-                categories.insert("Team Up", at: 0)
+            if let indexOfTeamUp = self?.categories.firstIndex(of: "Team Up") {
+                self?.categories.remove(at: indexOfTeamUp)
+                self?.categories.insert("Team Up", at: 0)
             }
-        
-            self?.categories = categories
-            self?.imagesDictionary = imagesDictionary
+            
             self?.reloadData()
+        }
+    }
+    
+    @objc private func doneButtonTapped() {
+        if let imageUrl = selectedImageUrl {
+            UserController.setProfilePicture(imageUrl: imageUrl)
+            delegate?.profilePicChosen(imageUrl: imageUrl)
+            dismiss(animated: true, completion: nil)
         }
     }
     
@@ -145,8 +161,11 @@ extension SelectProfilePicViewController: UICollectionViewDelegate, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfilePicCell
         
         let category = categories[indexPath.section]
-        if let imagesArray = imagesDictionary[category] {
-            cell.image = imagesArray[indexPath.row]
+        if let urlsArray = imageUrlsDictionary[category] {
+            let imageUrl = urlsArray[indexPath.row]
+            UserController.fetchProfilePicture(picUrl: imageUrl) { (image) in
+                cell.image = image
+            }
         }
         
         return cell
@@ -167,7 +186,7 @@ extension SelectProfilePicViewController: UICollectionViewDelegate, UICollection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let category = categories[section]
         
-        return (imagesDictionary[category] ?? []).count
+        return (imageUrlsDictionary[category] ?? []).count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -185,6 +204,15 @@ extension SelectProfilePicViewController: UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let category = categories[indexPath.section]
+        if let urlsArray = imageUrlsDictionary[category] {
+            let imageUrl = urlsArray[indexPath.row]
+            
+            selectedImageUrl = imageUrl
+        }
     }
     
 }

@@ -63,10 +63,9 @@ class UserSearchCell: UICollectionViewCell {
         
         usernameLabel.text = user.username
         
-        if let imageUrl = URL(string: user.profilePicUrl) {
-            ImageService.getImage(withURL: imageUrl) { [weak self] (image) in
-                self?.profilePicImageView.image = image
-            }
+        let imageDimension = frame.height * 0.45
+        UserController.fetchProfilePicture(picUrl: user.profilePicUrl) { [weak self] (image) in
+            self?.profilePicImageView.image = image.resize(newSize: CGSize(width: imageDimension, height: imageDimension))
         }
     }
     

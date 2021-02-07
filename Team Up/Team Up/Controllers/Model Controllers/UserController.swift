@@ -86,7 +86,7 @@ class UserController {
         }
     }
     
-    static func setupProfile(username: String, mic: MicStatus, region: String, image: UIImage?, completion: @escaping (_ success: Bool) -> Void) {
+    static func setupProfile(username: String, mic: MicStatus, region: String, profileImageUrl: String, completion: @escaping (_ success: Bool) -> Void) {
         
         if username.range(of: "[^a-zA-Z0-9]", options: .regularExpression) != nil {
             Helpers.showNotificationBanner(title: "Invalid username", subtitle: "Usernames can only contain alphanumeric characters.", image: nil, style: .danger, textAlignment: .left)
@@ -120,14 +120,13 @@ class UserController {
                         "username" : username,
                         "searchName" : username.lowercased(),
                         "biography" : "No biography",
-                        "profilePicUrl" : "https://www.example.com/exampleImage.jpg",
+                        "profilePicUrl" : profileImageUrl,
                         "region" : region,
                         "mic" : mic.rawValue
                     ]
                     
                     ref.child("users").child(username).updateChildValues(values)
                     
-                    updateProfilePic(image: image)
                     fetchUserData()
                     
                     completion(true)
@@ -137,43 +136,11 @@ class UserController {
         
     }
     
-    static func updateProfilePic(image: UIImage?) {
-        guard var imageToStore = image else { return }
-        
-        if imageToStore.size.width > 500 && imageToStore.size.height > 500 {
-            imageToStore = imageToStore.resize(newSize: CGSize(width: 500, height: 500))
-        }
-        
-        guard let data = imageToStore.jpegData(compressionQuality: 1.0) else { return }
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        guard let username = Auth.auth().currentUser?.displayName else { return }
-        
-        let imageRef = storageRef.child("profile-pictures/\(uid).jpg")
-        
-        imageRef.putData(data, metadata: nil) { (_, error) in
-            if let error = error {
-                Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "We could not save your profile picture. Please try again later.", image: nil, style: .danger, textAlignment: .left)
-                print(error.localizedDescription)
-                return
-            }
-            
-            imageRef.downloadURL { (url, error) in
-                if let error = error {
-                    Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "An error occured while change your profile picture. Please try again later.", image: nil, style: .danger, textAlignment: .left)
-                    print(error.localizedDescription)
-                    return
-                }
-                
-                guard let url = url else { return }
-                ref.child("users").child(username).updateChildValues(["profilePicUrl" : url.absoluteString])
-            }
-        }
-    }
-    
     static func updateBio(bio: String) {
         guard let username = Auth.auth().currentUser?.displayName else { return }
     
         ref.child("users").child(username).updateChildValues(["biography" : bio])
+        editUserLFGInfo()
     }
     
     static func fetchUsersGames(username: String, completion: @escaping (_ games: [Game]) -> Void) {
@@ -264,12 +231,21 @@ class UserController {
                             gameRef.child(autoId).removeValue()
                         }
                     } else {
-                        print("User is not already in this LFG")
                         if let lfgDictionary = lfgDictionary, games.contains(game) {
                             gameRef.childByAutoId().updateChildValues(lfgDictionary)
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    static func editUserLFGInfo() {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        fetchUsersGames(username: currentUser) { (games) in
+            if !games.isEmpty {
+                updateUserLFG(games: games)
             }
         }
     }
@@ -320,6 +296,7 @@ class UserController {
         for region in Region.allCases {
             let action = UIAlertAction(title: region.rawValue, style: .default) { (_) in
                 ref.child("users").child(username).updateChildValues(["region" : region.rawValue])
+                editUserLFGInfo()
                 NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
                 Helpers.showNotificationBanner(title: "Region changed to \(region.rawValue)", subtitle: "", image: nil, style: .success, textAlignment: .center)
             }
@@ -338,12 +315,14 @@ class UserController {
         
         let micAction = UIAlertAction(title: "Mic", style: .default) { (_) in
             ref.child("users").child(username).updateChildValues(["mic" : "mic"])
+            editUserLFGInfo()
             NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
             Helpers.showNotificationBanner(title: "Mic status changed", subtitle: "", image: nil, style: .success, textAlignment: .center)
         }
         
         let noMicAction = UIAlertAction(title: "No Mic", style: .default) { (_) in
             ref.child("users").child(username).updateChildValues(["mic" : "noMic"])
+            editUserLFGInfo()
             NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
             Helpers.showNotificationBanner(title: "Mic status changed", subtitle: "", image: nil, style: .success, textAlignment: .center)
         }
@@ -359,6 +338,14 @@ class UserController {
         MessageController.shared.fetchChats()
         TeammateController.shared.fetchTeammates()
         RequestController.shared.fetchTeammateRequests()
+        UserController.fetchAllProfilePictures()
+        
+        GameController.shared.fetchAllGames { (games) in
+            for game in games {
+                GameController.shared.fetchGameBackground(game: game)
+                GameController.shared.fetchGameLogo(game: game)
+            }
+        }
     }
     
     static func signOutUser(viewController: UIViewController) {
@@ -388,47 +375,49 @@ class UserController {
         viewController.present(alertController, animated: true, completion: nil)
     }
     
-    static func fetchAllProfilePictures(completion: @escaping (_ images: [String: [UIImage]]) -> Void) {
+    static func fetchAllProfilePictures(completion: @escaping (_ imageUrlsDictionary: [String: [String]]) -> Void = { _ in } ) {
         ref.child("profilePics").observeSingleEvent(of: .value) { (snapshot) in
             guard let urlsDictionary = snapshot.value as? [String : Any] else { completion([:]); return }
             
-            var imagesDictionary: [String : [UIImage]] = [:]
-            let dispatchGroup = DispatchGroup()
+            var imageUrlsDictionary: [String : [String]] = [:]
             
-            for categoryName in urlsDictionary.keys {
-                guard let categoryDictionary = urlsDictionary[categoryName] as? [String : String] else { return }
-                var categoryImages: [UIImage] = []
-                
-                for picName in categoryDictionary.keys {
-                    guard let picUrlString = categoryDictionary[picName], let picUrl = URL(string: picUrlString) else { return }
-                    let imagePathForStorage = "\(picUrlString.removeSpecialCharsFromString()).jpg"
-                    print(imagePathForStorage)
+            for category in urlsDictionary.keys {
+                if let categoryDictionary = urlsDictionary[category] as? [String : String] {
+                    let arrayOfImageUrls = Array(categoryDictionary.values.sorted())
+                    imageUrlsDictionary[category] = arrayOfImageUrls
                     
-                    if let image = Helpers.getImageFromFile(pathComponent: imagePathForStorage) {
-                        categoryImages.append(image)
-                        imagesDictionary[categoryName] = categoryImages
-                    } else {
-                        dispatchGroup.enter()
-                        
-                        ImageService.getImage(withURL: picUrl) { (image) in
-                            if let image = image {
-                                categoryImages.append(image)
-                                imagesDictionary[categoryName] = categoryImages
-                                
-                                Helpers.storeJpgToFile(image: image, pathComponent: imagePathForStorage, size: image.size)
-                            }
-                            
-                            dispatchGroup.leave()
-                        }
+                    for imageUrl in arrayOfImageUrls {
+                        fetchProfilePicture(picUrl: imageUrl)
                     }
-                    
                 }
             }
             
-            dispatchGroup.notify(queue: .main) {
-                completion(imagesDictionary)
+            completion(imageUrlsDictionary)
+        }
+    }
+    
+    static func fetchProfilePicture(picUrl: String, completion: @escaping (_ image: UIImage) -> Void = { _ in } ) {
+        let imagePathForStorage = "\(picUrl.removeSpecialCharsFromString()).jpg"
+        if let image = Helpers.getImageFromFile(pathComponent: imagePathForStorage) {
+            completion(image)
+        } else {
+            if let url = URL(string: picUrl) {
+                ImageService.getImage(withURL: url) { (image) in
+                    guard let image = image else {completion(UIImage(named: "defaultProfilePic")!); return }
+                    Helpers.storeJpgToFile(image: image, pathComponent: imagePathForStorage, size: image.size)
+                    completion(image)
+                }
+            } else {
+                completion(UIImage(named: "defaultProfilePic")!)
             }
         }
     }
-
+    
+    static func setProfilePicture(imageUrl: String) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        ref.child("users").child(currentUser).updateChildValues(["profilePicUrl" : imageUrl])
+        editUserLFGInfo()
+        NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
+    }
 }

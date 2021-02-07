@@ -91,10 +91,8 @@ class ChatTableViewCell: UITableViewCell {
         
         usernameLabel.text = chat.chatPartner.username
         
-        if let imageUrl = URL(string: chat.chatPartner.profilePicUrl) {
-            ImageService.getImage(withURL: imageUrl) { [weak self] (image) in
-                self?.profilePicImageView.image = image
-            }
+        UserController.fetchProfilePicture(picUrl: chat.chatPartner.profilePicUrl) { [weak self] (image) in
+            self?.profilePicImageView.image = image.resize(newSize: CGSize(width: 60, height: 60))
         }
         
         if let previewMessage = chat.messages.last {

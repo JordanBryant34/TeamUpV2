@@ -174,10 +174,8 @@ class PlayerCell: UICollectionViewCell {
             platformImageView.image = UIImage(named: "\(platform)Icon")?.resize(newSize: iconImageSize).withRenderingMode(.alwaysTemplate)
         }
         
-        if let imageUrl = URL(string: user.profilePicUrl) {
-            ImageService.getImage(withURL: imageUrl) { [weak self] (image) in
-                self?.profilePicImageView.image = image?.resize(newSize: CGSize(width: 60, height: 60))
-            }
+        UserController.fetchProfilePicture(picUrl: user.profilePicUrl) { [weak self] (image) in
+            self?.profilePicImageView.image = image.resize(newSize: CGSize(width: 60, height: 60))
         }
     }
     
