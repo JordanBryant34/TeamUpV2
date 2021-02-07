@@ -88,6 +88,12 @@ class AddBioViewController: UIViewController {
         setupViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        makeNavigationBarClear()
+    }
+    
     private func setDelegatesAndActions() {
         bioTextView.delegate = self
         
