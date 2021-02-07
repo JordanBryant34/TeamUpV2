@@ -264,7 +264,7 @@ extension PlayersViewController: LFGFiltersViewControllerDelegate {
 
 extension PlayersViewController: PlayerCellDelegate {
     func requestTapped(user: User, cell: PlayerCell) {
-        RequestController.shared.requestPlayerToTeamUp(user: user) { [weak self] (success) in
+        RequestController.shared.requestPlayerToTeamUp(username: user.username) { [weak self] (success) in
             if success {
                 self?.requestedUsers.append(user)
                 cell.alreadyRequested = true

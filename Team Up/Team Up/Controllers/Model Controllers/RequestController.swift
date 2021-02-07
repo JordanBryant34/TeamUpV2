@@ -18,35 +18,23 @@ class RequestController {
     
     var teammateRequests: [User] = []
     
-    func requestPlayerToTeamUp(user: User, completion: @escaping (_ success: Bool) -> Void) {
+    func requestPlayerToTeamUp(username: String, completion: @escaping (_ success: Bool) -> Void) {
         guard let currentUserName = Auth.auth().currentUser?.displayName else {
             Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "We were unable to retrieve your profile. Restart Team Up and try again.", image: nil, style: .danger, textAlignment: .left)
             completion(false)
             return
         }
         
-        ref.child("users").child(user.username).child("teammateRequests").observeSingleEvent(of: .value) { [weak self] (snapshot) in
+        ref.child("users").child(username).child("teammateRequests").observeSingleEvent(of: .value) { [weak self] (snapshot) in
             if let requestsDictionary = snapshot.value as? [String : Any], requestsDictionary.keys.contains(currentUserName) {
-                Helpers.showNotificationBanner(title: "You've already requested \(user.username)", subtitle: "", image: nil, style: .danger, textAlignment: .center)
+                Helpers.showNotificationBanner(title: "You've already requested \(username)", subtitle: "", image: nil, style: .danger, textAlignment: .center)
                 completion(true)
                 return
             }
             
-            UserController.fetchUser(username: currentUserName) { [weak self] (currentUser) in
-                guard let currentUser = currentUser else { return }
-                
-                let userDictionary = [
-                    "username" : currentUser.username,
-                    "mic" : currentUser.mic.rawValue,
-                    "biography" : currentUser.bio,
-                    "profilePicUrl" : currentUser.profilePicUrl,
-                    "region" : currentUser.region.rawValue
-                ]
-                
-                self?.ref.child("users").child(user.username).child("teammateRequests").updateChildValues([currentUserName : userDictionary])
-                Helpers.showNotificationBanner(title: "Teammate request sent to \(user.username)", subtitle: "", image: nil, style: .success, textAlignment: .center)
-                completion(true)
-            }
+            self?.ref.child("users").child(username).child("teammateRequests").updateChildValues([currentUserName : 1])
+            Helpers.showNotificationBanner(title: "Teammate request sent to \(username)", subtitle: "", image: nil, style: .success, textAlignment: .center)
+            completion(true)
         }
     }
     
@@ -66,14 +54,24 @@ class RequestController {
                 return
             }
             
+            let dispatchGroup = DispatchGroup()
+            
             for key in dictionary.keys {
-                if let userDictionary = dictionary[key] as? [String : Any], let user = User(dictionary: userDictionary) {
-                    users.append(user)
+                dispatchGroup.enter()
+                UserController.fetchUser(username: key) { (user) in
+                    if let user = user {
+                        users.append(user)
+                    }
+                    
+                    dispatchGroup.leave()
                 }
             }
             
-            strongSelf.teammateRequests = users
-            NotificationCenter.default.post(name: Notification.Name(strongSelf.teammateRequestNotification), object: nil)
+            dispatchGroup.notify(queue: .main) {
+                strongSelf.teammateRequests = users
+                NotificationCenter.default.post(name: Notification.Name(strongSelf.teammateRequestNotification), object: nil)
+            }
+            
         }
     }
     

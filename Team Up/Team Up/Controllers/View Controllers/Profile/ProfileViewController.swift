@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController {
         let imageView = FadedImageView()
         imageView.alpha = 0.8
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

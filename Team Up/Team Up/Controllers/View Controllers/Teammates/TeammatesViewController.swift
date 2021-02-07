@@ -77,6 +77,7 @@ class TeammatesViewController: UIViewController {
         super.viewDidLoad()
         
         makeNavigationBarClear()
+        updateNavigationBarAppearance(scrollView: collectionView)
     }
     
     private func setupViews() {
@@ -148,6 +149,10 @@ extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateNavigationBarAppearance(scrollView: scrollView)
+    }
+    
+    private func updateNavigationBarAppearance(scrollView: UIScrollView) {
         var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 2)
         var offsetForLabels = scrollView.contentOffset.y / (view.frame.height * 0.03)
         

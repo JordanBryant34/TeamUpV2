@@ -26,7 +26,7 @@ class RequestsViewController: UIViewController {
         label.font = .systemFont(ofSize: 17)
         label.alpha = 0
         label.textColor = .white
-        label.text = "Teammates"
+        label.text = "Teammate Requests"
         return label
     }()
     
@@ -66,6 +66,13 @@ class RequestsViewController: UIViewController {
         setupViews()
 
         noDataView.isHidden = !requestController.teammateRequests.isEmpty
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        makeNavigationBarClear()
+        updateNavigationBarByScrollPosition(scrollView: collectionView)
     }
     
     private func setupViews() {
@@ -157,7 +164,19 @@ extension RequestsViewController: UICollectionViewDelegate, UICollectionViewData
         return CGSize(width: view.frame.width - 30, height: 90)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let user = requestController.teammateRequests[indexPath.item]
+        
+        let profileViewController = ProfileViewController()
+        profileViewController.username = user.username
+        navigationController?.pushViewController(profileViewController, animated: true)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateNavigationBarByScrollPosition(scrollView: scrollView)
+    }
+    
+    private func updateNavigationBarByScrollPosition(scrollView: UIScrollView) {
         var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 2)
         var offsetForLabels = scrollView.contentOffset.y / (view.frame.height * 0.03)
         
