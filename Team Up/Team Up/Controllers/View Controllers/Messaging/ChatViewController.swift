@@ -26,6 +26,7 @@ class ChatViewController: UIViewController {
         tableView.estimatedRowHeight = 70
         tableView.separatorStyle = .none
         tableView.alpha = 0
+        tableView.keyboardDismissMode = .onDrag
         return tableView
     }()
     
