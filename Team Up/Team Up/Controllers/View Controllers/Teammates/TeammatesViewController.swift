@@ -28,7 +28,6 @@ class TeammatesViewController: UIViewController {
         button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(requestsButtonTapped), for: .touchUpInside)
-        
         let requestsBarButton = UIBarButtonItem(customView: button)
         return requestsBarButton
     }()
@@ -48,7 +47,7 @@ class TeammatesViewController: UIViewController {
         let image = UIImage(named: "teamUpLogoTemplate")?.resize(newSize: CGSize(width: view.frame.width * 0.5, height: view.frame.width * 0.5)).withRenderingMode(.alwaysTemplate)
         view.imageView.image = image
         view.imageView.tintColor = .teamUpDarkBlue()
-        view.textLabel.text = "You have no teammtes"
+        view.textLabel.text = "You have no teammates"
         view.detailTextLabel.text = "Find some players and request them to team up!"
         view.button.setTitle("Find Teammates", for: .normal)
         view.isHidden = true
@@ -66,6 +65,8 @@ class TeammatesViewController: UIViewController {
         
         collectionView.register(TeammateCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        
+        noDataView.button.addTarget(self, action: #selector(handleFindTeammates), for: .touchUpInside)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("teammatesUpdated"), object: nil)
         
@@ -85,8 +86,8 @@ class TeammatesViewController: UIViewController {
         
         view.backgroundColor = .teamUpBlue()
         
-        view.addSubview(noDataView)
         view.addSubview(collectionView)
+        view.addSubview(noDataView)
         
         noDataView.pinEdgesToView(view: view)
         collectionView.pinEdgesToView(view: view)
@@ -98,6 +99,11 @@ class TeammatesViewController: UIViewController {
     
     @objc private func requestsButtonTapped() {
         navigationController?.pushViewController(RequestsViewController(), animated: true)
+    }
+    
+    @objc private func handleFindTeammates() {
+        tabBarController?.selectedIndex = 0
+        tabBarController?.selectedViewController = tabBarController?.viewControllers![0]
     }
 
     @objc private func reloadData() {
