@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 
 class TeammatesViewController: UIViewController {
     
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
@@ -22,7 +22,7 @@ class TeammatesViewController: UIViewController {
         return collectionView
     }()
     
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 17)
@@ -32,7 +32,7 @@ class TeammatesViewController: UIViewController {
         return label
     }()
     
-    lazy var noDataView: NoDataView = {
+    private lazy var noDataView: NoDataView = {
         let view = NoDataView()
         let image = UIImage(named: "teamUpLogoTemplate")?.resize(newSize: CGSize(width: view.frame.width * 0.5, height: view.frame.width * 0.5)).withRenderingMode(.alwaysTemplate)
         view.imageView.image = image
@@ -44,11 +44,13 @@ class TeammatesViewController: UIViewController {
         return view
     }()
     
-    let teammateController = TeammateController.shared
-    let messageController = MessageController.shared
+    private let teammateController = TeammateController.shared
+    private let messageController = MessageController.shared
     
-    var cellId = "cellId"
-    var headerId = "headerId"
+    private var cellId = "cellId"
+    private var headerId = "headerId"
+    
+    private var teammateToRemove: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -204,18 +206,20 @@ extension TeammatesViewController: TeammateCellDelegate {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let removeTeammateAction = UIAlertAction(title: "Remove teammate", style: .destructive) { [weak self] (_) in
-            let removeAlertController = UIAlertController(title: "Remove \(teammate.username) from your teammates list?", message: "This will also remove you from their teammates list.", preferredStyle: .alert)
+            let promptUserVC = PromptUserViewController()
+            promptUserVC.modalPresentationStyle = .overFullScreen
+            promptUserVC.titleText = "Remove \(teammate.username) from your teammates list?"
+            promptUserVC.subTitleText = "This will also remove you from their teammates list."
+            promptUserVC.acceptButtonTitle = "Remove Teammate"
+            promptUserVC.cancelButtonTitle = "Cancel"
+            promptUserVC.isWarning = true
             
-            let confirmAction = UIAlertAction(title: "Remove", style: .default) { [weak self] (_) in
-                self?.teammateController.removeTeammate(teammate: teammate)
+            if let strongSelf = self {
+                strongSelf.teammateToRemove = teammate
+                promptUserVC.delegate = strongSelf
+                strongSelf.present(promptUserVC, animated: false, completion: nil)
             }
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            
-            removeAlertController.addAction(cancelAction)
-            removeAlertController.addAction(confirmAction)
-            
-            self?.present(removeAlertController, animated: true, completion: nil)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -224,6 +228,17 @@ extension TeammatesViewController: TeammateCellDelegate {
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+}
+
+extension TeammatesViewController: PromptUserViewControllerDelegate {
+    
+    func userAcceptedPrompt() {
+        guard let teammate = teammateToRemove else { return }
+        teammateController.removeTeammate(teammate: teammate)
+        
+        teammateToRemove = nil
     }
     
 }

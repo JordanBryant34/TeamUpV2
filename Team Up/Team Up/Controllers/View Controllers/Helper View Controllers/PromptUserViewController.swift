@@ -215,4 +215,8 @@ class PromptUserViewController: UIViewController {
         handleDismiss()
     }
     
+    deinit {
+        print("\n\nPromptUserViewController Deinit\n\n")
+    }
+    
 }
