@@ -113,7 +113,7 @@ class ProfileViewController: UIViewController {
             
             NotificationCenter.default.addObserver(self, selector: #selector(fetchUser), name: Notification.Name("profileUpdated"), object: nil)
             
-            let settingsButtonIcon = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(handleSettingsTapped))
+            let settingsButtonIcon = UIBarButtonItem(image: UIImage(named: "settingsIcon"), style: .plain, target: self, action: #selector(handleSettingsTapped))
             navigationItem.rightBarButtonItem = settingsButtonIcon
         } else {
             let optionsButtonIcon = UIBarButtonItem(title: "Options", style: .plain, target: self, action: #selector(handleOptionsTapped))

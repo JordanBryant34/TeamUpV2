@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         styleNavigationControllers()
         
+        UserController.fetchFCMToken()
+        
         return true
     }
     

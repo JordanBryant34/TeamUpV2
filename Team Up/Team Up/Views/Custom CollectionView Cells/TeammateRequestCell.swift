@@ -36,7 +36,7 @@ class TeammateRequestCell: UICollectionViewCell {
     
     let acceptButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(named: "checkmark")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "checkmarkIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         button.tintColor = .accent()
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -46,9 +46,8 @@ class TeammateRequestCell: UICollectionViewCell {
     
     let declineButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(named: "xIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "cancelIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 7.5, left: 7.5, bottom: 7.5, right: 7.5)
         button.tintColor = .systemRed
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false

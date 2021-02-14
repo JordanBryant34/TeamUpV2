@@ -6,9 +6,7 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseDatabase
-import FirebaseStorage
+import Firebase
 
 class UserController {
     
@@ -41,6 +39,7 @@ class UserController {
             } else {
                 Helpers.showNotificationBanner(title: "Welcome back", subtitle: "", image: nil, style: .success, textAlignment: .center)
                 fetchUserData()
+                fetchFCMToken()
                 completion(.success(true))
                 return
             }
@@ -128,6 +127,7 @@ class UserController {
                     ref.child("users").child(username).updateChildValues(values)
                     
                     fetchUserData()
+                    fetchFCMToken()
                     
                     completion(true)
                 }
@@ -356,7 +356,7 @@ class UserController {
                 MessageController.shared.clearDataAndObservers()
                 TeammateController.shared.clearDataAndObservers()
                 RequestController.shared.clearDataAndObservers()
-                
+                removeFCMToken()
                 
                 try Auth.auth().signOut()
                 
@@ -419,5 +419,21 @@ class UserController {
         ref.child("users").child(currentUser).updateChildValues(["profilePicUrl" : imageUrl])
         editUserLFGInfo()
         NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
+    }
+    
+    static func fetchFCMToken() {
+        Messaging.messaging().token { (token, error) in
+            if let error = error {
+                print("Error fetching FCM registration token: \(error)")
+            } else if let token = token {
+                guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+                ref.child("users").child(currentUser).updateChildValues(["fcmToken" : token])
+            }
+        }
+    }
+    
+    static func removeFCMToken() {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        ref.child("users").child(currentUser).updateChildValues(["fcmToken" : " "])
     }
 }

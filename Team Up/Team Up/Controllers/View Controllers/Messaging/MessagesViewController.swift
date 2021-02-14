@@ -55,7 +55,7 @@ class MessagesViewController: UIViewController {
         view.backgroundColor = .teamUpBlue()
         tableView.tableFooterView = UIView()
         
-        let newMessageButton = UIBarButtonItem(title: "New", style: .plain, target: self, action: #selector(handleNewMessage))
+        let newMessageButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleNewMessage))
         navigationItem.rightBarButtonItem = newMessageButton
         
         view.addSubview(tableView)
@@ -79,7 +79,7 @@ class MessagesViewController: UIViewController {
         selectTeammateVC.headerLabelText = "New Message"
         selectTeammateVC.delegate = self
         
-        present(UINavigationController(rootViewController: selectTeammateVC), animated: true, completion: nil)
+        present(selectTeammateVC, animated: true, completion: nil)
     }
     
 }

@@ -42,15 +42,13 @@ class SelectTeammateViewController: UIViewController {
         return view
     }()
     
-    lazy var exitBarButtonItem: UIBarButtonItem = {
-        let image = UIImage(named: "xIcon")?.resize(newSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate)
-        let button = UIButton(type: .custom)
-        button.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+    let exitButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(named: "cancelIcon")?.resize(newSize: CGSize(width: 25, height: 25))
         button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(exitPressed), for: .touchUpInside)
-        
-        let exitBarButton = UIBarButtonItem(customView: button)
-        return exitBarButton
+        button.imageEdgeInsets = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     let teammateController = TeammateController.shared
@@ -67,21 +65,26 @@ class SelectTeammateViewController: UIViewController {
         collectionView.register(TeammateCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         
+        exitButton.addTarget(self, action: #selector(exitPressed), for: .touchUpInside)
+        
         makeNavigationBarClear()
         setupViews()
     }
     
     private func setupViews() {
-        navigationItem.leftBarButtonItem = exitBarButtonItem
-        exitBarButtonItem.customView?.setHeightAndWidthConstants(height: 20, width: 20)
-        
         view.backgroundColor = .teamUpBlue()
         
         view.addSubview(noDataView)
+        view.addSubview(exitButton)
         view.addSubview(collectionView)
         
+        exitButton.setHeightAndWidthConstants(height: 30, width: 30)
+        exitButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+        exitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
+        
         noDataView.pinEdgesToView(view: view)
-        collectionView.pinEdgesToView(view: view)
+        
+        collectionView.anchor(exitButton.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 15, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         
         if teammateController.teammates.isEmpty {
             noDataView.isHidden = false

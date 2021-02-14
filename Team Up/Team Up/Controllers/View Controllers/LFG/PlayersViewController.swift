@@ -77,6 +77,8 @@ class PlayersViewController: UIViewController {
     var users: [User] = []
     var requestedUsers: [User] = []
     
+    private var alreadyPromptedForNotifications = false
+    
     let gameController = GameController.shared
     
     override func viewDidLoad() {
@@ -164,6 +166,19 @@ class PlayersViewController: UIViewController {
             self.collectionView.reloadItems(at: indexPath)
             self.noDataView.isHidden = !self.users.isEmpty
         }
+    }
+    
+    private func promptForNotifications(requestedUser: String) {
+        let notificationsPromptVC = PromptUserViewController()
+        notificationsPromptVC.modalPresentationStyle = .overFullScreen
+        notificationsPromptVC.titleText = "Want to know when \(requestedUser) accepts your teammate request?"
+        notificationsPromptVC.subTitleText = "Enable notifications to be alerted when other players interact with you."
+        notificationsPromptVC.acceptButtonTitle = "Enable Notifications"
+        notificationsPromptVC.cancelButtonTitle = "No thanks"
+        notificationsPromptVC.delegate = self
+        
+        present(notificationsPromptVC, animated: false, completion: nil)
+        alreadyPromptedForNotifications = true
     }
     
     deinit {
@@ -257,12 +272,15 @@ extension PlayersViewController: UICollectionViewDelegate, UICollectionViewDataS
 }
 
 extension PlayersViewController: LFGFiltersViewControllerDelegate {
+    
     func filter(platform: String?, region: Region?) {
         fetchPlayers(platform: platform, region: region)
     }
+    
 }
 
 extension PlayersViewController: PlayerCellDelegate {
+    
     func requestTapped(user: User, cell: PlayerCell) {
         RequestController.shared.requestPlayerToTeamUp(username: user.username) { [weak self] (success) in
             if success {
@@ -270,5 +288,18 @@ extension PlayersViewController: PlayerCellDelegate {
                 cell.alreadyRequested = true
             }
         }
+        
+        if !NotificationsController.isRegisteredForNotifications && alreadyPromptedForNotifications == false {
+            promptForNotifications(requestedUser: user.username)
+        }
     }
+    
+}
+
+extension PlayersViewController: PromptUserViewControllerDelegate {
+    
+    func userAcceptedPrompt() {
+        NotificationsController.userWantsNotifications()
+    }
+    
 }

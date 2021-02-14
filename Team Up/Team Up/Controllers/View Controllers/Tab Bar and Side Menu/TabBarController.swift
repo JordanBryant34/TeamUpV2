@@ -39,13 +39,15 @@ class TabBarController: UITabBarController {
         let profileController = UINavigationController(rootViewController: profileVC)
         
         setViewControllers([lfgController, teammatesController, messagesController, profileController], animated: true)
-        
-        lfgController.tabBarItem = UITabBarItem(title: "LFG", image: nil, selectedImage: nil)
-        teammatesController.tabBarItem = UITabBarItem(title: "Teammates", image: nil, selectedImage: nil)
-        messagesController.tabBarItem = UITabBarItem(title: "Messages", image: nil, selectedImage: nil)
-        profileController.tabBarItem = UITabBarItem(title: "Profile", image: nil, selectedImage: nil)
+                
+        lfgController.tabBarItem = UITabBarItem(title: "LFG", image: UIImage(named: "lfgIcon"), selectedImage: nil)
+        teammatesController.tabBarItem = UITabBarItem(title: "Teammates", image: UIImage(named: "teammatesIcon"), selectedImage: nil)
+        messagesController.tabBarItem = UITabBarItem(title: "Messages", image: UIImage(named: "messagesIcon"), selectedImage: nil)
+        profileController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "profileIcon"), selectedImage: nil)
         
         tabBar.barTintColor = .teamUpDarkBlue()
+        tabBar.unselectedItemTintColor = .secondaryLabelColor()
+        tabBar.tintColor = .accent()
         tabBar.isTranslucent = false
     }
     

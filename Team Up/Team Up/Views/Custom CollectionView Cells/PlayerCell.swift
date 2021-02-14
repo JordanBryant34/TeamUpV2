@@ -87,9 +87,10 @@ class PlayerCell: UICollectionViewCell {
     
     let moreButton: UIButton = {
         let button = UIButton()
-        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysTemplate)
+        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysTemplate)
+        button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
         button.tintColor = .accent()
-        button.setBackgroundImage(templateImage, for: .normal)
+        button.setImage(templateImage, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

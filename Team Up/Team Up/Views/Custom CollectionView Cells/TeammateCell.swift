@@ -49,9 +49,10 @@ class TeammateCell: UICollectionViewCell {
     
     let messageButton: UIButton = {
         let button = UIButton()
-        let templateImage = UIImage(named: "messageIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
+        let templateImage = UIImage(named: "messageIcon")?.resize(newSize: CGSize(width: 30, height: 30)).withRenderingMode(.alwaysTemplate)
         button.tintColor = .accent()
-        button.setBackgroundImage(templateImage, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
+        button.setImage(templateImage, for: .normal)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -59,9 +60,10 @@ class TeammateCell: UICollectionViewCell {
     
     let moreButton: UIButton = {
         let button = UIButton()
-        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
+        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 28, height: 28)).withRenderingMode(.alwaysTemplate)
+        button.imageEdgeInsets = UIEdgeInsets(top: 3.5, left: 3.5, bottom: 3.5, right: 3.5)
         button.tintColor = .accent()
-        button.setBackgroundImage(templateImage, for: .normal)
+        button.setImage(templateImage, for: .normal)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

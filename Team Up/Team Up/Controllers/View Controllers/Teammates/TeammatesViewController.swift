@@ -22,16 +22,6 @@ class TeammatesViewController: UIViewController {
         return collectionView
     }()
     
-    lazy var requestsBarButtonItem: UIBarButtonItem = {
-        let image = UIImage(named: "requestsIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
-        let button = UIButton(type: .custom)
-        button.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(requestsButtonTapped), for: .touchUpInside)
-        let requestsBarButton = UIBarButtonItem(customView: button)
-        return requestsBarButton
-    }()
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -82,6 +72,7 @@ class TeammatesViewController: UIViewController {
     }
     
     private func setupViews() {
+        let requestsBarButtonItem = UIBarButtonItem(image: UIImage(named: "requestsIcon"), style: .plain, target: self, action: #selector(requestsButtonTapped))
         navigationItem.rightBarButtonItem = requestsBarButtonItem
         
         view.backgroundColor = .teamUpBlue()
