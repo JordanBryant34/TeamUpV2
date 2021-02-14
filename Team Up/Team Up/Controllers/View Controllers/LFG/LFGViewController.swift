@@ -223,7 +223,7 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
 
             header.searchBar.delegate = self
             header.searchBar.text = searchText
-            header.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search LFG...", attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondaryLabelColor()])
+            header.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search games and players...", attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondaryLabelColor()])
             
             header.titleLabel.text = "Looking for group"
             header.detailLabel.text = "Tap on a game to find people that also play that game."
