@@ -349,30 +349,19 @@ class UserController {
     }
     
     static func signOutUser(viewController: UIViewController) {
-        let alertController = UIAlertController(title: "Log out?", message: nil, preferredStyle: .alert)
-        
-        let logOutAction = UIAlertAction(title: "Log out", style: .default) { (_) in
-            do {
-                MessageController.shared.clearDataAndObservers()
-                TeammateController.shared.clearDataAndObservers()
-                RequestController.shared.clearDataAndObservers()
-                removeFCMToken()
-                
-                try Auth.auth().signOut()
-                
-                let signInViewController = UINavigationController(rootViewController: SignInViewController())
-                viewController.view.window?.rootViewController = signInViewController
-            } catch {
-                Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "We were unable to log you out. Try again later or restart the app.", image: nil, style: .danger, textAlignment: .left)
-            }
+        do {
+            MessageController.shared.clearDataAndObservers()
+            TeammateController.shared.clearDataAndObservers()
+            RequestController.shared.clearDataAndObservers()
+            removeFCMToken()
+            
+            try Auth.auth().signOut()
+            
+            let signInViewController = UINavigationController(rootViewController: SignInViewController())
+            viewController.view.window?.rootViewController = signInViewController
+        } catch {
+            Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "We were unable to log you out. Try again later or restart the app.", image: nil, style: .danger, textAlignment: .left)
         }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        alertController.addAction(logOutAction)
-        alertController.addAction(cancelAction)
-        
-        viewController.present(alertController, animated: true, completion: nil)
     }
     
     static func fetchAllProfilePictures(completion: @escaping (_ imageUrlsDictionary: [String: [String]]) -> Void = { _ in } ) {

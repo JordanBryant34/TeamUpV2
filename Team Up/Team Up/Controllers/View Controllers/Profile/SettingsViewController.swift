@@ -46,6 +46,17 @@ class SettingsViewController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(color: .teamUpDarkBlue()), for: .default)
     }
     
+    private func promptUserForSignOut() {
+        let promptUserVC = PromptUserViewController()
+        promptUserVC.modalPresentationStyle = .overFullScreen
+        promptUserVC.titleText = "Don't leave me"
+        promptUserVC.subTitleText = "Are you sure you want to log out?"
+        promptUserVC.acceptButtonTitle = "Log out"
+        promptUserVC.cancelButtonTitle = "Cancel"
+        promptUserVC.delegate = self
+        present(promptUserVC, animated: false, completion: nil)
+    }
+    
     deinit {
         print("\n\nSettingsViewController Deinit\n\n")
     }
@@ -124,7 +135,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             addBioViewController.isEditingSettings = true
             navigationController?.pushViewController(addBioViewController, animated: true)
         case "Log out":
-            UserController.signOutUser(viewController: self)
+            promptUserForSignOut()
         case "Edit profile picture":
             let selectProfilePicVC = SelectProfilePicViewController()
             selectProfilePicVC.modalPresentationStyle = .overFullScreen
@@ -134,6 +145,14 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+}
+
+extension SettingsViewController: PromptUserViewControllerDelegate {
+    
+    func userAcceptedPrompt() {
+        UserController.signOutUser(viewController: self)
     }
     
 }
