@@ -162,7 +162,7 @@ class PromptUserViewController: UIViewController {
         
         backgroundView.anchor(nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         
-        backgroundViewTopAnchorConstraint = backgroundView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: backgroundView.frame.height)
+        backgroundViewTopAnchorConstraint = backgroundView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: backgroundView.frame.height - 10)
         backgroundViewTopAnchorConstraint?.isActive = true
         
         logoImageView.setHeightAndWidthConstants(height: 120, width: 120)
@@ -192,17 +192,19 @@ class PromptUserViewController: UIViewController {
     }
     
     private func animateView() {
-        self.backgroundViewTopAnchorConstraint?.constant = -backgroundView.frame.height
-        UIView.animate(withDuration: 0.3) {
+        self.backgroundViewTopAnchorConstraint?.constant = -(backgroundView.frame.height - 10)
+
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 2.5, options: .curveLinear) {
             self.darkenedView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
             self.view.layoutIfNeeded()
         }
+
     }
     
     @objc private func handleDismiss() {
         self.backgroundViewTopAnchorConstraint?.constant = 0
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.2) {
             self.darkenedView.backgroundColor = .clear
             self.view.layoutIfNeeded()
         } completion: { [weak self] (_) in
