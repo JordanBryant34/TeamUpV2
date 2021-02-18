@@ -41,6 +41,15 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
+    lazy var noDataView: NoDataView = {
+        let view = NoDataView()
+        view.textLabel.text = "You haven't added any games"
+        view.detailTextLabel.text = "Add games that you play so that other players can find you."
+        view.button.setTitle("Add Games", for: .normal)
+        view.isHidden = true
+        return view
+    }()
+    
     lazy var activityIndicator: NVActivityIndicatorView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.15, height: view.frame.width * 0.15)
         let indicator = NVActivityIndicatorView(frame: frame, type: .ballClipRotateMultiple, color: .accent(), padding: nil)
@@ -61,6 +70,8 @@ class ProfileViewController: UIViewController {
         
         collectionView.register(GameCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        
+        noDataView.button.addTarget(self, action: #selector(handleAddGames), for: .touchUpInside)
         
         makeNavigationBarClear()
         
@@ -88,7 +99,10 @@ class ProfileViewController: UIViewController {
         
         view.addSubview(backgroundImageView)
         view.addSubview(collectionView)
+        view.addSubview(noDataView)
         view.addSubview(activityIndicator)
+        
+        noDataView.pinEdgesToView(view: view)
         
         backgroundImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -139,11 +153,21 @@ class ProfileViewController: UIViewController {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.activityIndicator.stopAnimating()
+            
+            if let user = self.user, self.currentUser {
+                self.noDataView.isHidden = !user.games.isEmpty
+            }
         }
     }
     
     @objc private func handleSettingsTapped() {
         navigationController?.pushViewController(SettingsViewController(), animated: true)
+    }
+    
+    @objc private func handleAddGames() {
+        let addGamesViewController = AddGamesViewController()
+        addGamesViewController.isEditingSettings = true
+        navigationController?.pushViewController(addGamesViewController, animated: true)
     }
     
     @objc private func handleOptionsTapped() {

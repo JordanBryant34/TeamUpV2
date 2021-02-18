@@ -60,6 +60,16 @@ class TabBarController: UITabBarController {
             let setupProfileController = UINavigationController(rootViewController: SetupProfileViewController())
             setupProfileController.modalPresentationStyle = .overFullScreen
             present(setupProfileController, animated: true, completion: nil)
+        } else if let currentUser = Auth.auth().currentUser?.displayName {
+            UserController.fetchUsersGames(username: currentUser) { [weak self] (games) in
+                if games.isEmpty {
+                    let addGamesViewController = AddGamesViewController()
+                    addGamesViewController.isEditingSettings = true
+                    let addGamesNavigationController = UINavigationController(rootViewController: addGamesViewController)
+                    addGamesNavigationController.modalPresentationStyle = .overFullScreen
+                    self?.present(addGamesNavigationController, animated: true, completion: nil)
+                }
+            }
         }
     }
     

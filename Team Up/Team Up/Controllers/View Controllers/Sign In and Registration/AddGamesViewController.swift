@@ -145,6 +145,7 @@ class AddGamesViewController: UIViewController {
             if isEditingSettings {
                 NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
                 navigationController?.popViewController(animated: true)
+                dismiss(animated: true, completion: nil)
             } else {
                 navigationController?.pushViewController(TabBarController(), animated: true)
             }
