@@ -130,8 +130,8 @@ class ProfileViewController: UIViewController {
             let settingsButtonIcon = UIBarButtonItem(image: UIImage(named: "settingsIcon"), style: .plain, target: self, action: #selector(handleSettingsTapped))
             navigationItem.rightBarButtonItem = settingsButtonIcon
         } else {
-            let optionsButtonIcon = UIBarButtonItem(title: "Options", style: .plain, target: self, action: #selector(handleOptionsTapped))
-            navigationItem.rightBarButtonItem = optionsButtonIcon
+//            let optionsButtonIcon = UIBarButtonItem(title: "Options", style: .plain, target: self, action: #selector(handleOptionsTapped))
+//            navigationItem.rightBarButtonItem = optionsButtonIcon
         }
         
         fetchUser()

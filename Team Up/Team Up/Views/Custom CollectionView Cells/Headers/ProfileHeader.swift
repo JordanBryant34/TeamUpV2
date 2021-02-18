@@ -20,11 +20,18 @@ class ProfileHeader: UICollectionReusableView {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 50
-        imageView.layer.borderWidth = 5
-        imageView.layer.borderColor = UIColor.teamUpBlue().cgColor
         imageView.backgroundColor = .teamUpDarkBlue()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
+    }()
+    
+    let profilePicOutlineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .teamUpBlue()
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 55
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     let bioLabel: UILabel = {
@@ -107,6 +114,7 @@ class ProfileHeader: UICollectionReusableView {
     private func setupViews() {
         addSubview(bannerView)
         addSubview(backgroundView)
+        addSubview(profilePicOutlineView)
         addSubview(profilePicImageView)
         addSubview(bioLabel)
         addSubview(separatorView)
@@ -118,6 +126,9 @@ class ProfileHeader: UICollectionReusableView {
         profilePicImageView.centerYAnchor.constraint(equalTo: bannerView.bottomAnchor, constant: 15).isActive = true
         profilePicImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
         profilePicImageView.setHeightAndWidthConstants(height: 100, width: 100)
+        
+        profilePicOutlineView.centerInView(view: profilePicImageView)
+        profilePicOutlineView.setHeightAndWidthConstants(height: 110, width: 110)
         
         bioLabel.topAnchor.constraint(equalTo: profilePicImageView.bottomAnchor).isActive = true
         bioLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
