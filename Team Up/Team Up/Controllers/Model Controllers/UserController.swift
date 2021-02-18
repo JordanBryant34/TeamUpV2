@@ -266,6 +266,7 @@ class UserController {
                 }
             }
             
+            users = users.sorted(by: { $0.username < $1.username })
             completion(users)
         }
     }
