@@ -85,15 +85,15 @@ class PlayerCell: UICollectionViewCell {
         return button
     }()
     
-    let moreButton: UIButton = {
-        let button = UIButton()
-        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysTemplate)
-        button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
-        button.tintColor = .accent()
-        button.setImage(templateImage, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+//    let moreButton: UIButton = {
+//        let button = UIButton()
+//        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysTemplate)
+//        button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+//        button.tintColor = .accent()
+//        button.setImage(templateImage, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
     
     weak var delegate: PlayerCellDelegate?
     let iconImageSize = CGSize(width: 20, height: 20)
@@ -128,7 +128,7 @@ class PlayerCell: UICollectionViewCell {
         addSubview(separatorView)
         addSubview(stackView)
         addSubview(requestButton)
-        addSubview(moreButton)
+//        addSubview(moreButton)
         
         profilePicImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
         profilePicImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -146,13 +146,13 @@ class PlayerCell: UICollectionViewCell {
         
         requestButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor).isActive = true
         requestButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        requestButton.rightAnchor.constraint(equalTo: moreButton.leftAnchor, constant: -10).isActive = true
+        requestButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
         requestButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
-        moreButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 7.5).isActive = true
-        moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7.5).isActive = true
-        moreButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
-        moreButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+//        moreButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 7.5).isActive = true
+//        moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7.5).isActive = true
+//        moreButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+//        moreButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
         stackView.addArrangedSubview(usernameLabel)
         stackView.addArrangedSubview(regionLabel)
