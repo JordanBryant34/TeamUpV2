@@ -15,6 +15,7 @@ class MessageController {
     private let ref = Database.database().reference()
     
     var chats: [DirectChat] = []
+    var alreadyPromptedForNotifications = false
     
     func fetchChats() {
         guard let currentUser = Auth.auth().currentUser?.displayName else {

@@ -123,7 +123,24 @@ class ChatViewController: UIViewController {
         if let text = chatInputView.textField.text, let chat = chat, !text.isEmpty {
             messageController.sendDirectMessage(messageText: text, chatPartner: chat.chatPartner)
             chatInputView.textField.text = ""
+            
+            if !NotificationsController.isRegisteredForNotifications && !messageController.alreadyPromptedForNotifications {
+                promptForNotifications(chatPartnerUsername: chat.chatPartner.username)
+                messageController.alreadyPromptedForNotifications = true
+            }
         }
+    }
+    
+    private func promptForNotifications(chatPartnerUsername: String) {
+        let notificationsPromptVC = PromptUserViewController()
+        notificationsPromptVC.modalPresentationStyle = .overFullScreen
+        notificationsPromptVC.titleText = "Want to know when \(chatPartnerUsername) responds?"
+        notificationsPromptVC.subTitleText = "Enable notifications to be alerted when other players interact with you."
+        notificationsPromptVC.acceptButtonTitle = "Enable Notifications"
+        notificationsPromptVC.cancelButtonTitle = "No thanks"
+        notificationsPromptVC.delegate = self
+        
+        present(notificationsPromptVC, animated: false, completion: nil)
     }
     
     private func scrollToBottom(animated: Bool) {
@@ -193,6 +210,14 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismissKeyboard()
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+}
+
+extension ChatViewController: PromptUserViewControllerDelegate {
+    
+    func userAcceptedPrompt() {
+        NotificationsController.userWantsNotifications()
     }
     
 }
