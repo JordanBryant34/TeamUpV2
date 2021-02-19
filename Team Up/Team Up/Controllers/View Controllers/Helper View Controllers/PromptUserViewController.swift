@@ -123,7 +123,7 @@ class PromptUserViewController: UIViewController {
     
     var isWarning = false {
         didSet {
-            acceptButton.backgroundColor = isWarning ? .systemRed : .accent()
+            acceptButton.backgroundColor = isWarning ? .danger() : .accent()
         }
     }
     

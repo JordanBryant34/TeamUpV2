@@ -81,7 +81,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectedBackgroundView = selectedView
         
         cell.textLabel?.text = settingsTitles[indexPath.section][indexPath.row]
-        cell.textLabel?.textColor = indexPath.section == 1 ? .systemRed : .white
+        cell.textLabel?.textColor = indexPath.section == 1 ? .danger() : .white
         cell.backgroundColor = .teamUpDarkBlue()
         
         return cell

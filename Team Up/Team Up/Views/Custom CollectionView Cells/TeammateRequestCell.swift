@@ -48,7 +48,7 @@ class TeammateRequestCell: UICollectionViewCell {
         let button = UIButton()
         let image = UIImage(named: "cancelIcon")?.resize(newSize: CGSize(width: 35, height: 35)).withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = .systemRed
+        button.tintColor = .danger()
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

@@ -28,4 +28,8 @@ extension UIColor {
     static func separatorColor() -> UIColor {
         return UIColor(red: 81/255, green: 91/255, blue: 103/255, alpha: 0.75)
     }
+    
+    static func danger() -> UIColor {
+        return UIColor(red: 255/255, green: 85/255, blue: 65/255, alpha: 1)
+    }
 }
