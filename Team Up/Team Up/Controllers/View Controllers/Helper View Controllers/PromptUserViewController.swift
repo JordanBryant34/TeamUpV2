@@ -9,6 +9,11 @@ import UIKit
 
 protocol PromptUserViewControllerDelegate: AnyObject {
     func userAcceptedPrompt()
+    func promptDismissed()
+}
+
+extension PromptUserViewControllerDelegate {
+    func promptDismissed() {} //default implementation
 }
 
 class PromptUserViewController: UIViewController {
@@ -208,6 +213,7 @@ class PromptUserViewController: UIViewController {
             self.darkenedView.backgroundColor = .clear
             self.view.layoutIfNeeded()
         } completion: { [weak self] (_) in
+            self?.delegate?.promptDismissed()
             self?.dismiss(animated: false, completion: nil)
         }
     }

@@ -54,6 +54,11 @@ class RequestsViewController: UIViewController {
     var cellId = "cellId"
     var headerId = "headerId"
     
+    var isAcceptingRequest = false
+    var isDecliningRequest = false
+    
+    var requestingUser: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -106,29 +111,36 @@ class RequestsViewController: UIViewController {
 extension RequestsViewController: TeammateRequestCellDelegate {
     
     func acceptRequest(requestingUser: User, cell: TeammateRequestCell) {
-        let alertController = UIAlertController(title: "Add \(requestingUser.username) as a teammate?", message: nil, preferredStyle: .alert)
+        let promptUserVC = PromptUserViewController()
+        promptUserVC.modalPresentationStyle = .overFullScreen
+        promptUserVC.titleText = "Accept \(requestingUser.username)'s teammate request?"
+        promptUserVC.subTitleText = "You can always remove them from your teammates list later."
+        promptUserVC.acceptButtonTitle = "Accept Request"
+        promptUserVC.cancelButtonTitle = "Cancel"
+        promptUserVC.delegate = self
         
-        let acceptAction = UIAlertAction(title: "Add", style: .default) { [weak self] (_) in
-            self?.requestController.acceptTeammateRequest(requestingUser: requestingUser)
-        }
+        isAcceptingRequest = true
+        isDecliningRequest = false
+        self.requestingUser = requestingUser
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alertController.addAction(acceptAction)
-        
-        present(alertController, animated: true, completion: nil)
+        present(promptUserVC, animated: false, completion: nil)
     }
     
     func declineRequest(requestingUser: User, cell: TeammateRequestCell) {
-        let alertController = UIAlertController(title: "Decline \(requestingUser.username)'s teammate request?", message: nil, preferredStyle: .alert)
+        let promptUserVC = PromptUserViewController()
+        promptUserVC.modalPresentationStyle = .overFullScreen
+        promptUserVC.titleText = "Decline \(requestingUser.username)'s teammate request?"
+        promptUserVC.subTitleText = "You can always send them a teammate request later."
+        promptUserVC.acceptButtonTitle = "Decline Request"
+        promptUserVC.cancelButtonTitle = "Cancel"
+        promptUserVC.isWarning = true
+        promptUserVC.delegate = self
         
-        let declineAction = UIAlertAction(title: "Decline", style: .default) { [weak self] (_) in
-            self?.requestController.declineTeammateRequest(requestingUser: requestingUser)
-        }
+        isAcceptingRequest = false
+        isDecliningRequest = true
+        self.requestingUser = requestingUser
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alertController.addAction(declineAction)
-        
-        present(alertController, animated: true, completion: nil)
+        present(promptUserVC, animated: false, completion: nil)
     }
 }
 
@@ -201,6 +213,27 @@ extension RequestsViewController: UICollectionViewDelegate, UICollectionViewData
         if let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: 0)) as? LargeTitleHeader {
             header.titleLabel.alpha = 1 - offsetForLabels
         }
+    }
+    
+}
+
+extension RequestsViewController: PromptUserViewControllerDelegate {
+    
+    func userAcceptedPrompt() {
+        guard let requestingUser = requestingUser else { return }
+        
+        if isAcceptingRequest {
+            requestController.acceptTeammateRequest(requestingUser: requestingUser)
+        } else if isDecliningRequest {
+            requestController.declineTeammateRequest(requestingUser: requestingUser)
+        }
+    }
+    
+    func promptDismissed() {
+        isAcceptingRequest = false
+        isDecliningRequest = false
+        
+        requestingUser = nil
     }
     
 }
