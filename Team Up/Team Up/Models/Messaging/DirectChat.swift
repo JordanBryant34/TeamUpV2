@@ -6,11 +6,23 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class DirectChat {
     
     var chatPartner: User
     var messages: [Message]
+    
+    var unreadMessages: [Message] {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return [] }
+        let newMessages = messages.filter({ $0.fromUser != currentUser && $0.read == false })
+
+        return newMessages
+    }
+    
+    var hasNewMessages: Bool {
+        return !unreadMessages.isEmpty
+    }
     
     init(chatPartner: User, messages: [Message]) {
         self.chatPartner = chatPartner

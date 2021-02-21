@@ -68,16 +68,19 @@ class MessageController {
         return nil
     }
     
+    
     func sendDirectMessage(messageText: String, chatPartner: User) {
         guard let username = Auth.auth().currentUser?.displayName else { return }
         
         let userMessageRef = ref.child("users").child(username).child("messaging").child("directChats").child(chatPartner.username)
         let chatPartnerRef = ref.child("users").child(chatPartner.username).child("messaging").child("directChats").child(username)
         
-        let message = Message(text: messageText, imageUrl: nil, fromUser: username, timestamp: Int(Date().timeIntervalSince1970))
+        let id = UUID().uuidString
         
-        userMessageRef.childByAutoId().updateChildValues(message.asDictionary())
-        chatPartnerRef.childByAutoId().updateChildValues(message.asDictionary())
+        let message = Message(text: messageText, imageUrl: nil, fromUser: username, timestamp: Int(Date().timeIntervalSince1970), read: false, id: id)
+        
+        userMessageRef.child(id).updateChildValues(message.asDictionary())
+        chatPartnerRef.child(id).updateChildValues(message.asDictionary())
     }
     
     func deleteDirectChat(chat: DirectChat) {
@@ -85,6 +88,23 @@ class MessageController {
         
         let chatRef = ref.child("users").child(currentUser).child("messaging").child("directChats").child(chat.chatPartner.username)
         chatRef.removeValue()
+    }
+    
+    func markDirectChatMessagesAsRead(chat: DirectChat) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        let unreadMessages = chat.unreadMessages
+                
+        if unreadMessages.isEmpty == false {
+            var messageDictionary: [String : [String : Any]] = [:]
+            
+            for message in unreadMessages {
+                message.markAsRead()
+                messageDictionary[message.id] = message.asDictionary()
+            }
+            
+            let chatRef = ref.child("users").child(currentUser).child("messaging").child("directChats").child(chat.chatPartner.username)
+            chatRef.updateChildValues(messageDictionary)
+        }
     }
     
     func clearDataAndObservers() {

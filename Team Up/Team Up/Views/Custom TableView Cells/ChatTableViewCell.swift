@@ -9,14 +9,24 @@ import UIKit
 
 class ChatTableViewCell: UITableViewCell {
     
-    let usernameLabel: UILabel = {
+    private let newMessageIndicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .accent()
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 7.5 / 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
+    }()
+    
+    private let usernameLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 17)
         label.textColor = .white
         return label
     }()
     
-    let profilePicImageView: UIImageView = {
+    private let profilePicImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
@@ -27,14 +37,14 @@ class ChatTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    let chatPreviewLabel: UILabel = {
+    private let chatPreviewLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
         label.textColor = .secondaryLabelColor()
         return label
     }()
     
-    let timeLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
         label.textColor = .secondaryLabelColor()
@@ -67,13 +77,18 @@ class ChatTableViewCell: UITableViewCell {
     }
     
     private func setupViews() {
+        addSubview(newMessageIndicatorView)
         addSubview(profilePicImageView)
         addSubview(usernameLabel)
         addSubview(chatPreviewLabel)
         addSubview(timeLabel)
         
+        newMessageIndicatorView.leftAnchor.constraint(equalTo: leftAnchor, constant: 7).isActive = true
+        newMessageIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        newMessageIndicatorView.setHeightAndWidthConstants(height: 7.5, width: 7.5)
+        
         profilePicImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        profilePicImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
+        profilePicImageView.leftAnchor.constraint(equalTo: newMessageIndicatorView.rightAnchor, constant: 7).isActive = true
         profilePicImageView.setHeightAndWidthConstants(height: 60, width: 60)
         
         usernameLabel.anchor(profilePicImageView.topAnchor, left: profilePicImageView.rightAnchor, bottom: centerYAnchor, right: timeLabel.leftAnchor, topConstant: 0, leftConstant: 15, bottomConstant: 0, rightConstant: 15, widthConstant: 0, heightConstant: 0)
@@ -105,6 +120,8 @@ class ChatTableViewCell: UITableViewCell {
             let relativeDate = formatter.localizedString(for: messageDate, relativeTo: Date())
             timeLabel.text = relativeDate
         }
+        
+        newMessageIndicatorView.isHidden = !chat.hasNewMessages
     }
     
     required init?(coder: NSCoder) {

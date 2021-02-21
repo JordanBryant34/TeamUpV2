@@ -67,6 +67,7 @@ class ChatViewController: UIViewController {
         super.viewDidAppear(animated)
         
         scrollToBottom(animated: false)
+        markChatAsRead()
     }
     
     private func setupObserversAndActions() {
@@ -113,6 +114,8 @@ class ChatViewController: UIViewController {
             chat = messageController.fetchDirectChat(chatParter: chatPartner)
         }
         
+        markChatAsRead()
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.scrollToBottom(animated: true)
@@ -128,6 +131,12 @@ class ChatViewController: UIViewController {
                 promptForNotifications(chatPartnerUsername: chat.chatPartner.username)
                 messageController.alreadyPromptedForNotifications = true
             }
+        }
+    }
+    
+    private func markChatAsRead() {
+        if let chat = chat {
+            messageController.markDirectChatMessagesAsRead(chat: chat)
         }
     }
     
