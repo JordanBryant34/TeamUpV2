@@ -97,14 +97,14 @@ class ChatTableViewCell: UITableViewCell {
         
         if let previewMessage = chat.messages.last {
             chatPreviewLabel.text = previewMessage.text
+            
+            let messageDate = Date(timeIntervalSince1970: Double(previewMessage.timestamp))
+            let formatter = RelativeDateTimeFormatter()
+            formatter.unitsStyle = .full
+            
+            let relativeDate = formatter.localizedString(for: messageDate, relativeTo: Date())
+            timeLabel.text = relativeDate
         }
-        
-        let messageDate = Date(timeIntervalSince1970: Double(chat.messages[0].timestamp))
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        
-        let relativeDate = formatter.localizedString(for: messageDate, relativeTo: Date())
-        timeLabel.text = relativeDate
     }
     
     required init?(coder: NSCoder) {

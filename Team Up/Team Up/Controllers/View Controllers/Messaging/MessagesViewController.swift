@@ -10,11 +10,21 @@ import UIKit
 class MessagesViewController: UIViewController {
     
     lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: view.frame, style: .grouped)
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
+    }()
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 17)
+        label.alpha = 0
+        label.textColor = .white
+        label.text = "Messages"
+        return label
     }()
     
     lazy var noDataView: NoDataView = {
@@ -37,6 +47,7 @@ class MessagesViewController: UIViewController {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("messagesUpdated"), object: nil)
+        tableView.register(ChatTableViewCell.self, forCellReuseIdentifier: cellId)
         noDataView.button.addTarget(self, action: #selector(handleNewMessage), for: .touchUpInside)
         
         makeNavigationBarClear()
@@ -44,11 +55,10 @@ class MessagesViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tableView.register(ChatTableViewCell.self, forCellReuseIdentifier: cellId)
+        super.viewDidLoad()
         
         makeNavigationBarClear()
+        updateNavigationBarAppearance(scrollView: tableView)
     }
     
     private func setupViews() {
@@ -126,6 +136,37 @@ extension MessagesViewController: UITableViewDelegate, UITableViewDataSource {
             let chat = messageController.chats[indexPath.row]
             
             messageController.deleteDirectChat(chat: chat)
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateNavigationBarAppearance(scrollView: scrollView)
+    }
+    
+    private func updateNavigationBarAppearance(scrollView: UIScrollView) {
+        var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 10)
+        var offsetForLabels = scrollView.contentOffset.y / (view.frame.height * 0.03)
+        
+        if offsetForNavBar > 0.95 {
+            offsetForNavBar = 0.95
+        }
+        
+        if offsetForNavBar < 0 {
+            navigationItem.titleView = nil
+            offsetForNavBar = 0
+        } else {
+            navigationItem.titleView = titleLabel
+        }
+        
+        if offsetForLabels > 1 {
+            offsetForLabels = 1
+        }
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(color: UIColor.teamUpDarkBlue().withAlphaComponent(offsetForNavBar)), for: .default)
+        titleLabel.alpha = offsetForNavBar
+        
+        if let header = tableView.headerView(forSection: 0) as? LargeTitleTableViewHeader {
+            header.titleLabel.alpha = 1 - offsetForLabels
         }
     }
 }

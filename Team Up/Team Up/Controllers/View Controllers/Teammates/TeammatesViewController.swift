@@ -152,7 +152,7 @@ extension TeammatesViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     private func updateNavigationBarAppearance(scrollView: UIScrollView) {
-        var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 2)
+        var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 10)
         var offsetForLabels = scrollView.contentOffset.y / (view.frame.height * 0.03)
         
         if offsetForNavBar > 0.95 {

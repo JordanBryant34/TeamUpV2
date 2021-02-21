@@ -42,7 +42,7 @@ class MessageController {
                 UserController.fetchUser(username: key) { (user) in
                     guard let user = user else { return }
                     
-                    if let chat = DirectChat(chatPartner: user, dictionary: chatDictionary), chat.messages.count > 0 {
+                    if let chat = DirectChat(chatPartner: user, dictionary: chatDictionary), !chat.messages.isEmpty {
                         chat.messages = chat.messages.sorted(by: { $0.timestamp < $1.timestamp })
                         fetchedChats.append(chat)
                     }
@@ -52,7 +52,7 @@ class MessageController {
             }
             
             dispatchGroup.notify(queue: .main) {
-                self?.chats = fetchedChats
+                self?.chats = fetchedChats.sorted(by: { $0.messages.last?.timestamp ?? 0 > $1.messages.last?.timestamp ?? 0 })
                 NotificationCenter.default.post(name: Notification.Name("messagesUpdated"), object: nil)
             }
         }
