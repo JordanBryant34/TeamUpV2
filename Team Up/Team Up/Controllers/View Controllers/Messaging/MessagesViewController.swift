@@ -57,6 +57,7 @@ class MessagesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         
+        reloadData()
         makeNavigationBarClear()
         updateNavigationBarAppearance(scrollView: tableView)
     }
@@ -81,6 +82,7 @@ class MessagesViewController: UIViewController {
         DispatchQueue.main.async {
             self.noDataView.isHidden = !self.messageController.chats.isEmpty
             self.tableView.reloadData()
+            self.messageController.updateMessagesNotificationBadge()
         }
     }
     

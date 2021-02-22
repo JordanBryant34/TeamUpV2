@@ -95,6 +95,7 @@ class MessageController {
         
         let chatRef = ref.child("users").child(currentUser).child("messaging").child("directChats").child(chat.chatPartner.username)
         chatRef.removeValue()
+        updateMessagesNotificationBadge()
     }
     
     func markDirectChatMessagesAsRead(chat: DirectChat) {
@@ -111,6 +112,7 @@ class MessageController {
             
             let chatRef = ref.child("users").child(currentUser).child("messaging").child("directChats").child(chat.chatPartner.username)
             chatRef.updateChildValues(messageDictionary)
+            updateMessagesNotificationBadge()
         }
     }
     
