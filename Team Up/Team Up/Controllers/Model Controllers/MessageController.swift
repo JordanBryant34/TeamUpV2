@@ -17,6 +17,12 @@ class MessageController {
     var chats: [DirectChat] = []
     var alreadyPromptedForNotifications = false
     
+    var hasNewMessages: Bool {
+        let chatsWithNewMessages = chats.filter({ $0.hasNewMessages })
+        
+        return !chatsWithNewMessages.isEmpty
+    }
+    
     func fetchChats() {
         guard let currentUser = Auth.auth().currentUser?.displayName else {
             chats = []
@@ -54,6 +60,7 @@ class MessageController {
             dispatchGroup.notify(queue: .main) {
                 self?.chats = fetchedChats.sorted(by: { $0.messages.last?.timestamp ?? 0 > $1.messages.last?.timestamp ?? 0 })
                 NotificationCenter.default.post(name: Notification.Name("messagesUpdated"), object: nil)
+                self?.updateMessagesNotificationBadge()
             }
         }
     }
@@ -104,6 +111,18 @@ class MessageController {
             
             let chatRef = ref.child("users").child(currentUser).child("messaging").child("directChats").child(chat.chatPartner.username)
             chatRef.updateChildValues(messageDictionary)
+        }
+    }
+    
+    func updateMessagesNotificationBadge() {
+        let scene = UIApplication.shared.connectedScenes.first
+        guard let sceneDelegate = (scene?.delegate as? SceneDelegate) else { return }
+        guard let tabBarController = sceneDelegate.tabBarController else { return }
+        
+        if hasNewMessages {
+            tabBarController.addBadgeToTabBarItemIndex(index: 2)
+        } else  {
+            tabBarController.removeBadgeFromTabBarItemIndex(index: 2)
         }
     }
     

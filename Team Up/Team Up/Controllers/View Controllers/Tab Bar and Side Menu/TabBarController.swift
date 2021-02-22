@@ -81,5 +81,40 @@ class TabBarController: UITabBarController {
             }
         }
     }
+    
+    func addBadgeToTabBarItemIndex(index: Int) {
+        removeBadgeFromTabBarItemIndex(index: index)
+        
+        let dotRadius: CGFloat = 5
+        let dotDiameter: CGFloat = 10
+        
+        let topMargin: CGFloat = 5
+        let tabBarItemCount = CGFloat(tabBar.items?.count ?? 0)
+        
+        let screenSize = UIScreen.main.bounds
+        let halfItemWidth = (screenSize.width) / (tabBarItemCount * 2)
+        
+        let xOffset = halfItemWidth * CGFloat(index * 2 + 1)
+        
+        if let imageWidth: CGFloat = tabBar.items?[index].selectedImage?.size.width {
+            let imageHalfWidth = imageWidth / 2
+            let dotView = UIView(frame: CGRect(x: xOffset + imageHalfWidth - 7, y: topMargin, width: dotDiameter, height: dotDiameter))
+            dotView.clipsToBounds = false
+            
+            dotView.tag = index
+            dotView.backgroundColor = .accent()
+            dotView.layer.cornerRadius = dotRadius
+            tabBar.addSubview(dotView)
+        }
+    }
+    
+    func removeBadgeFromTabBarItemIndex(index: Int) {
+        for subView in tabBar.subviews {
+            if subView.tag == index {
+                subView.removeFromSuperview()
+                return
+            }
+        }
+    }
 
 }
