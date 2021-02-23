@@ -44,8 +44,11 @@ class TeammatesViewController: UIViewController {
         return view
     }()
     
+    private var requestsBarButtonItem: BadgedButtonItem?
+    
     private let teammateController = TeammateController.shared
     private let messageController = MessageController.shared
+    private let requestsController = RequestController.shared
     
     private var cellId = "cellId"
     private var headerId = "headerId"
@@ -61,6 +64,7 @@ class TeammatesViewController: UIViewController {
         noDataView.button.addTarget(self, action: #selector(handleFindTeammates), for: .touchUpInside)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("teammatesUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateRequestsBadge), name: Notification.Name(requestsController.teammateRequestNotification), object: nil)
         
         makeNavigationBarClear()
         setupViews()
@@ -71,10 +75,12 @@ class TeammatesViewController: UIViewController {
         
         makeNavigationBarClear()
         updateNavigationBarAppearance(scrollView: collectionView)
+        updateRequestsBadge()
     }
     
     private func setupViews() {
-        let requestsBarButtonItem = UIBarButtonItem(image: UIImage(named: "requestsIcon"), style: .plain, target: self, action: #selector(requestsButtonTapped))
+        requestsBarButtonItem = BadgedButtonItem(with: UIImage(named: "requestsIcon"))
+        requestsBarButtonItem?.tapAction = requestsButtonTapped
         navigationItem.rightBarButtonItem = requestsBarButtonItem
         
         view.backgroundColor = .teamUpBlue()
@@ -84,10 +90,12 @@ class TeammatesViewController: UIViewController {
         
         noDataView.pinEdgesToView(view: view)
         collectionView.pinEdgesToView(view: view)
-        
-        requestsBarButtonItem.customView?.setHeightAndWidthConstants(height: 35, width: 35)
-        
+                
         noDataView.isHidden = !teammateController.teammates.isEmpty
+    }
+    
+    @objc private func updateRequestsBadge() {
+        requestsBarButtonItem?.setBadge(with: requestsController.teammateRequests.count)
     }
     
     @objc private func requestsButtonTapped() {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A03AA2E25E5A32100D4B9EB /* BadgedButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */; };
 		7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */; };
 		7A2606A025C65DEA00FA4971 /* ProfilePicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */; };
 		7A2606A325CB74AB00FA4971 /* SectionTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */; };
@@ -74,6 +75,7 @@
 /* Begin PBXFileReference section */
 		1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.debug.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.debug.xcconfig"; sourceTree = "<group>"; };
 		61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Team_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedButtonItem.swift; sourceTree = "<group>"; };
 		7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfilePicViewController.swift; sourceTree = "<group>"; };
 		7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicCell.swift; sourceTree = "<group>"; };
 		7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleHeader.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				7AF7A6CD2547652700FC3C25 /* FadedImageView.swift */,
 				7AF7A6F2254CA6CE00FC3C25 /* NoDataView.swift */,
 				7A49C4DB2555D05800103FF0 /* ChatInputView.swift */,
+				7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 				7A2B0650253E550200CF585A /* RoundedButton.swift in Sources */,
 				7A2B064C253E48EC00CF585A /* TeamUpTextField.swift in Sources */,
 				7AED1574253E0D910004DA81 /* TeammatesViewController.swift in Sources */,
+				7A03AA2E25E5A32100D4B9EB /* BadgedButtonItem.swift in Sources */,
 				7ABFB61F25A7873D005AF4E1 /* TeammateController.swift in Sources */,
 				7AF7A6EA254B43A300FC3C25 /* TeammateCell.swift in Sources */,
 				7A29FDEA25B0F371001923DB /* SettingsViewController.swift in Sources */,

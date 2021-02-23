@@ -70,6 +70,7 @@ class RequestController {
             dispatchGroup.notify(queue: .main) {
                 strongSelf.teammateRequests = users
                 NotificationCenter.default.post(name: Notification.Name(strongSelf.teammateRequestNotification), object: nil)
+                strongSelf.updateTeammatesNotificationBadge()
             }
             
         }
@@ -88,6 +89,9 @@ class RequestController {
         requestingUserRef.child("teammateRequests").child(currentUser).removeValue()
         
         Helpers.showNotificationBanner(title: "\(requestingUser.username) added as a teammate", subtitle: "Send them a message!", image: nil, style: .success, textAlignment: .left)
+        
+        removeRequest(requestingUser: requestingUser)
+        updateTeammatesNotificationBadge()
     }
     
     func declineTeammateRequest(requestingUser: User) {
@@ -96,6 +100,27 @@ class RequestController {
         let currentUserRef = ref.child("users").child(currentUser)
         
         currentUserRef.child("teammateRequests").child(requestingUser.username).removeValue()
+        
+        removeRequest(requestingUser: requestingUser)
+        updateTeammatesNotificationBadge()
+    }
+    
+    func updateTeammatesNotificationBadge() {
+        let scene = UIApplication.shared.connectedScenes.first
+        guard let sceneDelegate = (scene?.delegate as? SceneDelegate) else { return }
+        guard let tabBarController = sceneDelegate.tabBarController else { return }
+        
+        if teammateRequests.count > 0 {
+            tabBarController.addBadgeToTabBarItemIndex(index: 1)
+        } else  {
+            tabBarController.removeBadgeFromTabBarItemIndex(index: 1)
+        }
+    }
+    
+    private func removeRequest(requestingUser: User) {
+        if let index = teammateRequests.firstIndex(of: requestingUser) {
+            teammateRequests.remove(at: index)
+        }
     }
     
     func clearDataAndObservers() {
