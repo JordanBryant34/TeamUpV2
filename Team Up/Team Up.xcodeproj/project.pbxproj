@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7A03AA2E25E5A32100D4B9EB /* BadgedButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */; };
+		7A03AA3225E6F6C800D4B9EB /* AdController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA3125E6F6C800D4B9EB /* AdController.swift */; };
 		7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */; };
 		7A2606A025C65DEA00FA4971 /* ProfilePicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */; };
 		7A2606A325CB74AB00FA4971 /* SectionTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */; };
@@ -76,6 +77,7 @@
 		1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.debug.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.debug.xcconfig"; sourceTree = "<group>"; };
 		61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Team_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedButtonItem.swift; sourceTree = "<group>"; };
+		7A03AA3125E6F6C800D4B9EB /* AdController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdController.swift; sourceTree = "<group>"; };
 		7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfilePicViewController.swift; sourceTree = "<group>"; };
 		7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicCell.swift; sourceTree = "<group>"; };
 		7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleHeader.swift; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				7ABFB61E25A7873D005AF4E1 /* TeammateController.swift */,
 				7ABFB62125ADFFC8005AF4E1 /* RequestController.swift */,
 				7AAB4FA825D99E260078A6BB /* NotificationsController.swift */,
+				7A03AA3125E6F6C800D4B9EB /* AdController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -571,6 +574,7 @@
 				7AEDD79A253F9D1F00620EFC /* UserController.swift in Sources */,
 				7AF7A6E42549DE2300FC3C25 /* LFGController.swift in Sources */,
 				7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */,
+				7A03AA3225E6F6C800D4B9EB /* AdController.swift in Sources */,
 				7AF7A6DE2548955C00FC3C25 /* UserSearchControllerCell.swift in Sources */,
 				7AAB4FA525D894800078A6BB /* PromptUserViewController.swift in Sources */,
 				7AF7A71525547D1200FC3C25 /* MessageTableViewCell.swift in Sources */,

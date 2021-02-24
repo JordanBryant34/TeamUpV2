@@ -19,6 +19,8 @@ class RequestController {
     var teammateRequests: [User] = []
     
     func requestPlayerToTeamUp(username: String, completion: @escaping (_ success: Bool) -> Void) {
+        AdController.shared.requestsCount += 1
+        
         guard let currentUserName = Auth.auth().currentUser?.displayName else {
             Helpers.showNotificationBanner(title: "Something went wrong", subtitle: "We were unable to retrieve your profile. Restart Team Up and try again.", image: nil, style: .danger, textAlignment: .left)
             completion(false)
@@ -34,6 +36,7 @@ class RequestController {
             
             self?.ref.child("users").child(username).child("teammateRequests").updateChildValues([currentUserName : 1])
             Helpers.showNotificationBanner(title: "Teammate request sent to \(username)", subtitle: "", image: nil, style: .success, textAlignment: .center)
+            
             completion(true)
         }
     }

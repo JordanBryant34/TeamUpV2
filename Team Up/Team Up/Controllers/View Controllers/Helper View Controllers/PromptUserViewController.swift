@@ -10,10 +10,22 @@ import UIKit
 protocol PromptUserViewControllerDelegate: AnyObject {
     func userAcceptedPrompt()
     func promptDismissed()
+    func timerUpdated(currentTime: TimeInterval, promptVC: PromptUserViewController)
+    func timerEnded()
 }
 
 extension PromptUserViewControllerDelegate {
-    func promptDismissed() {} //default implementation
+    //default implementations
+    func promptDismissed() {}
+    func timerUpdated(currentTime: TimeInterval, promptVC: PromptUserViewController) {}
+    func timerEnded() {}
+}
+
+enum UserActionPrompt {
+    case ad
+    case notifications
+    case logout
+    case removeTeammate
 }
 
 class PromptUserViewController: UIViewController {
@@ -127,9 +139,17 @@ class PromptUserViewController: UIViewController {
         }
     }
     
-    var backgroundViewTopAnchorConstraint: NSLayoutConstraint?
+    var acceptButtonEnabled = true {
+        didSet {
+            acceptButton.isEnabled = acceptButtonEnabled
+        }
+    }
+    
+    private var backgroundViewTopAnchorConstraint: NSLayoutConstraint?
     
     var delegate: PromptUserViewControllerDelegate?
+    
+    var timerLength: Double = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,6 +162,7 @@ class PromptUserViewController: UIViewController {
         darkenedView.addGestureRecognizer(tapGesture)
         
         setupViews()
+        setTimer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -203,7 +224,6 @@ class PromptUserViewController: UIViewController {
             self.darkenedView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
             self.view.layoutIfNeeded()
         }
-
     }
     
     @objc private func handleDismiss() {
@@ -214,7 +234,26 @@ class PromptUserViewController: UIViewController {
             self.view.layoutIfNeeded()
         } completion: { [weak self] (_) in
             self?.delegate?.promptDismissed()
-            self?.dismiss(animated: false, completion: nil)
+            self?.dismiss(animated: false, completion: {
+                if self?.timerLength == 0 {
+                    self?.delegate?.timerEnded()
+                }
+            })
+        }
+    }
+    
+    private func setTimer() {
+        if timerLength <= 0 { return }
+        
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] (timer) in
+            guard let strongSelf = self else { return }
+            if strongSelf.timerLength > 0 {
+                strongSelf.delegate?.timerUpdated(currentTime: strongSelf.timerLength, promptVC: strongSelf)
+                strongSelf.timerLength -= 1
+            } else {
+                timer.invalidate()
+                strongSelf.handleDismiss()
+            }
         }
     }
     
