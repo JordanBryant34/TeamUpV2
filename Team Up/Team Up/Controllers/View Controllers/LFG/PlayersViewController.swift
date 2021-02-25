@@ -302,7 +302,7 @@ extension PlayersViewController: LFGFiltersViewControllerDelegate {
 extension PlayersViewController: PlayerCellDelegate {
     
     func requestTapped(user: User, cell: PlayerCell) {
-        if AdController.shared.requestsCount >= 3 {
+        if AdController.shared.requestsCount >= 3 && AdController.shared.rewardedInterstitialAd != nil {
             promptForAd()
             return
         }
@@ -336,9 +336,12 @@ extension PlayersViewController: PromptUserViewControllerDelegate {
     }
     
     func timerEnded() {
-        if actionPrompt == .ad {
-            //present video reward ad here
-            AdController.shared.requestsCount = 0
+        if AdController.shared.rewardedInterstitialAd != nil {
+            if actionPrompt == .ad {
+                AdController.shared.showRequestsRewardAd()
+            }
+        } else {
+            AdController.shared.loadRewardedInterstitialAd()
         }
         
         actionPrompt = nil
