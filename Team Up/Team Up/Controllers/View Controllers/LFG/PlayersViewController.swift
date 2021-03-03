@@ -7,6 +7,7 @@
 
 import UIKit
 import NVActivityIndicatorView
+import GoogleMobileAds
 
 class PlayersViewController: UIViewController {
     
@@ -338,6 +339,7 @@ extension PlayersViewController: PromptUserViewControllerDelegate {
     func timerEnded() {
         if AdController.shared.rewardedInterstitialAd != nil {
             if actionPrompt == .ad {
+                AdController.shared.rewardedInterstitialAd?.fullScreenContentDelegate = self
                 AdController.shared.showRequestsRewardAd()
             }
         } else {
@@ -345,6 +347,15 @@ extension PlayersViewController: PromptUserViewControllerDelegate {
         }
         
         actionPrompt = nil
+    }
+    
+}
+
+extension PlayersViewController: GADFullScreenContentDelegate {
+    
+    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+//        present(SubscriptionsViewController(), animated: true, completion: nil)
+        AdController.shared.rewardedInterstitialAd?.fullScreenContentDelegate = nil
     }
     
 }
