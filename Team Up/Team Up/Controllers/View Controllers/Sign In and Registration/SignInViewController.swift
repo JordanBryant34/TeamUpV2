@@ -18,9 +18,9 @@ class SignInViewController: UIViewController {
         return imageView
     }()
     
-    let logoImageView: UIImageView = {
+    lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "teamUpLogo")
+        imageView.image = UIImage(named: "teamUpLogo")?.resize(newSize: CGSize(width: view.frame.height * 0.125, height: view.frame.height * 0.125))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -135,8 +135,8 @@ class SignInViewController: UIViewController {
         
         logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.015).isActive = true
-        logoImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
-        logoImageView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
+        logoImageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.125).isActive = true
+        logoImageView.widthAnchor.constraint(equalToConstant: view.frame.height * 0.125).isActive = true
         
         welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         welcomeLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 20).isActive = true
