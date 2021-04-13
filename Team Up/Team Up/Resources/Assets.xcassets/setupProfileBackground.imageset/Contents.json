@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "apex-legends-bloodhound-tapete-1080x1920-18473_165.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
