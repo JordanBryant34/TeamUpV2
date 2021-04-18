@@ -9,11 +9,6 @@ import Foundation
 import FirebaseDatabase
 import FirebaseStorage
 
-enum GameImageType: String {
-    case logo = "game-logos"
-    case background = "game-backgrounds"
-}
-
 class GameController {
     
     static let shared = GameController()
