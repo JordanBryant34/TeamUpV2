@@ -47,14 +47,21 @@ class LFGViewController: UIViewController {
         return indicator
     }()
     
+    var isSearching: Bool {
+        return !(searchText?.isEmpty ?? true)
+    }
+
     let gameController = GameController.shared
+    let lobbyController = LobbyController.shared
     var users: [User] = []
     var resultGames: [Game] = []
     
-    let cellId = "cellId"
+    let gameCellId = "cellId"
     let usersCellId = "userCellId"
     let headerId = "headerId"
     let titleHeaderId = "titleHeaderId"
+    let lobbyCellId = "lobbyCellId"
+    let noLobbyCellId = "noLobbyCellId"
 
     var searchText: String?
     
@@ -69,12 +76,12 @@ class LFGViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.register(GameCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.register(UserSearchControllerCell.self, forCellWithReuseIdentifier: usersCellId)
-        collectionView.register(TitleAndSearchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
-        collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: titleHeaderId)
+        activityIndicator.startAnimating()
         
-        getGames()
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("userLobbyUpdated"), object: nil)
+        
+        registerCells()
+        fetchGames()
         setupViews()
     }
     
@@ -106,17 +113,27 @@ class LFGViewController: UIViewController {
         activityIndicator.setHeightAndWidthConstants(height: view.frame.width * 0.15, width: view.frame.width * 0.15)
     }
     
-    private func getGames() {
-        activityIndicator.startAnimating()
-        gameController.fetchAllGames { [weak self] (games) in
+    private func registerCells() {
+        collectionView.register(GameCell.self, forCellWithReuseIdentifier: gameCellId)
+        collectionView.register(UserSearchControllerCell.self, forCellWithReuseIdentifier: usersCellId)
+        collectionView.register(LobbyCell.self, forCellWithReuseIdentifier: lobbyCellId)
+        collectionView.register(NoLobbyCell.self, forCellWithReuseIdentifier: noLobbyCellId)
+        collectionView.register(TitleAndSearchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: titleHeaderId)
+    }
+    
+    private func fetchGames() {
+        gameController.fetchAllGames { [weak self] (_) in
             self?.reloadData()
         }
     }
     
-    private func reloadData() {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.activityIndicator.stopAnimating()
+    @objc private func reloadData() {
+        if !gameController.games.isEmpty && lobbyController.initialFetchComplete {
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+                self.activityIndicator.stopAnimating()
+            }
         }
     }
     
@@ -158,20 +175,18 @@ extension LFGViewController: UISearchBarDelegate {
     }
     
     @objc private func search() {
-        
         if let searchText = searchText, !searchText.isEmpty {
             resultGames = gameController.searchGames(searchText: searchText)
             
             UserController.searchUsers(searchText: searchText) { [weak self] (users) in
                 self?.users = users
-                self?.reloadSection(sections: [1, 2])
+                self?.reloadSection(sections: [1, 2, 3])
             }
         } else {
             resultGames = []
             users = []
-            reloadSection(sections: [1, 2])
+            reloadSection(sections: [1, 2, 3])
         }
-    
     }
     
 }
@@ -179,36 +194,39 @@ extension LFGViewController: UISearchBarDelegate {
 extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 1 {
-            if users.count > 0 {
-                return 1
-            } else {
-                return 0
-            }
+            return 1
         } else if section == 2 {
+            return users.count > 0 ? 1 : 0
+        } else if section == 3 {
             return gamesDataSource.count
         } else { return 0 }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section == 2 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! GameCell
+        if indexPath.section == 3 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gameCellId, for: indexPath) as! GameCell
             let game = gamesDataSource[indexPath.item]
             
             cell.game = game
             
             return cell
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: usersCellId, for: indexPath) as! UserSearchControllerCell
             
             cell.users = self.users
             cell.delegate = self
             
             return cell
+        } else if indexPath.section == 1 {
+            let lobbyCell = collectionView.dequeueReusableCell(withReuseIdentifier: lobbyCellId, for: indexPath) as! LobbyCell
+            let noLobbyCell = collectionView.dequeueReusableCell(withReuseIdentifier: noLobbyCellId, for: indexPath) as! NoLobbyCell
+            
+            return lobbyController.lobby == nil ? noLobbyCell : lobbyCell
         } else {
             return UICollectionViewCell(frame: .zero)
         }
@@ -229,20 +247,23 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             header.detailLabel.text = "Tap on a game to find people that also play that game."
             
             return header
-        } else if indexPath.section == 1 || indexPath.section == 2 {
+        } else if indexPath.section == 1 || indexPath.section == 2 || indexPath.section == 3 {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: titleHeaderId, for: indexPath) as! LargeTitleHeader
             var dataSource: [Any] = []
             
             if indexPath.section == 1 {
+                header.titleLabel.text = "Your Lobby"
+            } else if indexPath.section == 2 {
                 dataSource = users
                 header.titleLabel.text = dataSource.count > 0 ? "Users" : "No users found"
-            } else if indexPath.section == 2 {
+            } else if indexPath.section == 3 {
                 dataSource = gamesDataSource
                 header.titleLabel.text = dataSource.count > 0 ? "Games" : "No games found"
             }
             
-            header.titleLabel.font = dataSource.count > 0 ? .boldSystemFont(ofSize: 30) : .systemFont(ofSize: 25)
-            header.titleLabel.textColor = dataSource.count > 0 ? .white : .secondaryLabelColor()
+            let titleShouldBeLarge = dataSource.count > 0 || indexPath.section == 1
+            header.titleLabel.font = titleShouldBeLarge ? .boldSystemFont(ofSize: 30) : .systemFont(ofSize: 25)
+            header.titleLabel.textColor = titleShouldBeLarge ? .white : .secondaryLabelColor()
             
             header.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
             
@@ -254,24 +275,36 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let gameCellWidth = view.frame.width - 20
-        let gameCellHeight = gameCellWidth * (9/16) - 30
+        if activityIndicator.isAnimating {
+            return .zero
+        }
         
         if indexPath.section == 1 {
-            return CGSize(width: view.frame.width, height: 150)
+            return isSearching ? .zero : CGSize(width: view.frame.width - 20, height: view.frame.height * 0.2)
         } else if indexPath.section == 2 {
-            return CGSize(width: gameCellWidth, height: gameCellHeight)
+            return CGSize(width: view.frame.width, height: 150)
+        } else if indexPath.section == 3 {
+            return CGSize(width: view.frame.width - 20, height: (view.frame.width - 20) * (9/16) - 30)
         } else { return .zero }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
+        if section != 0 && activityIndicator.isAnimating {
+            return .zero
+        }
+        
+        let sectionTitleSize = CGSize(width: view.frame.width, height: 70)
+        
         switch section {
         case 0:
             return CGSize(width: view.frame.width, height: view.frame.width * (9/16))
-        case 1, 2:
-            let size = !(searchText?.isEmpty ?? true) ? CGSize(width: view.frame.width, height: 50) : .zero
-            return size
+        case 1:
+            return isSearching ? .zero : sectionTitleSize
+        case 2:
+            return isSearching ? sectionTitleSize : .zero
+        case 3:
+            return sectionTitleSize
         default:
             return .zero
         }
@@ -281,7 +314,7 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dismissKeyboard()
         
-        if indexPath.section == 2 {
+        if indexPath.section == 3 {
             let game = gamesDataSource[indexPath.item]
             
             let playersViewController = PlayersViewController()
