@@ -6,14 +6,15 @@
 //
 
 import Foundation
-import FirebaseDatabase
-import FirebaseStorage
+import Firebase
 
 class GameController {
     
     static let shared = GameController()
     
     var games: [Game] = []
+    var userCurrentlyPlayedGame: Game? = nil
+    var initialCurrentGameFetchComplete = false
     
     private let ref = Database.database().reference()
     
@@ -96,6 +97,35 @@ class GameController {
         }
         
         return results
+    }
+    
+    func getGame(name: String) -> Game? {
+        return games.first(where: { $0.name == name })
+    }
+    
+    func fetchCurrentlyPlayedGame(completion: @escaping (Game?) -> Void = { _ in } ) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        ref.child("users").child(currentUser).child("currentlyPlaying").observe(.value) { [weak self] (snapshot) in
+            var game: Game? = nil
+            
+            if let gameName = snapshot.value as? String {
+                game = self?.getGame(name: gameName)
+            }
+            
+            self?.initialCurrentGameFetchComplete = true
+            self?.userCurrentlyPlayedGame = game
+            NotificationCenter.default.post(name: Notification.Name("currentGameUpdated"), object: nil)
+            completion(game)
+        }
+    }
+    
+    func clearDataAndObservers() {
+        userCurrentlyPlayedGame = nil
+        NotificationCenter.default.post(name: Notification.Name("currentGameUpdated"), object: nil)
+        
+        guard let currentUser = Auth.auth().currentUser?.displayName else { print("could not remove currently played observer"); return }
+        ref.child("users").child(currentUser).child("currentlyPlaying").removeAllObservers()
     }
     
 }

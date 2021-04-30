@@ -1,13 +1,13 @@
 //
-//  LobbyCell.swift
+//  CurrentGameCell.swift
 //  Team Up
 //
-//  Created by Jordan Bryant on 4/24/21.
+//  Created by Jordan Bryant on 4/30/21.
 //
 
 import UIKit
 
-class LobbyCell: UICollectionViewCell {
+class CurrentGameCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -20,3 +20,4 @@ class LobbyCell: UICollectionViewCell {
     }
     
 }
+

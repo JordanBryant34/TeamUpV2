@@ -52,7 +52,6 @@ class LFGViewController: UIViewController {
     }
 
     let gameController = GameController.shared
-    let lobbyController = LobbyController.shared
     var users: [User] = []
     var resultGames: [Game] = []
     
@@ -60,8 +59,8 @@ class LFGViewController: UIViewController {
     let usersCellId = "userCellId"
     let headerId = "headerId"
     let titleHeaderId = "titleHeaderId"
-    let lobbyCellId = "lobbyCellId"
-    let noLobbyCellId = "noLobbyCellId"
+    let currentGameCellId = "currentGameCellId"
+    let notOnlineCellId = "notOnlineCellId"
 
     var searchText: String?
     
@@ -78,7 +77,7 @@ class LFGViewController: UIViewController {
         
         activityIndicator.startAnimating()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("userLobbyUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: Notification.Name("currentGameUpdated"), object: nil)
         
         registerCells()
         fetchGames()
@@ -116,8 +115,8 @@ class LFGViewController: UIViewController {
     private func registerCells() {
         collectionView.register(GameCell.self, forCellWithReuseIdentifier: gameCellId)
         collectionView.register(UserSearchControllerCell.self, forCellWithReuseIdentifier: usersCellId)
-        collectionView.register(LobbyCell.self, forCellWithReuseIdentifier: lobbyCellId)
-        collectionView.register(NoLobbyCell.self, forCellWithReuseIdentifier: noLobbyCellId)
+        collectionView.register(CurrentGameCell.self, forCellWithReuseIdentifier: currentGameCellId)
+        collectionView.register(NoDataCell.self, forCellWithReuseIdentifier: notOnlineCellId)
         collectionView.register(TitleAndSearchHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(LargeTitleHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: titleHeaderId)
     }
@@ -129,7 +128,7 @@ class LFGViewController: UIViewController {
     }
     
     @objc private func reloadData() {
-        if !gameController.games.isEmpty && lobbyController.initialFetchComplete {
+        if !gameController.games.isEmpty && gameController.initialCurrentGameFetchComplete {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
                 self.activityIndicator.stopAnimating()
@@ -223,10 +222,14 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             
             return cell
         } else if indexPath.section == 1 {
-            let lobbyCell = collectionView.dequeueReusableCell(withReuseIdentifier: lobbyCellId, for: indexPath) as! LobbyCell
-            let noLobbyCell = collectionView.dequeueReusableCell(withReuseIdentifier: noLobbyCellId, for: indexPath) as! NoLobbyCell
+            let currentGameCell = collectionView.dequeueReusableCell(withReuseIdentifier: currentGameCellId, for: indexPath) as! CurrentGameCell
             
-            return lobbyController.lobby == nil ? noLobbyCell : lobbyCell
+            let noDataCell = collectionView.dequeueReusableCell(withReuseIdentifier: notOnlineCellId, for: indexPath) as! NoDataCell
+            noDataCell.title = "You're currently offine"
+            noDataCell.subText = "Let other players know what game you're playing right now."
+            noDataCell.buttonTitle = "Go Online"
+            
+            return gameController.userCurrentlyPlayedGame == nil ? noDataCell : currentGameCell
         } else {
             return UICollectionViewCell(frame: .zero)
         }
@@ -252,7 +255,7 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             var dataSource: [Any] = []
             
             if indexPath.section == 1 {
-                header.titleLabel.text = "Your Lobby"
+                header.titleLabel.text = "Currently Playing"
             } else if indexPath.section == 2 {
                 dataSource = users
                 header.titleLabel.text = dataSource.count > 0 ? "Users" : "No users found"
@@ -280,7 +283,7 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         }
         
         if indexPath.section == 1 {
-            return isSearching ? .zero : CGSize(width: view.frame.width - 20, height: view.frame.height * 0.2)
+            return isSearching ? .zero : CGSize(width: view.frame.width - 20, height: view.frame.height * 0.25)
         } else if indexPath.section == 2 {
             return CGSize(width: view.frame.width, height: 150)
         } else if indexPath.section == 3 {

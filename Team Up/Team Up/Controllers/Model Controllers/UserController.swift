@@ -336,10 +336,10 @@ class UserController {
     }
     
     static func fetchUserData() {
-        LobbyController.shared.fetchUsersLobby()
         MessageController.shared.fetchChats()
         TeammateController.shared.fetchTeammates()
         RequestController.shared.fetchTeammateRequests()
+        GameController.shared.fetchCurrentlyPlayedGame()
         UserController.fetchAllProfilePictures()
         
         GameController.shared.fetchAllGames { (games) in
@@ -352,7 +352,6 @@ class UserController {
     
     static func signOutUser(viewController: UIViewController) {
         do {
-            LobbyController.shared.clearDataAndObservers()
             MessageController.shared.clearDataAndObservers()
             TeammateController.shared.clearDataAndObservers()
             RequestController.shared.clearDataAndObservers()
