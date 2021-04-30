@@ -178,9 +178,13 @@ extension LFGViewController: UISearchBarDelegate {
         if let searchText = searchText, !searchText.isEmpty {
             resultGames = gameController.searchGames(searchText: searchText)
             
-            UserController.searchUsers(searchText: searchText) { [weak self] (users) in
-                self?.users = users
-                self?.reloadSection(sections: [1, 2, 3])
+            if searchText.count > 3 {
+                UserController.searchUsers(searchText: searchText) { [weak self] (users) in
+                    self?.users = users
+                    self?.reloadSection(sections: [1, 2, 3])
+                }
+            } else {
+                reloadSection(sections: [1, 2, 3])
             }
         } else {
             resultGames = []
@@ -286,7 +290,7 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         if indexPath.section == 1 {
             return isSearching ? .zero : CGSize(width: view.frame.width - 20, height: view.frame.height * 0.25)
         } else if indexPath.section == 2 {
-            return CGSize(width: view.frame.width, height: 150)
+            return (searchText?.count ?? 0) > 3 ? CGSize(width: view.frame.width, height: 150) : .zero
         } else if indexPath.section == 3 {
             return CGSize(width: view.frame.width - 20, height: (view.frame.width - 20) * (9/16) - 30)
         } else { return .zero }
@@ -306,7 +310,7 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         case 1:
             return isSearching ? .zero : sectionTitleSize
         case 2:
-            return isSearching ? sectionTitleSize : .zero
+            return isSearching && (searchText?.count ?? 0) > 3 ? sectionTitleSize : .zero
         case 3:
             return sectionTitleSize
         default:
