@@ -84,7 +84,7 @@ class NoDataCell: UICollectionViewCell {
         
         stackView.setCustomSpacing(10, after: titleLabel)
         
-        button.setHeightAndWidthConstants(height: frame.height / 3.25, width: frame.width * 0.8)
+        button.setHeightAndWidthConstants(height: 60, width: UIScreen.main.bounds.width * 0.75)
         
         subLabel.preferredMaxLayoutWidth = frame.width * 0.75
     }

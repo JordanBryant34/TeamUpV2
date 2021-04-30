@@ -130,7 +130,6 @@ class LFGViewController: UIViewController {
     @objc private func reloadData() {
         if !gameController.games.isEmpty && gameController.initialCurrentGameFetchComplete {
             DispatchQueue.main.async {
-                self.collectionView.layoutIfNeeded()
                 self.collectionView.reloadData()
                 self.activityIndicator.stopAnimating()
             }
