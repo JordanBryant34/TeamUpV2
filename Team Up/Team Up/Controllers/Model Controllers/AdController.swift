@@ -13,6 +13,7 @@ class AdController {
     static let shared = AdController()
     
     private let rewardedInterstitalTestId = "ca-app-pub-3940256099942544/6978759866"
+    private let rewardedInterstitalId = "ca-app-pub-7879710565936793/6684615628"
     
     var rewardedInterstitialAd: GADRewardedInterstitialAd?
     
