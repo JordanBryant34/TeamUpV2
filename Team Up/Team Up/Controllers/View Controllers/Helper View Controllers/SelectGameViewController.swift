@@ -107,7 +107,7 @@ class SelectGameViewController: UIViewController {
     private func getConfirmationTitle() -> String {
         switch userPrompt {
             case .goOnlineForGame:
-                return "Appear online for \(selectedGame?.name ?? "")"
+                return "Appear online for \(selectedGame?.name ?? "")?"
             default:
                 return ""
         }
