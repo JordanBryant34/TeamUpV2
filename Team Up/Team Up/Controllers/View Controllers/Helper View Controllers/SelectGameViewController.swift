@@ -45,6 +45,7 @@ class SelectGameViewController: UIViewController {
     private var games: [Game] = []
     private var cellId = "cellId"
     private var headerId = "headerId"
+    private var promptAccepted = false
     
     var selectedGame: Game?
     var showAllGames = false
@@ -193,11 +194,14 @@ extension SelectGameViewController: PromptUserViewControllerDelegate {
     
     func userAcceptedPrompt() {
         guard let game = selectedGame else { return }
+        promptAccepted = true
         delegate?.gameSelected(game: game)
     }
     
     func promptDismissed() {
-        dismiss(animated: true, completion: nil)
+        if promptAccepted {
+            dismiss(animated: true, completion: nil)
+        }
     }
     
 }
