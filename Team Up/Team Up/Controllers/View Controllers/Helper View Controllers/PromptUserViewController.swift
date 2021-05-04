@@ -26,6 +26,8 @@ enum UserActionPrompt {
     case notifications
     case logout
     case removeTeammate
+    case goOnlineForGame
+    case goOfflineForGame
 }
 
 class PromptUserViewController: UIViewController {
@@ -233,11 +235,11 @@ class PromptUserViewController: UIViewController {
             self.darkenedView.backgroundColor = .clear
             self.view.layoutIfNeeded()
         } completion: { [weak self] (_) in
-            self?.delegate?.promptDismissed()
             self?.dismiss(animated: false, completion: {
                 if self?.timerLength == 0 {
                     self?.delegate?.timerEnded()
                 }
+                self?.delegate?.promptDismissed()
             })
         }
     }

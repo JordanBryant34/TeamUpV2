@@ -11,7 +11,7 @@ import NVActivityIndicatorView
 
 class LFGViewController: UIViewController {
     
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
@@ -21,7 +21,7 @@ class LFGViewController: UIViewController {
         return collectionView
     }()
     
-    let backgroundImageView: UIImageView = {
+    private let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -30,7 +30,7 @@ class LFGViewController: UIViewController {
         return imageView
     }()
     
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 17)
@@ -40,31 +40,33 @@ class LFGViewController: UIViewController {
         return label
     }()
     
-    lazy var activityIndicator: NVActivityIndicatorView = {
+    private lazy var activityIndicator: NVActivityIndicatorView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.15, height: view.frame.width * 0.15)
         let indicator = NVActivityIndicatorView(frame: frame, type: .ballClipRotateMultiple, color: .accent(), padding: nil)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
     
-    var isSearching: Bool {
+    private var isSearching: Bool {
         return !(searchText?.isEmpty ?? true)
     }
 
-    let gameController = GameController.shared
-    var users: [User] = []
-    var resultGames: [Game] = []
+    private let gameController = GameController.shared
+    private var users: [User] = []
+    private var resultGames: [Game] = []
     
-    let gameCellId = "cellId"
-    let usersCellId = "userCellId"
-    let headerId = "headerId"
-    let titleHeaderId = "titleHeaderId"
-    let currentGameCellId = "currentGameCellId"
-    let notOnlineCellId = "notOnlineCellId"
+    private let gameCellId = "cellId"
+    private let usersCellId = "userCellId"
+    private let headerId = "headerId"
+    private let titleHeaderId = "titleHeaderId"
+    private let currentGameCellId = "currentGameCellId"
+    private let notOnlineCellId = "notOnlineCellId"
+    
+    private var userPromptAction: UserActionPrompt?
 
-    var searchText: String?
+    private var searchText: String?
     
-    var gamesDataSource: [Game] {
+    private var gamesDataSource: [Game] {
         if let searchText = searchText, !searchText.isEmpty {
             return resultGames
         } else {
@@ -142,18 +144,43 @@ class LFGViewController: UIViewController {
         }
     }
     
+    @objc private func goOnlineTapped() {
+        let selectGameVC = SelectGameViewController()
+        selectGameVC.headerLabelText = "Choose a game"
+        selectGameVC.userPrompt = .goOnlineForGame
+        selectGameVC.requiresConfirmation = true
+        selectGameVC.delegate = self
+        
+        present(selectGameVC, animated: true, completion: nil)
+    }
+    
+    private func promptToGoOffline() {
+        userPromptAction = .goOfflineForGame
+        let promptVC = PromptUserViewController()
+        promptVC.modalPresentationStyle = .overFullScreen
+        promptVC.acceptButtonTitle = "Confirm"
+        promptVC.cancelButtonTitle = "Cancel"
+        promptVC.titleText = "Go offline?"
+        promptVC.subTitleText = "You will no longer be pushed to the top of search results as \"Playing Now\"."
+        promptVC.isWarning = true
+        promptVC.delegate = self
+        present(promptVC, animated: false, completion: nil)
+    }
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 }
 
 extension LFGViewController: UserSearchDelegate {
+    
     func presentUserProfile(username: String) {
         let profileVC = ProfileViewController()
         profileVC.username = username
         
         navigationController?.pushViewController(profileVC, animated: true)
     }
+    
 }
 
 extension LFGViewController: UISearchBarDelegate {
@@ -227,11 +254,13 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             return cell
         } else if indexPath.section == 1 {
             let currentGameCell = collectionView.dequeueReusableCell(withReuseIdentifier: currentGameCellId, for: indexPath) as! CurrentGameCell
+            currentGameCell.game = gameController.userCurrentlyPlayedGame
             
             let noDataCell = collectionView.dequeueReusableCell(withReuseIdentifier: notOnlineCellId, for: indexPath) as! NoDataCell
-            noDataCell.title = "You're currently offine"
+            noDataCell.title = "You're currently offline"
             noDataCell.subText = "Let other players know what game you're playing right now."
             noDataCell.buttonTitle = "Go Online"
+            noDataCell.button.addTarget(self, action: #selector(goOnlineTapped), for: .touchUpInside)
             
             return gameController.userCurrentlyPlayedGame == nil ? noDataCell : currentGameCell
         } else {
@@ -287,7 +316,11 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         }
         
         if indexPath.section == 1 {
-            return isSearching ? .zero : CGSize(width: view.frame.width - 20, height: view.frame.height * 0.25)
+            if isSearching  {
+                return .zero
+            } else {
+                return gameController.userCurrentlyPlayedGame == nil ? CGSize(width: view.frame.width - 20, height: view.frame.height * 0.25) : CGSize(width: view.frame.width - 20, height: 90)
+            }
         } else if indexPath.section == 2 {
             return (searchText?.count ?? 0) > 3 ? CGSize(width: view.frame.width, height: 150) : .zero
         } else if indexPath.section == 3 {
@@ -328,6 +361,8 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             playersViewController.game = game
 
             navigationController?.pushViewController(playersViewController, animated: true)
+        } else if indexPath.section == 1 {
+            promptToGoOffline()
         }
     }
     
@@ -374,6 +409,28 @@ extension LFGViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         }
     
         backgroundImageView.alpha = 1 - offsetForImage
+    }
+    
+}
+
+extension LFGViewController: SelectGameViewControllerDelegate {
+    
+    func gameSelected(game: Game) {
+        gameController.goOnlineForGame(game: game)
+    }
+
+}
+
+extension LFGViewController: PromptUserViewControllerDelegate {
+    
+    func userAcceptedPrompt() {
+        if userPromptAction == .goOfflineForGame {
+            guard let game = gameController.userCurrentlyPlayedGame else {
+                reloadData()
+                return
+            }
+            gameController.goOfflineForGame(game: game)
+        }
     }
     
 }

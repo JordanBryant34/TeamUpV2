@@ -107,17 +107,39 @@ class GameController {
         guard let currentUser = Auth.auth().currentUser?.displayName else { return }
         
         ref.child("users").child(currentUser).child("currentlyPlaying").observe(.value) { [weak self] (snapshot) in
+            guard let strongSelf = self else { completion(nil); return }
             var game: Game? = nil
             
             if let gameName = snapshot.value as? String {
-                game = self?.getGame(name: gameName)
+                if strongSelf.games.isEmpty {
+                    strongSelf.fetchAllGames { (_) in
+                        game = strongSelf.getGame(name: gameName)
+                        strongSelf.updateCurrentlyPlayedGame(game: game)
+                    }
+                } else {
+                    game = strongSelf.getGame(name: gameName)
+                    strongSelf.updateCurrentlyPlayedGame(game: game)
+                }
+            } else {
+                strongSelf.updateCurrentlyPlayedGame(game: game)
             }
-            
-            self?.initialCurrentGameFetchComplete = true
-            self?.userCurrentlyPlayedGame = game
-            NotificationCenter.default.post(name: Notification.Name("currentGameUpdated"), object: nil)
-            completion(game)
         }
+    }
+    
+    private func updateCurrentlyPlayedGame(game: Game?) {
+        userCurrentlyPlayedGame = game
+        initialCurrentGameFetchComplete = true
+        NotificationCenter.default.post(name: Notification.Name("currentGameUpdated"), object: nil)
+    }
+    
+    func goOnlineForGame(game: Game) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        ref.child("users").child(currentUser).child("currentlyPlaying").setValue(game.name)
+    }
+    
+    func goOfflineForGame(game: Game) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        ref.child("users").child(currentUser).child("currentlyPlaying").removeValue()
     }
     
     func clearDataAndObservers() {

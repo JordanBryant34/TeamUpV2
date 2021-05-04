@@ -29,7 +29,7 @@ class NoDataCell: UICollectionViewCell {
         return label
     }()
     
-    private let button: RoundedButton = {
+    let button: RoundedButton = {
         let button = RoundedButton()
         button.backgroundColor = .accent()
         button.setTitleColor(.white, for: .normal)

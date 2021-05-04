@@ -12,6 +12,7 @@
 		7A03AA5125ED736B00D4B9EB /* SubscriptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */; };
 		7A1AB6142634B9E700F733B2 /* NoDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1AB6132634B9E700F733B2 /* NoDataCell.swift */; };
 		7A1AB61A263CBE1400F733B2 /* CurrentGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1AB619263CBE1400F733B2 /* CurrentGameCell.swift */; };
+		7A1AB639263F1B4E00F733B2 /* SelectGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1AB638263F1B4E00F733B2 /* SelectGameViewController.swift */; };
 		7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */; };
 		7A2606A025C65DEA00FA4971 /* ProfilePicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */; };
 		7A2606A325CB74AB00FA4971 /* SectionTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */; };
@@ -84,6 +85,7 @@
 		7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsViewController.swift; sourceTree = "<group>"; };
 		7A1AB6132634B9E700F733B2 /* NoDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataCell.swift; sourceTree = "<group>"; };
 		7A1AB619263CBE1400F733B2 /* CurrentGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentGameCell.swift; sourceTree = "<group>"; };
+		7A1AB638263F1B4E00F733B2 /* SelectGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectGameViewController.swift; sourceTree = "<group>"; };
 		7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfilePicViewController.swift; sourceTree = "<group>"; };
 		7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicCell.swift; sourceTree = "<group>"; };
 		7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleHeader.swift; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 				7ABFB61A25A782E9005AF4E1 /* SelectTeammateViewController.swift */,
 				7AAB4FA425D894800078A6BB /* PromptUserViewController.swift */,
 				7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */,
+				7A1AB638263F1B4E00F733B2 /* SelectGameViewController.swift */,
 			);
 			path = "Helper View Controllers";
 			sourceTree = "<group>";
@@ -565,6 +568,7 @@
 				7A49C4DC2555D05800103FF0 /* ChatInputView.swift in Sources */,
 				7AF7A7002551E69300FC3C25 /* Message.swift in Sources */,
 				7A4D9D1A25435DDA00E440B6 /* User.swift in Sources */,
+				7A1AB639263F1B4E00F733B2 /* SelectGameViewController.swift in Sources */,
 				7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */,
 				7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */,
 				7AEDD793253E723700620EFC /* SetupProfileViewController.swift in Sources */,
