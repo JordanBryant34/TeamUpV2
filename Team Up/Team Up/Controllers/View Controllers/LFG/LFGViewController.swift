@@ -158,7 +158,7 @@ class LFGViewController: UIViewController {
         userPromptAction = .goOfflineForGame
         let promptVC = PromptUserViewController()
         promptVC.modalPresentationStyle = .overFullScreen
-        promptVC.acceptButtonTitle = "Confirm"
+        promptVC.acceptButtonTitle = "Go offline"
         promptVC.cancelButtonTitle = "Cancel"
         promptVC.titleText = "Go offline?"
         promptVC.subTitleText = "You will no longer be pushed to the top of search results as \"Playing Now\"."
