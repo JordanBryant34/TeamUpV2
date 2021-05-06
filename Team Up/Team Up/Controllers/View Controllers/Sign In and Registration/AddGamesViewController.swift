@@ -48,6 +48,7 @@ class AddGamesViewController: UIViewController {
     
     var searchText: String? = nil
     var isEditingSettings = false
+    var isFinished = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +65,12 @@ class AddGamesViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
+        if !isFinished {
+            for game in addedGames {
+                game.playerPlatform = nil
+            }
+        }
     }
     
     private func fetchGames() {
@@ -101,9 +108,8 @@ class AddGamesViewController: UIViewController {
             let action = UIAlertAction(title: platform, style: .default) { [weak self] (_) in
                 let image = UIImage(named: "\(platform)Icon")?.resize(newSize: CGSize(width: 30, height: 30))
                 
-                let gameToAdd = game
-                gameToAdd.playerPlatform = platform
-                self?.addedGames.append(gameToAdd)
+                game.playerPlatform = platform
+                self?.addedGames.append(game)
                 
                 self?.reloadCell(at: indexPath)
                 
@@ -141,6 +147,7 @@ class AddGamesViewController: UIViewController {
     @objc private func finishTapped() {
         if addedGames.count > 0 {
             UserController.updateUserGames(games: addedGames)
+            isFinished = true
             
             if isEditingSettings {
                 NotificationCenter.default.post(name: Notification.Name("profileUpdated"), object: nil)
