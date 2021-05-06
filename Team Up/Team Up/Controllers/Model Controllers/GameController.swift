@@ -145,7 +145,8 @@ class GameController {
                 "mic" : user.mic.rawValue,
                 "biography" : user.bio,
                 "platform" : platform,
-                "compoundQuery" : "\(platform)_\(user.region.rawValue)"
+                "compoundQuery" : "\(platform)_\(user.region.rawValue)",
+                "currentlyPlaying" : game.name
             ]
             
             let gameRef = strongSelf.ref.child("lfg").child("online").child(game.name)

@@ -141,8 +141,8 @@ class PlayersViewController: UIViewController {
     
         activityIndicator.startAnimating()
         
-        LFGController.fetchPlayers(game: game, platform: platform, region: region) { [weak self] (users) in
-            self?.users = users
+        LFGController.fetchPlayers(game: game, platform: platform, region: region) { [weak self] (users, onlineUsers) in
+            self?.users = onlineUsers + users
             self?.reloadData()
         }
     }
@@ -219,6 +219,7 @@ extension PlayersViewController: UICollectionViewDelegate, UICollectionViewDataS
         let user = users[indexPath.item]
 
         cell.delegate = self
+        cell.game = game
         cell.user = user
         cell.alreadyRequested = requestedUsers.contains(user)
         
