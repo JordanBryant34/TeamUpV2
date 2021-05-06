@@ -134,12 +134,38 @@ class GameController {
     
     func goOnlineForGame(game: Game) {
         guard let currentUser = Auth.auth().currentUser?.displayName else { return }
-        ref.child("users").child(currentUser).child("currentlyPlaying").setValue(game.name)
+        
+        UserController.fetchUser(username: currentUser) { [weak self] (user) in
+            guard let user = user, let platform = game.playerPlatform, let strongSelf = self else { return }
+            
+            let lfgDictionary = [
+                "username" : user.username,
+                "region" : user.region.rawValue,
+                "profilePicUrl" : user.profilePicUrl,
+                "mic" : user.mic.rawValue,
+                "biography" : user.bio,
+                "platform" : platform,
+                "compoundQuery" : "\(platform)_\(user.region.rawValue)"
+            ]
+            
+            let gameRef = strongSelf.ref.child("lfg").child("online").child(game.name)
+            gameRef.childByAutoId().updateChildValues(lfgDictionary)
+            
+            strongSelf.ref.child("users").child(currentUser).child("currentlyPlaying").setValue(game.name)
+        }
     }
     
     func goOfflineForGame(game: Game) {
         guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
         ref.child("users").child(currentUser).child("currentlyPlaying").removeValue()
+        
+        let gameRef = ref.child("lfg").child("online").child(game.name)
+        gameRef.queryOrdered(byChild: "username").queryEqual(toValue: currentUser).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? NSDictionary, let autoId = dictionary.allKeys.first as? String {
+                gameRef.child(autoId).removeValue()
+            }
+        }
     }
     
     func clearDataAndObservers() {
