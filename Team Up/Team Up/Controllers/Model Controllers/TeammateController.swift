@@ -33,7 +33,7 @@ class TeammateController {
             let teammateNames = Array(dictionary.keys)
             
             UserController.fetchUsers(usernames: teammateNames) { [weak self] (teammates) in
-                self?.teammates = teammates
+                self?.teammates = self?.sortTeammates(teammates: teammates) ?? []
                 NotificationCenter.default.post(name: Notification.Name("teammatesUpdated"), object: nil)
             }
         }
@@ -57,6 +57,25 @@ class TeammateController {
         
         guard let currentUser = Auth.auth().currentUser?.displayName else { return }
         ref.child("users").child(currentUser).child("teammates").removeAllObservers()
+    }
+    
+    func sortTeammates(teammates: [User]) -> [User] {
+        if teammates.count <= 1 {
+            return teammates
+        }
+        
+        var sortedTeammates = teammates.sorted { (teammate1, teammate2) -> Bool in
+            return teammate1.username.lowercased() < teammate2.username.lowercased()
+        }
+        
+        for teammate in sortedTeammates.reversed() {
+            if teammate.currentlyPlaying != nil, let index = sortedTeammates.firstIndex(of: teammate) {
+                sortedTeammates.remove(at: index)
+                sortedTeammates.insert(teammate, at: 0)
+            }
+        }
+        
+        return sortedTeammates
     }
     
 }

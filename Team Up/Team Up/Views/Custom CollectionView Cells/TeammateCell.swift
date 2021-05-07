@@ -39,10 +39,18 @@ class TeammateCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let stackView: UIStackView = {
+    private let horizontalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 15
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private let verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 7.5
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -69,6 +77,16 @@ class TeammateCell: UICollectionViewCell {
         return button
     }()
     
+    private let playingNowLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabelColor()
+        label.font = .boldSystemFont(ofSize: 14)
+        label.isHidden = true
+        label.sizeToFit()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     var user: User? {
         didSet {
             setData()
@@ -93,24 +111,31 @@ class TeammateCell: UICollectionViewCell {
         backgroundColor = .teamUpDarkBlue()
         
         addSubview(profilePicImageView)
-        addSubview(stackView)
+        addSubview(usernameLabel)
+        addSubview(horizontalStackView)
+        addSubview(verticalStackView)
         
         profilePicImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         profilePicImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
         profilePicImageView.setHeightAndWidthConstants(height: frame.height * 0.75, width: frame.height * 0.75)
         profilePicImageView.layer.cornerRadius = frame.height * 0.375
         
-        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        stackView.leftAnchor.constraint(equalTo: profilePicImageView.rightAnchor, constant: 10).isActive = true
-        stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
-        stackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        horizontalStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        horizontalStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
+        horizontalStackView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        
+        verticalStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        verticalStackView.leftAnchor.constraint(equalTo: profilePicImageView.rightAnchor, constant: 10).isActive = true
+        verticalStackView.rightAnchor.constraint(equalTo: horizontalStackView.leftAnchor, constant: -10).isActive = true
         
         moreButton.setHeightAndWidthConstants(height: 35, width: 35)
         messageButton.setHeightAndWidthConstants(height: 35, width: 35)
         
-        stackView.addArrangedSubview(usernameLabel)
-        stackView.addArrangedSubview(messageButton)
-        stackView.addArrangedSubview(moreButton)
+        horizontalStackView.addArrangedSubview(messageButton)
+        horizontalStackView.addArrangedSubview(moreButton)
+        
+        verticalStackView.addArrangedSubview(usernameLabel)
+        verticalStackView.addArrangedSubview(playingNowLabel)
     }
     
     private func setData() {
@@ -124,6 +149,9 @@ class TeammateCell: UICollectionViewCell {
         UserController.fetchProfilePicture(picUrl: user.profilePicUrl) { [weak self] (image) in
             self?.profilePicImageView.image = image.resize(newSize: CGSize(width: imageDimension, height: imageDimension))
         }
+        
+        playingNowLabel.isHidden = user.currentlyPlaying == nil
+        playingNowLabel.text = "Playing \(user.currentlyPlaying ?? "")"
     }
     
     @objc private func handleMessageButtonTapped() {
