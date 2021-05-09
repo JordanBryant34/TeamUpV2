@@ -138,7 +138,7 @@ class GameController {
         UserController.fetchUser(username: currentUser) { [weak self] (user) in
             guard let user = user, let platform = game.playerPlatform, let strongSelf = self else { return }
             
-            let lfgDictionary = [
+            let lfgDictionary: [String : Any] = [
                 "username" : user.username,
                 "region" : user.region.rawValue,
                 "profilePicUrl" : user.profilePicUrl,
@@ -146,7 +146,8 @@ class GameController {
                 "biography" : user.bio,
                 "platform" : platform,
                 "compoundQuery" : "\(platform)_\(user.region.rawValue)",
-                "currentlyPlaying" : game.name
+                "currentlyPlaying" : game.name,
+                "onlineSince" : Date().timeIntervalSince1970
             ]
             
             let gameRef = strongSelf.ref.child("lfg").child("online").child(game.name)
