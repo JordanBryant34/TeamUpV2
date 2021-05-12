@@ -6,16 +6,10 @@
 //
 
 import Foundation
-import GoogleMobileAds
 
 class AdController {
     
     static let shared = AdController()
-    
-    private let rewardedInterstitalTestId = "ca-app-pub-3940256099942544/6978759866"
-    private let rewardedInterstitalId = "ca-app-pub-7879710565936793/6684615628"
-    
-    var rewardedInterstitialAd: GADRewardedInterstitialAd?
     
     var requestsCount = 0
     
@@ -24,25 +18,15 @@ class AdController {
     }
     
     func loadRewardedInterstitialAd() {
-        GADRewardedInterstitialAd.load(withAdUnitID: rewardedInterstitalTestId, request: GADRequest()) { (rewardedAd, error) in
-            if let error = error {
-                print("Error loading rewarded interstitial ad: \(error.localizedDescription)")
-            } else if let rewardedAd = rewardedAd {
-                print("Successfully loaded rewarded interstitial ad")
-                self.rewardedInterstitialAd = rewardedAd
-            }
-        }
+        
     }
     
     func showRequestsRewardAd() {
-        let scene = UIApplication.shared.connectedScenes.first
-        guard let sceneDelegate = (scene?.delegate as? SceneDelegate) else { return }
-        guard let tabBarController = sceneDelegate.tabBarController else { return }
-        guard let rewardAd = rewardedInterstitialAd else { return }
         
-        rewardAd.present(fromRootViewController: tabBarController) {
-            self.requestsCount = 0
-            self.loadRewardedInterstitialAd()
-        }
     }
+    
+    func setupMopub() {
+        
+    }
+    
 }

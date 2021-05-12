@@ -6,7 +6,10 @@
 //
 
 import Foundation
-import Firebase
+import FirebaseDatabase
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseMessaging
 
 class UserController {
     

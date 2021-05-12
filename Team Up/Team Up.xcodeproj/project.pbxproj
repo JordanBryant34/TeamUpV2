@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		577D81C9FC08445A0B282E83 /* Pods_Team_Up.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355FCFFDC227911840824384 /* Pods_Team_Up.framework */; };
 		7A03AA2E25E5A32100D4B9EB /* BadgedButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */; };
 		7A03AA3225E6F6C800D4B9EB /* AdController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA3125E6F6C800D4B9EB /* AdController.swift */; };
 		7A03AA5125ED736B00D4B9EB /* SubscriptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */; };
@@ -74,12 +75,11 @@
 		7AFA1165254106FF00EEE7C6 /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA1164254106FF00EEE7C6 /* GameCell.swift */; };
 		7AFA11692541120B00EEE7C6 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA11682541120B00EEE7C6 /* Helpers.swift */; };
 		7AFA116C2541193100EEE7C6 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFA116B2541193100EEE7C6 /* ImageService.swift */; };
-		C3D3C85C78C5CD43A3CC371A /* Pods_Team_Up.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.debug.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.debug.xcconfig"; sourceTree = "<group>"; };
-		61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Team_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		355FCFFDC227911840824384 /* Pods_Team_Up.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Team_Up.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		53ECD6F911C782E2FBC45CC1 /* Pods-Team Up.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.debug.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.debug.xcconfig"; sourceTree = "<group>"; };
 		7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedButtonItem.swift; sourceTree = "<group>"; };
 		7A03AA3125E6F6C800D4B9EB /* AdController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdController.swift; sourceTree = "<group>"; };
 		7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsViewController.swift; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 		7AFA1164254106FF00EEE7C6 /* GameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCell.swift; sourceTree = "<group>"; };
 		7AFA11682541120B00EEE7C6 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		7AFA116B2541193100EEE7C6 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
-		7EE233B4B2AECB512A7B0CA7 /* Pods-Team Up.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.release.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.release.xcconfig"; sourceTree = "<group>"; };
+		AC0319BEE5618E506D928FE2 /* Pods-Team Up.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Team Up.release.xcconfig"; path = "Target Support Files/Pods-Team Up/Pods-Team Up.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,21 +158,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3D3C85C78C5CD43A3CC371A /* Pods_Team_Up.framework in Frameworks */,
+				577D81C9FC08445A0B282E83 /* Pods_Team_Up.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3EE36DEA04BCB086E050BEF6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				61F1907FCC108837786F61D5 /* Pods_Team_Up.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		7A2B0653253E58AD00CF585A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,7 +289,7 @@
 				7AADD00F253E061000CA1FF7 /* Team Up */,
 				7AADD00E253E061000CA1FF7 /* Products */,
 				BD8A580F1CE7B41047DB2D1B /* Pods */,
-				3EE36DEA04BCB086E050BEF6 /* Frameworks */,
+				9809FCE40DE6AF5B3CA8C35C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -427,11 +419,19 @@
 			path = Headers;
 			sourceTree = "<group>";
 		};
+		9809FCE40DE6AF5B3CA8C35C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				355FCFFDC227911840824384 /* Pods_Team_Up.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BD8A580F1CE7B41047DB2D1B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */,
-				7EE233B4B2AECB512A7B0CA7 /* Pods-Team Up.release.xcconfig */,
+				53ECD6F911C782E2FBC45CC1 /* Pods-Team Up.debug.xcconfig */,
+				AC0319BEE5618E506D928FE2 /* Pods-Team Up.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -443,11 +443,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7AADD021253E061200CA1FF7 /* Build configuration list for PBXNativeTarget "Team Up" */;
 			buildPhases = (
-				61E058C9042CFD7D6FEE9FA2 /* [CP] Check Pods Manifest.lock */,
+				9FEBD5C845E62BF6ABDAA9D5 /* [CP] Check Pods Manifest.lock */,
 				7AADD009253E061000CA1FF7 /* Sources */,
 				7AADD00A253E061000CA1FF7 /* Frameworks */,
 				7AADD00B253E061000CA1FF7 /* Resources */,
-				7684E512A627BA99588F7125 /* [CP] Embed Pods Frameworks */,
+				4264B13519BA7768AC692DCD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -504,7 +504,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		61E058C9042CFD7D6FEE9FA2 /* [CP] Check Pods Manifest.lock */ = {
+		4264B13519BA7768AC692DCD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Team Up/Pods-Team Up-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Team Up/Pods-Team Up-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Team Up/Pods-Team Up-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9FEBD5C845E62BF6ABDAA9D5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -524,23 +541,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7684E512A627BA99588F7125 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Team Up/Pods-Team Up-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Team Up/Pods-Team Up-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Team Up/Pods-Team Up-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -749,7 +749,7 @@
 		};
 		7AADD022253E061200CA1FF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B1FE76B61E6ADB0015A892D /* Pods-Team Up.debug.xcconfig */;
+			baseConfigurationReference = 53ECD6F911C782E2FBC45CC1 /* Pods-Team Up.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -761,7 +761,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "player3-team-up-v2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -771,7 +771,7 @@
 		};
 		7AADD023253E061200CA1FF7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7EE233B4B2AECB512A7B0CA7 /* Pods-Team Up.release.xcconfig */;
+			baseConfigurationReference = AC0319BEE5618E506D928FE2 /* Pods-Team Up.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -783,7 +783,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "player3-team-up-v2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
