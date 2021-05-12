@@ -7,6 +7,7 @@
 
 import UIKit
 import NVActivityIndicatorView
+import MoPubSDK
 
 class PlayersViewController: UIViewController {
     
@@ -98,6 +99,14 @@ class PlayersViewController: UIViewController {
         
         makeNavigationBarClear()
         updateViewsByScrollPosition(scrollView: collectionView)
+        
+        AdController.shared.adController?.delegate = self
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        AdController.shared.adController?.delegate = nil
     }
     
     private func setupViews() {
@@ -181,23 +190,6 @@ class PlayersViewController: UIViewController {
         actionPrompt = .notifications
         
         present(notificationsPromptVC, animated: false, completion: nil)
-        alreadyPromptedForNotifications = true
-    }
-    
-    private func promptForAd() {
-        let adPromptVC = PromptUserViewController()
-        adPromptVC.modalPresentationStyle = .overFullScreen
-        adPromptVC.titleText = "We know this isn't ideal."
-        adPromptVC.subTitleText = "In order to keep the app available to everyone, Team Up is largely supported by ads.\n\nView this ad to be able to send more teammate requests."
-        adPromptVC.cancelButtonTitle = "No thanks"
-        adPromptVC.timerLength = 3
-        adPromptVC.acceptButtonTitle = "Ad will play in \(Int(adPromptVC.timerLength))..."
-        adPromptVC.acceptButtonEnabled = false
-        adPromptVC.delegate = self
-        
-        actionPrompt = .ad
-        
-        present(adPromptVC, animated: false, completion: nil)
         alreadyPromptedForNotifications = true
     }
     
@@ -303,16 +295,17 @@ extension PlayersViewController: LFGFiltersViewControllerDelegate {
 extension PlayersViewController: PlayerCellDelegate {
     
     func requestTapped(user: User, cell: PlayerCell) {
-//        if AdController.shared.requestsCount >= 3 && AdController.shared.rewardedInterstitialAd != nil {
-//            promptForAd()
-//            return
-//        }
+        if let adController = AdController.shared.adController, AdController.shared.requestsCount >= 3, adController.ready {
+            adController.show(from: self)
+            AdController.shared.loadInterstitialAds()
+            AdController.shared.requestsCount = 0
+        }
         
         RequestController.shared.requestPlayerToTeamUp(username: user.username) { [weak self] (success) in
             if success {
                 self?.requestedUsers.append(user)
                 cell.alreadyRequested = true
-                
+
                 if !NotificationsController.isRegisteredForNotifications && self?.alreadyPromptedForNotifications == false {
                     self?.promptForNotifications(requestedUser: user.username)
                 }
@@ -330,23 +323,12 @@ extension PlayersViewController: PromptUserViewControllerDelegate {
         }
     }
     
-    func timerUpdated(currentTime: TimeInterval, promptVC: PromptUserViewController) {
-        if actionPrompt == .ad {
-            promptVC.acceptButtonTitle = "Ad will play in \(Int(currentTime))..."
-        }
-    }
+}
+
+extension PlayersViewController: MPInterstitialAdControllerDelegate {
     
-    func timerEnded() {
-//        if AdController.shared.rewardedInterstitialAd != nil {
-//            if actionPrompt == .ad {
-//                AdController.shared.rewardedInterstitialAd?.fullScreenContentDelegate = self
-//                AdController.shared.showRequestsRewardAd()
-//            }
-//        } else {
-//            AdController.shared.loadRewardedInterstitialAd()
-//        }
-        
-        actionPrompt = nil
+    func interstitialDidDismiss(_ interstitial: MPInterstitialAdController!) {
+        AdController.shared.adController?.loadAd()
     }
     
 }

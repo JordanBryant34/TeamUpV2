@@ -14,11 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
+        AdController.shared.setupMopub()
         
         styleNavigationControllers()
         
         UserController.fetchFCMToken()
-        AdController.shared.loadAds()
         
         return true
     }

@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import NVActivityIndicatorView
+import MoPubSDK
 
 protocol SelectGameViewControllerDelegate: AnyObject {
     func gameSelected(game: Game)
@@ -64,6 +65,18 @@ class SelectGameViewController: UIViewController {
         
         fetchGames()
         setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AdController.shared.adController?.delegate = self
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        AdController.shared.adController?.delegate = nil
     }
     
     private func fetchGames() {
@@ -200,8 +213,21 @@ extension SelectGameViewController: PromptUserViewControllerDelegate {
     
     func promptDismissed() {
         if promptAccepted {
-            dismiss(animated: true, completion: nil)
+            if let adController = AdController.shared.adController, adController.ready, userPrompt == .goOnlineForGame {
+                adController.show(from: self)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
         }
+    }
+    
+}
+
+extension SelectGameViewController: MPInterstitialAdControllerDelegate {
+    
+    func interstitialDidDismiss(_ interstitial: MPInterstitialAdController!) {
+        AdController.shared.adController?.loadAd()
+        dismiss(animated: true, completion: nil)
     }
     
 }
