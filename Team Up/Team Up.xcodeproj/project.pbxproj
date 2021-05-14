@@ -10,6 +10,9 @@
 		7A03AA2E25E5A32100D4B9EB /* BadgedButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */; };
 		7A03AA3225E6F6C800D4B9EB /* AdController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA3125E6F6C800D4B9EB /* AdController.swift */; };
 		7A03AA5125ED736B00D4B9EB /* SubscriptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */; };
+		7A1AB6142634B9E700F733B2 /* NoDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1AB6132634B9E700F733B2 /* NoDataCell.swift */; };
+		7A1AB61A263CBE1400F733B2 /* CurrentGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1AB619263CBE1400F733B2 /* CurrentGameCell.swift */; };
+		7A1AB639263F1B4E00F733B2 /* SelectGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1AB638263F1B4E00F733B2 /* SelectGameViewController.swift */; };
 		7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */; };
 		7A2606A025C65DEA00FA4971 /* ProfilePicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */; };
 		7A2606A325CB74AB00FA4971 /* SectionTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */; };
@@ -80,12 +83,14 @@
 		7A03AA2D25E5A32100D4B9EB /* BadgedButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedButtonItem.swift; sourceTree = "<group>"; };
 		7A03AA3125E6F6C800D4B9EB /* AdController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdController.swift; sourceTree = "<group>"; };
 		7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsViewController.swift; sourceTree = "<group>"; };
+		7A1AB6132634B9E700F733B2 /* NoDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataCell.swift; sourceTree = "<group>"; };
+		7A1AB619263CBE1400F733B2 /* CurrentGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentGameCell.swift; sourceTree = "<group>"; };
+		7A1AB638263F1B4E00F733B2 /* SelectGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectGameViewController.swift; sourceTree = "<group>"; };
 		7A26069C25C6595B00FA4971 /* SelectProfilePicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfilePicViewController.swift; sourceTree = "<group>"; };
 		7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicCell.swift; sourceTree = "<group>"; };
 		7A2606A225CB74AB00FA4971 /* SectionTitleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleHeader.swift; sourceTree = "<group>"; };
 		7A29FDE925B0F371001923DB /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7A2B0612253E22FA00CF585A /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		7A2B0624253E305900CF585A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A2B0643253E33D500CF585A /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		7A2B0647253E394800CF585A /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		7A2B064B253E48EC00CF585A /* TeamUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUpTextField.swift; sourceTree = "<group>"; };
@@ -325,7 +330,6 @@
 				7AADD012253E061000CA1FF7 /* SceneDelegate.swift */,
 				7AADD019253E061200CA1FF7 /* Assets.xcassets */,
 				7AADD01B253E061200CA1FF7 /* LaunchScreen.storyboard */,
-				7A2B0624253E305900CF585A /* GoogleService-Info.plist */,
 				7AADD01E253E061200CA1FF7 /* Info.plist */,
 			);
 			path = Resources;
@@ -348,6 +352,7 @@
 				7ABFB61A25A782E9005AF4E1 /* SelectTeammateViewController.swift */,
 				7AAB4FA425D894800078A6BB /* PromptUserViewController.swift */,
 				7A03AA5025ED736B00D4B9EB /* SubscriptionsViewController.swift */,
+				7A1AB638263F1B4E00F733B2 /* SelectGameViewController.swift */,
 			);
 			path = "Helper View Controllers";
 			sourceTree = "<group>";
@@ -405,6 +410,8 @@
 				7AF7A6E9254B43A300FC3C25 /* TeammateCell.swift */,
 				7AF7A6EF254B60C400FC3C25 /* TeammateRequestCell.swift */,
 				7A26069F25C65DEA00FA4971 /* ProfilePicCell.swift */,
+				7A1AB6132634B9E700F733B2 /* NoDataCell.swift */,
+				7A1AB619263CBE1400F733B2 /* CurrentGameCell.swift */,
 			);
 			path = "Custom CollectionView Cells";
 			sourceTree = "<group>";
@@ -561,6 +568,7 @@
 				7A49C4DC2555D05800103FF0 /* ChatInputView.swift in Sources */,
 				7AF7A7002551E69300FC3C25 /* Message.swift in Sources */,
 				7A4D9D1A25435DDA00E440B6 /* User.swift in Sources */,
+				7A1AB639263F1B4E00F733B2 /* SelectGameViewController.swift in Sources */,
 				7A26069D25C6595B00FA4971 /* SelectProfilePicViewController.swift in Sources */,
 				7AED1570253E0D840004DA81 /* LFGViewController.swift in Sources */,
 				7AEDD793253E723700620EFC /* SetupProfileViewController.swift in Sources */,
@@ -575,7 +583,9 @@
 				7AAF56AB253FAB81004BAFF2 /* AddBioViewController.swift in Sources */,
 				7AAF56AE253FB513004BAFF2 /* AddGamesViewController.swift in Sources */,
 				7A2B0613253E22FA00CF585A /* UIColorExtension.swift in Sources */,
+				7A1AB61A263CBE1400F733B2 /* CurrentGameCell.swift in Sources */,
 				7AEDD79A253F9D1F00620EFC /* UserController.swift in Sources */,
+				7A1AB6142634B9E700F733B2 /* NoDataCell.swift in Sources */,
 				7AF7A6E42549DE2300FC3C25 /* LFGController.swift in Sources */,
 				7AADD011253E061000CA1FF7 /* AppDelegate.swift in Sources */,
 				7A03AA3225E6F6C800D4B9EB /* AdController.swift in Sources */,
@@ -751,10 +761,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "player3-team-up-v2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -772,10 +783,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "player3-team-up-v2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -13,7 +13,7 @@ protocol PlayerCellDelegate: AnyObject {
 
 class PlayerCell: UICollectionViewCell {
     
-    let usernameLabel: UILabel = {
+    private let usernameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .boldSystemFont(ofSize: 16)
@@ -23,7 +23,7 @@ class PlayerCell: UICollectionViewCell {
         return label
     }()
     
-    let profilePicImageView: UIImageView = {
+    private let profilePicImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
@@ -34,14 +34,14 @@ class PlayerCell: UICollectionViewCell {
         return imageView
     }()
     
-    let separatorView: UIView = {
+    private let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .teamUpBlue()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let regionLabel: UILabel = {
+    private let regionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .secondaryLabelColor()
         label.font = .boldSystemFont(ofSize: 14)
@@ -51,28 +51,28 @@ class PlayerCell: UICollectionViewCell {
         return label
     }()
     
-    let platformImageView: UIImageView = {
+    private let platformImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.tintColor = .secondaryLabelColor()
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }()
     
-    let micImageView: UIImageView = {
+    private let micImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.tintColor = .secondaryLabelColor()
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }()
     
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 7.5
         return stackView
     }()
     
-    let requestButton: UIButton = {
+    private let requestButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .accent()
         button.titleLabel?.font = .boldSystemFont(ofSize: 16)
@@ -85,15 +85,25 @@ class PlayerCell: UICollectionViewCell {
         return button
     }()
     
-//    let moreButton: UIButton = {
-//        let button = UIButton()
-//        let templateImage = UIImage(named: "moreOptions")?.resize(newSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysTemplate)
-//        button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
-//        button.tintColor = .accent()
-//        button.setImage(templateImage, for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        return button
-//    }()
+    private let playingNowLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabelColor()
+        label.font = .boldSystemFont(ofSize: 14)
+        label.text = "Playing now"
+        label.isHidden = true
+        label.sizeToFit()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let playingNowImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "playingNowIcon")?.resize(newSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = .secondaryLabelColor()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isHidden = true
+        return imageView
+    }()
     
     weak var delegate: PlayerCellDelegate?
     let iconImageSize = CGSize(width: 20, height: 20)
@@ -109,6 +119,8 @@ class PlayerCell: UICollectionViewCell {
             setData()
         }
     }
+    
+    var game: Game?
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -128,7 +140,8 @@ class PlayerCell: UICollectionViewCell {
         addSubview(separatorView)
         addSubview(stackView)
         addSubview(requestButton)
-//        addSubview(moreButton)
+        addSubview(playingNowImageView)
+        addSubview(playingNowLabel)
         
         profilePicImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
         profilePicImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -149,20 +162,20 @@ class PlayerCell: UICollectionViewCell {
         requestButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
         requestButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
-//        moreButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 7.5).isActive = true
-//        moreButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7.5).isActive = true
-//        moreButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
-//        moreButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        
         stackView.addArrangedSubview(usernameLabel)
         stackView.addArrangedSubview(regionLabel)
         stackView.addArrangedSubview(platformImageView)
         stackView.addArrangedSubview(micImageView)
+        
+        playingNowImageView.leftAnchor.constraint(equalTo: separatorView.leftAnchor).isActive = true
+        playingNowImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: frame.height / 4).isActive = true
+        playingNowImageView.setHeightAndWidthConstants(height: 20, width: 20)
+        
+        playingNowLabel.leftAnchor.constraint(equalTo: playingNowImageView.rightAnchor, constant: 5).isActive = true
+        playingNowLabel.centerYAnchor.constraint(equalTo: playingNowImageView.centerYAnchor).isActive = true
     }
     
     private func setData() {
-        micImageView.image = nil
-        platformImageView.image = nil
         profilePicImageView.image = nil
         
         guard let user = user else { return }
@@ -170,14 +183,15 @@ class PlayerCell: UICollectionViewCell {
         usernameLabel.text = user.username
         regionLabel.text = user.region.rawValue
         micImageView.image = UIImage(named: user.mic.rawValue)?.resize(newSize: iconImageSize).withRenderingMode(.alwaysTemplate)
-        
-        if let platform = user.platform {
-            platformImageView.image = UIImage(named: "\(platform)Icon")?.resize(newSize: iconImageSize).withRenderingMode(.alwaysTemplate)
-        }
+        platformImageView.image = UIImage(named: "\(user.platform ?? " ")Icon")?.resize(newSize: iconImageSize).withRenderingMode(.alwaysTemplate)
         
         UserController.fetchProfilePicture(picUrl: user.profilePicUrl) { [weak self] (image) in
             self?.profilePicImageView.image = image.resize(newSize: CGSize(width: 60, height: 60))
         }
+        
+        let playingNow = (game?.name ?? "") == user.currentlyPlaying
+        playingNowLabel.isHidden = !playingNow
+        playingNowImageView.isHidden = !playingNow
     }
     
     @objc private func handleRequestButtonTapped() {

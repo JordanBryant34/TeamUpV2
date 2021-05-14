@@ -226,7 +226,6 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     private func updateViewsByScrollPosition(scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
         var offsetForNavBar = scrollView.contentOffset.y / (view.frame.height / 2.5)
         var offsetForImage = scrollView.contentOffset.y / (view.frame.height / 10)
         

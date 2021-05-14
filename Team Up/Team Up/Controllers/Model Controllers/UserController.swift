@@ -339,6 +339,7 @@ class UserController {
         MessageController.shared.fetchChats()
         TeammateController.shared.fetchTeammates()
         RequestController.shared.fetchTeammateRequests()
+        GameController.shared.fetchCurrentlyPlayedGame()
         UserController.fetchAllProfilePictures()
         
         GameController.shared.fetchAllGames { (games) in

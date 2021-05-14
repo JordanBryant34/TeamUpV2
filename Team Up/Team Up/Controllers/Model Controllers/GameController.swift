@@ -6,19 +6,15 @@
 //
 
 import Foundation
-import FirebaseDatabase
-import FirebaseStorage
-
-enum GameImageType: String {
-    case logo = "game-logos"
-    case background = "game-backgrounds"
-}
+import Firebase
 
 class GameController {
     
     static let shared = GameController()
     
     var games: [Game] = []
+    var userCurrentlyPlayedGame: Game? = nil
+    var initialCurrentGameFetchComplete = false
     
     private let ref = Database.database().reference()
     
@@ -101,6 +97,85 @@ class GameController {
         }
         
         return results
+    }
+    
+    func getGame(name: String) -> Game? {
+        return games.first(where: { $0.name == name })
+    }
+    
+    func fetchCurrentlyPlayedGame(completion: @escaping (Game?) -> Void = { _ in } ) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        ref.child("users").child(currentUser).child("currentlyPlaying").observe(.value) { [weak self] (snapshot) in
+            guard let strongSelf = self else { completion(nil); return }
+            var game: Game? = nil
+            
+            if let gameName = snapshot.value as? String {
+                if strongSelf.games.isEmpty {
+                    strongSelf.fetchAllGames { (_) in
+                        game = strongSelf.getGame(name: gameName)
+                        strongSelf.updateCurrentlyPlayedGame(game: game)
+                    }
+                } else {
+                    game = strongSelf.getGame(name: gameName)
+                    strongSelf.updateCurrentlyPlayedGame(game: game)
+                }
+            } else {
+                strongSelf.updateCurrentlyPlayedGame(game: game)
+            }
+        }
+    }
+    
+    private func updateCurrentlyPlayedGame(game: Game?) {
+        userCurrentlyPlayedGame = game
+        initialCurrentGameFetchComplete = true
+        NotificationCenter.default.post(name: Notification.Name("currentGameUpdated"), object: nil)
+    }
+    
+    func goOnlineForGame(game: Game) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        UserController.fetchUser(username: currentUser) { [weak self] (user) in
+            guard let user = user, let platform = game.playerPlatform, let strongSelf = self else { return }
+            
+            let lfgDictionary: [String : Any] = [
+                "username" : user.username,
+                "region" : user.region.rawValue,
+                "profilePicUrl" : user.profilePicUrl,
+                "mic" : user.mic.rawValue,
+                "biography" : user.bio,
+                "platform" : platform,
+                "compoundQuery" : "\(platform)_\(user.region.rawValue)",
+                "currentlyPlaying" : game.name,
+                "onlineSince" : Date().timeIntervalSince1970
+            ]
+            
+            let gameRef = strongSelf.ref.child("lfg").child("online").child(game.name)
+            gameRef.childByAutoId().updateChildValues(lfgDictionary)
+            
+            strongSelf.ref.child("users").child(currentUser).child("currentlyPlaying").setValue(game.name)
+        }
+    }
+    
+    func goOfflineForGame(game: Game) {
+        guard let currentUser = Auth.auth().currentUser?.displayName else { return }
+        
+        ref.child("users").child(currentUser).child("currentlyPlaying").removeValue()
+        
+        let gameRef = ref.child("lfg").child("online").child(game.name)
+        gameRef.queryOrdered(byChild: "username").queryEqual(toValue: currentUser).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? NSDictionary, let autoId = dictionary.allKeys.first as? String {
+                gameRef.child(autoId).removeValue()
+            }
+        }
+    }
+    
+    func clearDataAndObservers() {
+        userCurrentlyPlayedGame = nil
+        NotificationCenter.default.post(name: Notification.Name("currentGameUpdated"), object: nil)
+        
+        guard let currentUser = Auth.auth().currentUser?.displayName else { print("could not remove currently played observer"); return }
+        ref.child("users").child(currentUser).child("currentlyPlaying").removeAllObservers()
     }
     
 }

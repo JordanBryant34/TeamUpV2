@@ -23,8 +23,7 @@ class SetupProfileViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.accent().cgColor
-        imageView.image = UIImage(named: "defaultProfilePic")
-        imageView.backgroundColor = .teamUpDarkBlue()
+        imageView.backgroundColor = UIColor.accent().withAlphaComponent(0.1)
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -33,9 +32,12 @@ class SetupProfileViewController: UIViewController {
     let editProfilePicLabel: UILabel = {
         let label = UILabel()
         label.sizeToFit()
-        label.font = .systemFont(ofSize: 14)
-        label.text = "Edit Profile Picture"
-        label.textColor = .accent()
+        label.font = .boldSystemFont(ofSize: 13)
+        label.text = "Set profile picture"
+        label.textColor = .white
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -150,6 +152,8 @@ class SetupProfileViewController: UIViewController {
     private func setupViews() {
         title = "Profile Setup"
         
+        let profilePicSize = view.frame.height * 0.125
+        
         view.backgroundColor = .teamUpBlue()
         
         view.addSubview(backgroundImageView)
@@ -167,14 +171,14 @@ class SetupProfileViewController: UIViewController {
         
         profilePicImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         profilePicImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.03).isActive = true
-        profilePicImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
-        profilePicImageView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.125).isActive = true
-        profilePicImageView.layer.cornerRadius = view.frame.height * 0.125 / 2
+        profilePicImageView.setHeightAndWidthConstants(height: profilePicSize, width: profilePicSize)
+        profilePicImageView.layer.cornerRadius = profilePicSize / 2
         
-        editProfilePicLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        editProfilePicLabel.topAnchor.constraint(equalTo: profilePicImageView.bottomAnchor, constant: 5).isActive = true
+        editProfilePicLabel.centerXAnchor.constraint(equalTo: profilePicImageView.centerXAnchor).isActive = true
+        editProfilePicLabel.centerYAnchor.constraint(equalTo: profilePicImageView.centerYAnchor, constant: 3).isActive = true
+        editProfilePicLabel.preferredMaxLayoutWidth = profilePicSize * 0.9
         
-        usernameTextField.topAnchor.constraint(equalTo: editProfilePicLabel.bottomAnchor, constant: 70).isActive = true
+        usernameTextField.topAnchor.constraint(equalTo: profilePicImageView.bottomAnchor, constant: 60).isActive = true
         usernameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         usernameTextField.setHeightAndWidthConstants(height: 50, width: view.frame.width * 0.8)
         
@@ -202,7 +206,7 @@ class SetupProfileViewController: UIViewController {
     
     private func checkIfReadyToContinue() {
         if let username = usernameTextField.text, let regionString = regionTextField.text {
-            if !username.isEmpty && !regionString.isEmpty {
+            if !username.isEmpty && !regionString.isEmpty && !profilePicUrl.trimmingCharacters(in: .whitespaces).isEmpty {
                 continueButton.isEnabled = true
             }
         }
@@ -299,6 +303,8 @@ extension SetupProfileViewController: SelectProfilePicViewControllerDelegate {
         self.profilePicUrl = imageUrl
         UserController.fetchProfilePicture(picUrl: imageUrl) { [weak self] (image) in
             self?.profilePicImageView.image = image
+            self?.editProfilePicLabel.isHidden = true
+            self?.checkIfReadyToContinue()
         }
     }
 }
