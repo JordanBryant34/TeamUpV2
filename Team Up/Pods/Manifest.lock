@@ -136,6 +136,9 @@ PODS:
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
   - PromisesObjC (1.2.12)
+  - Purchases (3.11.1):
+    - PurchasesCoreSwift (= 3.11.1)
+  - PurchasesCoreSwift (3.11.1)
   - SnapKit (5.0.1)
   - SwiftyJSON (5.0.1)
 
@@ -145,9 +148,10 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
-  - mopub-ios-sdk (= 5.16.2)
+  - mopub-ios-sdk
   - NotificationBannerSwift
   - NVActivityIndicatorView
+  - Purchases
   - SwiftyJSON
 
 SPEC REPOS:
@@ -172,6 +176,8 @@ SPEC REPOS:
     - NotificationBannerSwift
     - NVActivityIndicatorView
     - PromisesObjC
+    - Purchases
+    - PurchasesCoreSwift
     - SnapKit
     - SwiftyJSON
 
@@ -196,9 +202,11 @@ SPEC CHECKSUMS:
   NotificationBannerSwift: 7021be2338f8f29cf424b0aca43da462bf9e2a1a
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  Purchases: 6351f9ff6bd514e5ec5aa0f989ea181effa94bf5
+  PurchasesCoreSwift: ee857e4c21e6254b09d7e303a756fcf2b9164408
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
 
-PODFILE CHECKSUM: 7ebbe9ea846265a8b1a63977973533ada14fc5c1
+PODFILE CHECKSUM: 3de2fa30329c6d0d9e6387db50b97b83472018f9
 
 COCOAPODS: 1.10.0

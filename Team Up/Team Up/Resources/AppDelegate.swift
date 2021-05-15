@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import Purchases
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         AdController.shared.setupMopub()
+        
+        Purchases.debugLogsEnabled = true
+        Purchases.configure(withAPIKey: "pHGSiTQBlXJCZcIDFLScrxEpvMENsqqO")
         
         styleNavigationControllers()
         
