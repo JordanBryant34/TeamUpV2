@@ -329,6 +329,7 @@ extension PlayersViewController: MPInterstitialAdControllerDelegate {
     
     func interstitialDidDismiss(_ interstitial: MPInterstitialAdController!) {
         AdController.shared.adController?.loadAd()
+        SubscriptionController.shared.presentSubscriptionController(viewController: self)
     }
     
 }

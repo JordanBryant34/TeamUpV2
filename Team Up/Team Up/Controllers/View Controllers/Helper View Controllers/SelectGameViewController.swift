@@ -227,7 +227,13 @@ extension SelectGameViewController: MPInterstitialAdControllerDelegate {
     
     func interstitialDidDismiss(_ interstitial: MPInterstitialAdController!) {
         AdController.shared.adController?.loadAd()
-        dismiss(animated: true, completion: nil)
+        if let parent = presentingViewController {
+            dismiss(animated: true) {
+                SubscriptionController.shared.presentSubscriptionController(viewController: parent)
+            }
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
     }
     
 }

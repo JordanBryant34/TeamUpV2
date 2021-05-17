@@ -16,14 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         AdController.shared.setupMopub()
-        
-        Purchases.debugLogsEnabled = true
-        Purchases.configure(withAPIKey: "pHGSiTQBlXJCZcIDFLScrxEpvMENsqqO")
+        SubscriptionController.shared.setupSubscriptions()
         
         styleNavigationControllers()
         
         UserController.fetchFCMToken()
-        
+            
         return true
     }
     

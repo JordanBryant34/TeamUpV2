@@ -21,8 +21,6 @@ class TabBarController: UITabBarController {
         super.viewDidAppear(animated)
         
         checkIfProfileIsSetup()
-        
-        present(SubscriptionsViewController(), animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

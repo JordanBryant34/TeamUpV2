@@ -30,12 +30,11 @@ class SubscriptionsViewController: UIViewController {
         return button
     }()
     
-    private let freeTrialLabel: UILabel = {
+    private let offerTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 22.5, weight: .semibold)
-        label.text = "Get 3-day free trial, then only"
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -47,7 +46,7 @@ class SubscriptionsViewController: UIViewController {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 20)
         label.sizeToFit()
-        label.text = "$0.99 / month"
+//        label.text = "$0.99 / month"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -122,8 +121,23 @@ class SubscriptionsViewController: UIViewController {
         return button
     }()
     
+    var subscriptionOfferTitle: String? {
+        didSet {
+            offerTitleLabel.text = subscriptionOfferTitle
+        }
+    }
+    
+    var priceText: String? {
+        didSet {
+            priceLabel.text = priceText
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        dismissButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+        declineButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
         
         setupViews()
     }
@@ -135,7 +149,7 @@ class SubscriptionsViewController: UIViewController {
         view.addSubview(subscribeButton)
         view.addSubview(declineButton)
         view.addSubview(priceLabel)
-        view.addSubview(freeTrialLabel)
+        view.addSubview(offerTitleLabel)
         view.addSubview(gradientSeparator)
         view.addSubview(infoSubLabel)
         view.addSubview(infoLabel)
@@ -151,14 +165,14 @@ class SubscriptionsViewController: UIViewController {
         
         subscribeButton.anchor(view.centerYAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: view.frame.height * 0.2, leftConstant: 40, bottomConstant: 0, rightConstant: 40, widthConstant: 0, heightConstant: view.frame.height * 0.075)
         declineButton.anchor(subscribeButton.bottomAnchor, left: subscribeButton.leftAnchor, bottom: nil, right: subscribeButton.rightAnchor, topConstant: 20, leftConstant: 20, bottomConstant: 0, rightConstant: 10, widthConstant: 0, heightConstant: view.frame.height * 0.050)
-        gradientSeparator.anchor(nil, left: view.leftAnchor, bottom: freeTrialLabel.topAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 20, bottomConstant: 25, rightConstant: 20, widthConstant: 0, heightConstant: 2)
+        gradientSeparator.anchor(nil, left: view.leftAnchor, bottom: offerTitleLabel.topAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 20, bottomConstant: 25, rightConstant: 20, widthConstant: 0, heightConstant: 2)
         infoSubLabel.anchor(nil, left: view.leftAnchor, bottom: gradientSeparator.topAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 60, bottomConstant: 0, rightConstant: 60, widthConstant: 0, heightConstant: view.frame.height * 0.125)
         
         priceLabel.bottomAnchor.constraint(equalTo: subscribeButton.topAnchor, constant: -20).isActive = true
         priceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        freeTrialLabel.bottomAnchor.constraint(equalTo: priceLabel.topAnchor, constant: -10).isActive = true
-        freeTrialLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        offerTitleLabel.bottomAnchor.constraint(equalTo: priceLabel.topAnchor, constant: -10).isActive = true
+        offerTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         infoLabel.bottomAnchor.constraint(equalTo: infoSubLabel.topAnchor, constant: 10).isActive = true
         infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -175,7 +189,11 @@ class SubscriptionsViewController: UIViewController {
         
         dismissButton.setHeightAndWidthConstants(height: 30, width: 30)
         dismissButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
+        dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+    }
+    
+    @objc private func handleDismiss() {
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
