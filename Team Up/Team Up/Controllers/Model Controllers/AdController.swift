@@ -5,7 +5,7 @@
 //  Created by Jordan Bryant on 2/24/21.
 //
 
-import Foundation
+import UIKit
 import MoPubSDK
 
 class AdController {
@@ -17,8 +17,16 @@ class AdController {
     var requestsCount = 0
     
     func loadInterstitialAds() {
-        DispatchQueue.main.async {
-            self.adController?.loadAd()
+        if !SubscriptionController.shared.userSubscribed {
+            DispatchQueue.main.async {
+                self.adController?.loadAd()
+            }
+        }
+    }
+    
+    func showAd(from viewController: UIViewController) {
+        if let adController = adController, adController.ready, !SubscriptionController.shared.userSubscribed {
+            adController.show(from: viewController)
         }
     }
     
@@ -26,7 +34,6 @@ class AdController {
         let sdkConfig = MPMoPubConfiguration(adUnitIdForAppInitialization: interstitialAdId)
 
         MoPub.sharedInstance().initializeSdk(with: sdkConfig) {
-            print("MoPub Setup Complete")
             self.adController = MPInterstitialAdController(forAdUnitId: self.interstitialAdId)
             self.loadInterstitialAds()
         }

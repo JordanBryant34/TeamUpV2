@@ -13,8 +13,10 @@ class SubscriptionsViewController: UIViewController {
     private let subscribeButton: RoundedButton = {
         let button = RoundedButton()
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.setBackgroundImage(UIImage(color: .teamUpDarkBlue()), for: .disabled)
+        button.setBackgroundImage(UIImage(color: .accent()), for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .accent()
+        button.setTitleColor(.secondaryLabelColor(), for: .disabled)
         button.setTitle("Start free trial", for: .normal)
         return button
     }()
@@ -46,7 +48,6 @@ class SubscriptionsViewController: UIViewController {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 20)
         label.sizeToFit()
-//        label.text = "$0.99 / month"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -133,11 +134,14 @@ class SubscriptionsViewController: UIViewController {
         }
     }
     
+    private let subscriptionController = SubscriptionController.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dismissButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
         declineButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+        subscribeButton.addTarget(self, action: #selector(handleSubscribeTapped), for: .touchUpInside)
         
         setupViews()
     }
@@ -190,6 +194,19 @@ class SubscriptionsViewController: UIViewController {
         dismissButton.setHeightAndWidthConstants(height: 30, width: 30)
         dismissButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
         dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+    }
+    
+    @objc private func handleSubscribeTapped() {
+        activityIndicator.startAnimating()
+        subscribeButton.isEnabled = false
+        subscriptionController.subscribeUser { [weak self] (success) in
+            self?.activityIndicator.stopAnimating()
+            self?.subscribeButton.isEnabled = true
+            if success {
+                Helpers.showNotificationBanner(title: "You are now subscribed.", subtitle: "", image: nil, style: .success, textAlignment: .center)
+                self?.handleDismiss()
+            }
+        }
     }
     
     @objc private func handleDismiss() {

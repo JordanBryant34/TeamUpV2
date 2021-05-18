@@ -213,8 +213,8 @@ extension SelectGameViewController: PromptUserViewControllerDelegate {
     
     func promptDismissed() {
         if promptAccepted {
-            if let adController = AdController.shared.adController, adController.ready, userPrompt == .goOnlineForGame {
-                adController.show(from: self)
+            if userPrompt == .goOnlineForGame && !SubscriptionController.shared.userSubscribed {
+                AdController.shared.showAd(from: self)
             } else {
                 dismiss(animated: true, completion: nil)
             }

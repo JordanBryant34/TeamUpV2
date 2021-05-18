@@ -295,8 +295,8 @@ extension PlayersViewController: LFGFiltersViewControllerDelegate {
 extension PlayersViewController: PlayerCellDelegate {
     
     func requestTapped(user: User, cell: PlayerCell) {
-        if let adController = AdController.shared.adController, AdController.shared.requestsCount >= 3, adController.ready {
-            adController.show(from: self)
+        if AdController.shared.requestsCount >= 3 {
+            AdController.shared.showAd(from: self)
             AdController.shared.loadInterstitialAds()
             AdController.shared.requestsCount = 0
         }
