@@ -94,12 +94,31 @@ class SubscriptionController {
         }
     }
     
-    private func checkSubscriptionStatus() {
+    private func checkSubscriptionStatus(completion: @escaping (_ subscribed: Bool) -> () = { _ in }) {
         Purchases.shared.purchaserInfo { [weak self] (purchaserInfo, error) in
             if let error = error {
                 print("Error getting purchaser info: \(error.localizedDescription)")
+                completion(false)
             } else if let strongSelf = self {
                 strongSelf.userSubscribed = purchaserInfo?.entitlements["removeAds"]?.isActive ?? false
+                completion(strongSelf.userSubscribed)
+            }
+        }
+    }
+    
+    func restorePurchase(from viewController: UIViewController) {
+        Purchases.shared.restoreTransactions { [weak self] (purchaserInfo, error) in
+            if let error = error {
+                print("Error restoring purchase: \(error.localizedDescription)")
+                Helpers.showNotificationBanner(title: "Something went wrong...", subtitle: "We were unable to restore your purchase. Try again later.", image: nil, style: .danger, textAlignment: .left)
+            } else {
+                self?.checkSubscriptionStatus { (isSubscribed) in
+                    if isSubscribed {
+                        Helpers.showNotificationBanner(title: "Your subscription has been restored.", subtitle: "", image: nil, style: .success, textAlignment: .center)
+                    } else {
+                        self?.presentSubscriptionController(viewController: viewController)
+                    }
+                }
             }
         }
     }

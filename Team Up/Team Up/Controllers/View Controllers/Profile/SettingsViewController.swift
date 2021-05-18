@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class SettingsViewController: UIViewController {
     
@@ -19,6 +20,8 @@ class SettingsViewController: UIViewController {
     
     private let settingsTitles = [
         ["Edit profile picture", "Edit biography", "Edit region", "Edit mic status", "Edit games"],
+        ["Restore subscription"],
+        ["Privacy Policy", "Terms & Conditions"],
         ["Log out"]
     ]
     
@@ -81,7 +84,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectedBackgroundView = selectedView
         
         cell.textLabel?.text = settingsTitles[indexPath.section][indexPath.row]
-        cell.textLabel?.textColor = indexPath.section == 1 ? .danger() : .white
+        cell.textLabel?.textColor = settingsTitles[indexPath.section][indexPath.row] == "Log out" ? .danger() : .white
         cell.backgroundColor = .teamUpDarkBlue()
         
         return cell
@@ -98,7 +101,12 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 headerView.textLabel?.text = "Profile"
             case 1:
+                headerView.textLabel?.text = "Subscription"
+            case 2:
+                headerView.textLabel?.text = "Policies"
+            case 3:
                 headerView.textLabel?.text = "Account"
+
             default:
                 headerView.textLabel?.text = ""
             }
@@ -140,6 +148,16 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             let selectProfilePicVC = SelectProfilePicViewController()
             selectProfilePicVC.modalPresentationStyle = .overFullScreen
             present(selectProfilePicVC, animated: true, completion: nil)
+        case "Restore subscription":
+            SubscriptionController.shared.restorePurchase(from: self)
+        case "Privacy Policy":
+            guard let url = URL(string: "https://www.termsfeed.com/privacy-policy/7d2abbea67c2a3a1ba3984724a801a9a") else { return }
+            let safariViewController = SFSafariViewController(url: url)
+            present(safariViewController, animated: true, completion: nil)
+        case "Terms & Conditions":
+            guard let url = URL(string: "https://docs.google.com/document/d/1g65DmXcpVjbVZZT2quVKr_xczIN5rUMmsEAwnUJ0nqk/edit") else { return }
+            let safariViewController = SFSafariViewController(url: url)
+            present(safariViewController, animated: true, completion: nil)
         default:
             print("Settings cell has no text")
         }
